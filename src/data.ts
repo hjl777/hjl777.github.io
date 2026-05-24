@@ -434,19 +434,6 @@ export const projects: Project[] = [
     stack: ['Python', 'PyTorch', 'LLMs', 'PEFT', 'KG-RAG', 'HuggingFace'],
   },
   {
-    id: 'proj-vision',
-    title: 'Quantitative Coronary Angiography (QCA) & TAVI Planning',
-    subtitle: 'Medical vision pipelines · SAM 2 · 2D→3D reconstruction',
-    description:
-      'End-to-end QCA pipelines with clinician QA interfaces (segmentation, centerline, bifurcation extraction). Prototype 2D-to-3D vascular geometry reconstruction from routine angiographic sequences for interventional planning (TAVI). Semi-automated catheter / wire tracking via foundation-model-assisted segmentation (SAM 2).',
-    metrics: [
-      { label: 'Modality', value: 'XA · CT' },
-      { label: 'Backbone', value: 'SAM 2' },
-      { label: 'Target', value: 'TAVI' },
-    ],
-    stack: ['Python', 'PyTorch', 'MONAI', 'SAM 2', 'OpenCV', 'NumPy'],
-  },
-  {
     id: 'proj-stent-marker',
     title: 'End-to-End Coronary Vessel Analysis for Stent-Marker Localization',
     subtitle: 'Deep-learning segmentation · Mask refinement · Diameter profiling',
