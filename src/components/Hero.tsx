@@ -17,8 +17,13 @@ export default function Hero() {
             </h1>
 
             <p className="mt-4 text-base text-ink-600 sm:text-lg">
-              {profile.role} ·{' '}
-              <span className="text-ink-700">{profile.affiliation}</span>
+              {profile.role}
+              {profile.affiliation && (
+                <>
+                  {' · '}
+                  <span className="text-ink-700">{profile.affiliation}</span>
+                </>
+              )}
             </p>
 
             <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-500">
