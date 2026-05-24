@@ -469,7 +469,7 @@ export const experience: ExperienceItem[] = [
     role: 'Researcher',
     org: 'Asan Medical Center — Biomedical Engineering Research Center',
     location: 'Seoul, KR',
-    period: '2025.03 – Present',
+    period: '2025.03.01 – 2026.02.28',
     bullets: [
       'Build and deploy QCA analysis pipelines with clinician QA interfaces, improving measurement consistency and reviewer efficiency.',
       'Prototype 2D→3D vascular geometry reconstruction from routine angiographic sequences for TAVI planning.',
