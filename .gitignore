@@ -9,6 +9,9 @@ dist-ssr
 참고자료/
 *.docx
 
+# Session handoff notes (internal — not for public repo)
+HANDOFF.md
+
 .vscode/*
 !.vscode/extensions.json
 .idea

@@ -447,6 +447,19 @@ export const projects: Project[] = [
     stack: ['Python', 'PyTorch', 'MONAI', 'SAM 2', 'OpenCV', 'NumPy'],
   },
   {
+    id: 'proj-stent-marker',
+    title: 'End-to-End Coronary Vessel Analysis for Stent-Marker Localization',
+    subtitle: 'Deep-learning segmentation · Mask refinement · Diameter profiling',
+    description:
+      'An end-to-end pipeline I built from scratch for stent-marker localization on 2D coronary angiograms. I trained a deep-learning segmentation model over the three coronary trees (RCA / LAD / LCX) and refined the predicted masks, then used the cleaned vessel geometry with OCR-derived calibration (pixel→mm) to auto-detect points of bifurcation, measure vessel-wall diameter at multiple cross-sections, classify main vessel vs. side branch, and generate per-branch diameter profile diagrams.',
+    metrics: [
+      { label: 'Segmentation', value: 'DL-trained' },
+      { label: 'Vessels', value: 'RCA · LAD · LCX' },
+      { label: 'Targets', value: 'POB · Diameter' },
+    ],
+    stack: ['Python', 'PyTorch', 'OpenCV', 'scikit-image', 'pytesseract'],
+  },
+  {
     id: 'proj-outcomes',
     title: 'Clinical Outcome Prediction at Population Scale',
     subtitle: 'Nationwide ML risk models · XAI · external validation',
