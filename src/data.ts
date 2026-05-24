@@ -74,7 +74,8 @@ export const profile = {
     'Quantitative Coronary Angiography',
     'Clinical Outcome Prediction',
     'Epidemiology & XAI',
-    'LLM Fine-tuning · PEFT · RAG',
+    'LLM Fine-tuning · PEFT · KG-RAG',
+    'Knowledge Graphs & Schema Design',
     'Multimodal Medical AI',
   ],
   education: [
@@ -444,6 +445,19 @@ export const projects: Project[] = [
       { label: 'Targets', value: 'POB · Diameter' },
     ],
     stack: ['Python', 'PyTorch', 'OpenCV', 'scikit-image', 'pytesseract'],
+  },
+  {
+    id: 'proj-math-platform',
+    title: 'AI-Assisted Math Problem Platform (K-12)',
+    subtitle: 'Prompt engineering · TikZ figure generation · Trend analysis',
+    description:
+      'Contributing as a mathematics domain expert (B.S. Mathematics) to a Korean K-12 math problem management platform. Three threads of contribution: (1) prompt engineering to advance AI math-problem generation and variation quality, (2) AI-assisted figure generation for problem visuals (TikZ / LaTeX), and (3) longitudinal year-over-year problem-trend analysis reports for curriculum guidance.',
+    metrics: [
+      { label: 'Role', value: 'Domain expert' },
+      { label: 'Threads', value: 'Prompt · Figures · Trends' },
+      { label: 'Stack', value: 'LLM · TikZ' },
+    ],
+    stack: ['Python', 'LLM Prompting', 'TikZ', 'LaTeX'],
   },
   {
     id: 'proj-outcomes',
