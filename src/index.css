@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-white text-ink-800 font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+  }
+  ::selection {
+    @apply bg-indigo-100 text-indigo-900;
+  }
+}
+
+@layer components {
+  .container-prose {
+    @apply mx-auto w-full max-w-5xl px-6 sm:px-8;
+  }
+  .section {
+    @apply scroll-mt-24 py-20 sm:py-28;
+  }
+  .section-title {
+    @apply font-serif text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl;
+  }
+  .section-kicker {
+    @apply mb-3 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-indigo-600;
+  }
+  .section-kicker::before {
+    content: '';
+    @apply h-px w-8 bg-indigo-300;
+  }
+  .link-underline {
+    @apply relative inline-flex items-center gap-1 text-indigo-700 transition hover:text-indigo-900;
+  }
+  .link-underline::after {
+    content: '';
+    @apply absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-current transition-transform duration-300;
+  }
+  .link-underline:hover::after {
+    @apply scale-x-100;
+  }
+  .chip {
+    @apply inline-flex items-center rounded-full border border-ink-200 bg-white px-2.5 py-0.5 text-xs font-medium text-ink-600;
+  }
+  .badge-soft {
+    @apply inline-flex items-center rounded-md bg-indigo-50 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-indigo-700 ring-1 ring-inset ring-indigo-100;
+  }
+}

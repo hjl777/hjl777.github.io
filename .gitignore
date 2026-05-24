@@ -1,0 +1,25 @@
+node_modules
+dist
+dist-ssr
+*.local
+*.tsbuildinfo
+.claude/
+
+# Private source materials — never push these to public GitHub
+참고자료/
+*.docx
+
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
