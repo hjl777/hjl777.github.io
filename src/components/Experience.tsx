@@ -9,6 +9,7 @@ import {
   Fingerprint,
 } from 'lucide-react';
 import { experience, contacts, profile, honors } from '../data';
+import { useReveal, revealClass } from '../hooks/useReveal';
 
 const ICONS = {
   mail: Mail,
@@ -19,9 +20,10 @@ const ICONS = {
 } as const;
 
 export default function Experience() {
+  const { ref, visible } = useReveal<HTMLDivElement>();
   return (
     <section id="cv" className="section bg-ink-50/50 dark:bg-ink-900/40">
-      <div className="container-prose">
+      <div ref={ref} className={`container-prose ${revealClass(visible)}`}>
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
             <div className="section-kicker">CV & Contact</div>

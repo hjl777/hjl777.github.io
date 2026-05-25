@@ -1,10 +1,12 @@
 import { ArrowUpRight, Users } from 'lucide-react';
 import { projects } from '../data';
+import { useReveal, revealClass } from '../hooks/useReveal';
 
 export default function Projects() {
+  const { ref, visible } = useReveal<HTMLDivElement>();
   return (
     <section id="projects" className="section">
-      <div className="container-prose">
+      <div ref={ref} className={`container-prose ${revealClass(visible)}`}>
         <div className="max-w-2xl">
           <div className="section-kicker">Research & Projects</div>
           <h2 className="section-title">Selected systems & studies</h2>

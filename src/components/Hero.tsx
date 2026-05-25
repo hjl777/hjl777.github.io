@@ -20,8 +20,21 @@ const SOCIAL_ICONS = {
 
 export default function Hero() {
   return (
-    <section id="home" className="section pt-28 sm:pt-36">
-      <div className="container-prose">
+    <section
+      id="home"
+      className="section relative overflow-hidden pt-28 sm:pt-36"
+    >
+      {/* Ambient glow blobs (subtle, decorative) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 select-none"
+      >
+        <div className="absolute left-[8%] top-[18%] h-72 w-72 rounded-[42%_58%_45%_55%/55%_45%_60%_40%] bg-indigo-300/40 blur-3xl mix-blend-multiply animate-blob-1 dark:bg-indigo-500/25 dark:mix-blend-screen" />
+        <div className="absolute right-[6%] top-[8%] h-80 w-80 rounded-[60%_40%_55%_45%/40%_60%_45%_55%] bg-fuchsia-200/40 blur-3xl mix-blend-multiply animate-blob-2 dark:bg-fuchsia-500/20 dark:mix-blend-screen" />
+        <div className="absolute left-[38%] top-[58%] h-64 w-64 rounded-[55%_45%_60%_40%/50%_55%_45%_50%] bg-teal-200/35 blur-3xl mix-blend-multiply animate-blob-3 dark:bg-teal-500/15 dark:mix-blend-screen" />
+      </div>
+
+      <div className="container-prose relative">
         <div className="grid grid-cols-1 items-start gap-12 md:grid-cols-12 md:gap-16">
           {/* Left: bio */}
           <div className="md:col-span-7 animate-fade-up">

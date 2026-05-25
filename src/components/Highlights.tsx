@@ -1,5 +1,6 @@
 import { ArrowRight, ArrowUpRight, Star } from 'lucide-react';
 import { publications } from '../data';
+import { useReveal, revealClass } from '../hooks/useReveal';
 
 function renderAuthors(authors: string) {
   const parts = authors.split(/(\*\*[^*]+\*\*)/g);
@@ -21,11 +22,13 @@ export default function Highlights() {
     .sort((a, b) => b.year - a.year)
     .slice(0, 3);
 
+  const { ref, visible } = useReveal<HTMLDivElement>();
+
   if (!featured.length) return null;
 
   return (
     <section id="highlights" className="section bg-white dark:bg-ink-950">
-      <div className="container-prose">
+      <div ref={ref} className={`container-prose ${revealClass(visible)}`}>
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div className="max-w-2xl">
             <div className="section-kicker">Highlights</div>

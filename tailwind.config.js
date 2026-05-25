@@ -42,6 +42,9 @@ export default {
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out',
         'fade-up': 'fadeUp 0.7s ease-out',
+        'blob-1': 'blobFloat1 28s ease-in-out infinite',
+        'blob-2': 'blobFloat2 36s ease-in-out infinite',
+        'blob-3': 'blobFloat3 32s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -51,6 +54,36 @@ export default {
         fadeUp: {
           '0%': { opacity: '0', transform: 'translateY(8px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        blobFloat1: {
+          '0%, 100%': {
+            transform: 'translate(0px, 0px) scale(1)',
+            filter: 'hue-rotate(0deg)',
+          },
+          '50%': {
+            transform: 'translate(40px, -30px) scale(1.08)',
+            filter: 'hue-rotate(35deg)',
+          },
+        },
+        blobFloat2: {
+          '0%, 100%': {
+            transform: 'translate(0px, 0px) scale(1)',
+            filter: 'hue-rotate(0deg)',
+          },
+          '50%': {
+            transform: 'translate(-50px, 40px) scale(1.06)',
+            filter: 'hue-rotate(-25deg)',
+          },
+        },
+        blobFloat3: {
+          '0%, 100%': {
+            transform: 'translate(0px, 0px) scale(1)',
+            filter: 'hue-rotate(0deg)',
+          },
+          '50%': {
+            transform: 'translate(30px, 35px) scale(0.94)',
+            filter: 'hue-rotate(20deg)',
+          },
         },
       },
     },

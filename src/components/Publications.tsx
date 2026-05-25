@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { FileText, Code2, ExternalLink, BookOpen } from 'lucide-react';
 import { publications, type Publication } from '../data';
+import { useReveal, revealClass } from '../hooks/useReveal';
 
 type Filter = 'All' | 'Selected' | 'Journal' | 'Conference';
 const FILTERS: Filter[] = ['All', 'Selected', 'Journal', 'Conference'];
@@ -68,9 +69,11 @@ export default function Publications() {
     [],
   );
 
+  const { ref, visible } = useReveal<HTMLDivElement>();
+
   return (
     <section id="publications" className="section bg-ink-50/50 dark:bg-ink-900/40">
-      <div className="container-prose">
+      <div ref={ref} className={`container-prose ${revealClass(visible)}`}>
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
             <div className="section-kicker">Publications</div>

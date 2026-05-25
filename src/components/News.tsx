@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react';
 import { news } from '../data';
+import { useReveal, revealClass } from '../hooks/useReveal';
 
 function formatDate(iso: string) {
   // "2025-02" -> "Feb 2025"
@@ -9,11 +10,13 @@ function formatDate(iso: string) {
 }
 
 export default function News() {
+  const { ref, visible } = useReveal<HTMLDivElement>();
+
   if (!news.length) return null;
 
   return (
     <section id="news" className="section">
-      <div className="container-prose">
+      <div ref={ref} className={`container-prose ${revealClass(visible)}`}>
         <div className="max-w-2xl">
           <div className="section-kicker">News</div>
           <h2 className="section-title">Recent updates</h2>
