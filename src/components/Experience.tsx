@@ -6,6 +6,7 @@ import {
   Download,
   MapPin,
   Award,
+  Fingerprint,
 } from 'lucide-react';
 import { experience, contacts, profile, honors } from '../data';
 
@@ -14,17 +15,18 @@ const ICONS = {
   github: Github,
   linkedin: Linkedin,
   scholar: GraduationCap,
+  orcid: Fingerprint,
 } as const;
 
 export default function Experience() {
   return (
-    <section id="cv" className="section bg-ink-50/50">
+    <section id="cv" className="section bg-ink-50/50 dark:bg-ink-900/40">
       <div className="container-prose">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
             <div className="section-kicker">CV & Contact</div>
             <h2 className="section-title">Experience</h2>
-            <p className="mt-3 max-w-xl text-ink-600">
+            <p className="mt-3 max-w-xl text-ink-600 dark:text-ink-400">
               A timeline of research positions, programs, and industry
               experience.
             </p>
@@ -33,7 +35,7 @@ export default function Experience() {
             href={profile.cvUrl}
             target="_blank"
             rel="noreferrer"
-            className="group inline-flex items-center gap-2 rounded-full bg-ink-900 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-ink-800"
+            className="group inline-flex items-center gap-2 rounded-full bg-ink-900 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors duration-200 hover:bg-ink-800 dark:bg-indigo-500 dark:hover:bg-indigo-400"
           >
             <Download size={16} className="transition-transform group-hover:-translate-y-0.5" />
             Download CV (PDF)
@@ -44,7 +46,7 @@ export default function Experience() {
         <ol className="mt-12 relative">
           <span
             aria-hidden
-            className="absolute left-[7px] top-2 bottom-2 w-px bg-ink-200 sm:left-[calc(11rem+7px)]"
+            className="absolute left-[7px] top-2 bottom-2 w-px bg-ink-200 sm:left-[calc(11rem+7px)] dark:bg-ink-800"
           />
           {experience.map((e) => (
             <li
@@ -53,9 +55,9 @@ export default function Experience() {
             >
               {/* Period (desktop column) */}
               <div className="hidden sm:block">
-                <p className="font-mono text-xs text-ink-500">{e.period}</p>
+                <p className="font-mono text-xs text-ink-500 dark:text-ink-400">{e.period}</p>
                 {e.location && (
-                  <p className="mt-1 inline-flex items-center gap-1 text-xs text-ink-400">
+                  <p className="mt-1 inline-flex items-center gap-1 text-xs text-ink-400 dark:text-ink-500">
                     <MapPin size={11} />
                     {e.location}
                   </p>
@@ -64,20 +66,20 @@ export default function Experience() {
 
               {/* Dot */}
               <div className="relative pt-1.5">
-                <span className="block h-3.5 w-3.5 rounded-full border-2 border-white bg-indigo-500 ring-2 ring-indigo-200" />
+                <span className="block h-3.5 w-3.5 rounded-full border-2 border-white bg-indigo-500 ring-2 ring-indigo-200 dark:border-ink-950 dark:ring-indigo-700/60" />
               </div>
 
               {/* Content */}
               <div>
-                <h3 className="font-serif text-base font-semibold text-ink-900">
+                <h3 className="font-serif text-base font-semibold text-ink-900 dark:text-ink-50">
                   {e.role}
                 </h3>
-                <p className="text-sm text-ink-700">{e.org}</p>
-                <p className="mt-0.5 font-mono text-xs text-ink-500 sm:hidden">
+                <p className="text-sm text-ink-700 dark:text-ink-300">{e.org}</p>
+                <p className="mt-0.5 font-mono text-xs text-ink-500 sm:hidden dark:text-ink-400">
                   {e.period}
                   {e.location ? ` · ${e.location}` : ''}
                 </p>
-                <ul className="mt-2.5 list-disc space-y-1 pl-5 text-sm text-ink-600 marker:text-ink-300">
+                <ul className="mt-2.5 list-disc space-y-1 pl-5 text-sm text-ink-600 marker:text-ink-300 dark:text-ink-400 dark:marker:text-ink-600">
                   {e.bullets.map((b, i) => (
                     <li key={i}>{b}</li>
                   ))}
@@ -90,8 +92,8 @@ export default function Experience() {
         {/* Honors & Awards */}
         <div className="mt-14">
           <div className="mb-5 flex items-center gap-2">
-            <Award size={16} className="text-indigo-600" />
-            <h3 className="font-serif text-xl font-semibold text-ink-900">
+            <Award size={16} className="text-indigo-600 dark:text-indigo-400" />
+            <h3 className="font-serif text-xl font-semibold text-ink-900 dark:text-ink-50">
               Honors & Awards
             </h3>
           </div>
@@ -99,14 +101,14 @@ export default function Experience() {
             {honors.map((h) => (
               <li
                 key={h.title}
-                className="rounded-xl border border-ink-200 bg-white p-4"
+                className="rounded-xl border border-ink-200 bg-white p-4 dark:border-ink-800 dark:bg-ink-900"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="font-medium text-ink-900">{h.title}</p>
-                    <p className="mt-0.5 text-sm text-ink-600">{h.org}</p>
+                    <p className="font-medium text-ink-900 dark:text-ink-50">{h.title}</p>
+                    <p className="mt-0.5 text-sm text-ink-600 dark:text-ink-400">{h.org}</p>
                   </div>
-                  <span className="shrink-0 font-mono text-[11px] text-ink-500">
+                  <span className="shrink-0 font-mono text-[11px] text-ink-500 dark:text-ink-400">
                     {h.year}
                   </span>
                 </div>
@@ -116,16 +118,16 @@ export default function Experience() {
         </div>
 
         {/* Contact card */}
-        <div className="mt-14 rounded-2xl border border-ink-200 bg-white p-7 shadow-sm sm:p-9">
+        <div className="mt-14 rounded-2xl border border-ink-200 bg-white p-7 shadow-sm sm:p-9 dark:border-ink-800 dark:bg-ink-900">
           <div className="grid grid-cols-1 items-center gap-6 sm:grid-cols-2">
             <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-indigo-600">
+              <p className="text-xs font-medium uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
                 Contact
               </p>
-              <h3 className="mt-2 font-serif text-2xl font-semibold text-ink-900">
+              <h3 className="mt-2 font-serif text-2xl font-semibold text-ink-900 dark:text-ink-50">
                 Get in touch
               </h3>
-              <p className="mt-2 max-w-md text-sm text-ink-600">
+              <p className="mt-2 max-w-md text-sm text-ink-600 dark:text-ink-400">
                 Open to collaborations on medical AI, clinical prediction, and
                 trustworthy LLMs. Reach out by email or any of the channels
                 below.
@@ -140,9 +142,9 @@ export default function Experience() {
                       href={c.href}
                       target={c.href.startsWith('http') ? '_blank' : undefined}
                       rel="noreferrer"
-                      className="group flex items-center gap-3 rounded-lg border border-ink-200 bg-white px-3.5 py-3 text-sm text-ink-700 transition hover:border-indigo-300 hover:bg-indigo-50/40 hover:text-ink-900"
+                      className="group flex items-center gap-3 rounded-lg border border-ink-200 bg-white px-3.5 py-3 text-sm text-ink-700 transition-colors duration-200 hover:border-indigo-300 hover:bg-indigo-50/40 hover:text-ink-900 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300 dark:hover:border-indigo-600 dark:hover:bg-indigo-500/10 dark:hover:text-ink-50"
                     >
-                      <span className="flex h-8 w-8 items-center justify-center rounded-md bg-ink-100 text-ink-600 transition group-hover:bg-indigo-100 group-hover:text-indigo-700">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-md bg-ink-100 text-ink-600 transition-colors duration-200 group-hover:bg-indigo-100 group-hover:text-indigo-700 dark:bg-ink-800 dark:text-ink-400 dark:group-hover:bg-indigo-500/20 dark:group-hover:text-indigo-300">
                         <Icon size={15} />
                       </span>
                       <span className="font-medium">{c.label}</span>

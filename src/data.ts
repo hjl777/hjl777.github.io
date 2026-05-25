@@ -47,7 +47,13 @@ export interface ExperienceItem {
 export interface ContactLink {
   label: string;
   href: string;
-  icon: 'mail' | 'github' | 'linkedin' | 'scholar';
+  icon: 'mail' | 'github' | 'linkedin' | 'scholar' | 'orcid';
+}
+
+export interface NewsItem {
+  date: string;       // ISO YYYY-MM
+  text: string;
+  href?: string;
 }
 
 // -----------------------------------------------------------------------------
@@ -568,4 +574,39 @@ export const contacts: ContactLink[] = [
   { label: 'GitHub',         href: 'https://github.com/hjl777',                                  icon: 'github' },
   { label: 'LinkedIn',       href: 'https://www.linkedin.com/in/lee-ho-jae-247b29266/',         icon: 'linkedin' },
   { label: 'Google Scholar', href: 'https://scholar.google.com/citations?user=o2RGCNQAAAAJ',    icon: 'scholar' },
+  { label: 'ORCID',          href: 'https://orcid.org/0009-0002-1737-2540',                     icon: 'orcid' },
+];
+
+// -----------------------------------------------------------------------------
+// NEWS / UPDATES — most-recent first.
+// -----------------------------------------------------------------------------
+export const news: NewsItem[] = [
+  {
+    date: '2026-01',
+    text: 'Started a new project thread on stent-marker localization in 2D coronary angiograms — end-to-end DL segmentation over RCA/LAD/LCX with bifurcation diameter profiling.',
+  },
+  {
+    date: '2025-02',
+    text: 'New paper out in Journal of Medical Internet Research: ML-based prediction of substance use in adolescents across three independent worldwide cohorts.',
+    href: 'https://www.jmir.org/',
+  },
+  {
+    date: '2025-01',
+    text: 'Co-authored paper published in The Lancet Regional Health — Western Pacific on decade-long trends in cardiovascular-kidney-metabolic syndrome in South Korea.',
+    href: 'https://doi.org/10.1016/j.lanwpc.2024.101329',
+  },
+  {
+    date: '2024-10',
+    text: 'Co-first-authored paper in JMIR on ML-based prediction of neurodegenerative disease in patients with Type 2 Diabetes (derivation + external validation in two Korean cohorts).',
+    href: 'https://www.jmir.org/',
+  },
+  {
+    date: '2024-06',
+    text: 'Concluded MSIT (IITP) fellowship at the University of Toronto / MIT — worked on mitigating LLM hallucination in scientific Q&A via PEFT, soft prompting, and KG-based RAG.',
+  },
+  {
+    date: '2024-04',
+    text: 'Corresponding-author paper in Scientific Reports on national adolescent smoking prevalence in South Korea (2005–2022), covering the tobacco-tax hike and COVID-19 impact.',
+    href: 'https://www.nature.com/srep/',
+  },
 ];

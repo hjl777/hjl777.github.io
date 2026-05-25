@@ -1,0 +1,66 @@
+import { ArrowUpRight } from 'lucide-react';
+import { news } from '../data';
+
+function formatDate(iso: string) {
+  // "2025-02" -> "Feb 2025"
+  const [y, m] = iso.split('-');
+  const date = new Date(Number(y), Number(m) - 1, 1);
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+}
+
+export default function News() {
+  if (!news.length) return null;
+
+  return (
+    <section id="news" className="section">
+      <div className="container-prose">
+        <div className="max-w-2xl">
+          <div className="section-kicker">News</div>
+          <h2 className="section-title">Recent updates</h2>
+          <p className="mt-3 text-ink-600 dark:text-ink-400">
+            Recent papers, projects, and fellowships.
+          </p>
+        </div>
+
+        <ol className="mt-10 relative max-w-3xl">
+          <span
+            aria-hidden
+            className="absolute left-[6.5rem] top-2 bottom-2 w-px bg-ink-200 hidden sm:block dark:bg-ink-800"
+          />
+          {news.map((n, i) => (
+            <li
+              key={`${n.date}-${i}`}
+              className="relative grid grid-cols-1 gap-y-1 pb-6 last:pb-0 sm:grid-cols-[6.5rem_1.5rem_1fr] sm:gap-x-4"
+            >
+              <div className="hidden pt-0.5 font-mono text-xs text-ink-500 sm:block dark:text-ink-400">
+                {formatDate(n.date)}
+              </div>
+              <div className="relative hidden pt-1.5 sm:block">
+                <span className="block h-2.5 w-2.5 rounded-full border-2 border-white bg-indigo-500 ring-2 ring-indigo-200 dark:border-ink-950 dark:ring-indigo-700/60" />
+              </div>
+              <div>
+                <p className="font-mono text-xs text-ink-500 sm:hidden dark:text-ink-400">
+                  {formatDate(n.date)}
+                </p>
+                <p className="mt-0.5 text-sm leading-relaxed text-ink-700 sm:mt-0 dark:text-ink-300">
+                  {n.text}
+                  {n.href && (
+                    <a
+                      href={n.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="ml-1 inline-flex items-center gap-0.5 text-indigo-700 transition-colors duration-200 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
+                      aria-label="External link"
+                    >
+                      <ArrowUpRight size={12} />
+                    </a>
+                  )}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
