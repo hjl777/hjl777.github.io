@@ -6,7 +6,6 @@ const sections = [
   { id: 'home', label: 'Home' },
   { id: 'publications', label: 'Publications' },
   { id: 'projects', label: 'Research' },
-  { id: 'cv', label: 'CV' },
 ];
 
 export default function Nav() {

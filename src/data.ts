@@ -65,10 +65,10 @@ export const profile = {
   shortBio:
     'Researcher bridging a rigorous mathematical foundation with applied medical AI — quantitative coronary angiography, clinical outcome prediction, and LLM hallucination mitigation in scientific Q&A.',
   longBio: [
-    'I am an applied AI researcher working across three threads: (1) deep-learning pipelines for quantitative coronary angiography — vessel segmentation, bifurcation analysis, and stent-marker localization; (2) biostatistical and ML risk-prediction modeling over hospital EMR and nationwide cohort data, including SAS-based trend analyses and ratio-of-ratio comparisons; and (3) multi-agent LLM systems for educational content generation.',
-    'I hold a B.S. in Mathematics from Korea University and an M.S. in Pharmacy (Pharmaceutical Big Data Analysis) from Kyung Hee University, where I developed and externally validated ML risk prediction models for neurodegenerative, cardiovascular, and diabetic-retinopathy outcomes in Type 2 Diabetes.',
-    'As a fully-funded MSIT scholar, I worked jointly with researchers at the University of Toronto and MIT on mitigating hallucinations of LLMs over scientific Q&A — combining Parameter-Efficient Fine-Tuning, Soft Prompting, and Knowledge-Graph-based RAG to embed domain constraints into model outputs.',
-    'Across two years I have authored or co-authored 21 SCI/SCIE peer-reviewed papers (6 co-first, 1 corresponding) in venues including The Lancet Regional Health, JMIR, JAMA Network Open, and Scientific Reports.',
+    "I'm a researcher at the Institute of Biomedical Engineering, Asan Medical Center, working at the intersection of coronary-angiography AI, clinical risk prediction, and LLM reliability.",
+    'Co-authored 21 SCI/SCIE papers (6 co-first, 1 corresponding) in venues including The Lancet Regional Health, JAMA Network Open, JMIR, and Scientific Reports.',
+    'In 2024 I was a fully-funded MSIT fellow at the University of Toronto and MIT. There I worked on mitigating LLM hallucination in scientific Q&A — combining parameter-efficient fine-tuning, soft prompting, and knowledge-graph-based RAG to constrain model outputs with domain knowledge.',
+    'Currently most interested in how LLMs can reason reliably over structured medical knowledge — what it takes for retrieval and constraint mechanisms to hold up in high-stakes clinical contexts.',
   ],
   interests: [
     'Quantitative Coronary Angiography',
@@ -86,10 +86,10 @@ export const profile = {
       detail: 'Thesis on ML-based suicidal-ideation prediction (3 cohorts)',
     },
     {
-      degree: 'Visiting Student — Mechanical & Industrial Eng.',
+      degree: 'Applied AI Program',
       org: 'University of Toronto',
       period: 'Jan – Jul 2024',
-      detail: 'Fully-funded MSIT (IITP) Fellowship',
+      detail: 'Hosted by Dept. of Mechanical & Industrial Engineering',
     },
     {
       degree: 'B.S. in Mathematics',
