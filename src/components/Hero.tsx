@@ -81,7 +81,7 @@ export default function Hero() {
                         title={c.label}
                         className="text-ink-500 transition-colors duration-200 hover:text-ink-800 dark:text-ink-400 dark:hover:text-ink-100"
                       >
-                        <Icon size={16} />
+                        <Icon size={20} />
                       </a>
                     );
                   })}

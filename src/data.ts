@@ -69,10 +69,10 @@ export const profile = {
   cvUrl: '/cv.pdf',
   avatarUrl: '/portrait.png',
   shortBio:
-    'Researcher bridging a rigorous mathematical foundation with applied medical AI — quantitative coronary angiography, clinical outcome prediction, and LLM hallucination mitigation in scientific Q&A.',
+    'Researcher bridging a rigorous mathematical foundation with applied medical AI — quantitative coronary angiography, clinical outcome prediction (including mental health & addiction risk), and LLM hallucination mitigation in scientific Q&A.',
   longBio: [
     "I'm an independent researcher working at the intersection of coronary-angiography AI, clinical risk prediction (suicidal ideation, substance use & addiction), and LLM reliability.",
-    'Co-authored 21 SCI/SCIE papers (6 co-first, 1 corresponding) in venues including The Lancet Regional Health, JAMA Network Open, JMIR, and Scientific Reports.',
+    'Co-authored 24 SCI/SCIE papers (6 co-first, 1 corresponding) in venues including The Lancet Regional Health, JAMA Network Open, JMIR, and Scientific Reports.',
     'In 2024 I was a fully-funded MSIT fellow at the University of Toronto and MIT. There I worked on mitigating LLM hallucination in scientific Q&A — combining parameter-efficient fine-tuning, soft prompting, and knowledge-graph-based RAG to constrain model outputs with domain knowledge.',
     'Currently most interested in how LLMs can reason reliably over structured medical knowledge — what it takes for retrieval and constraint mechanisms to hold up in high-stakes clinical contexts.',
   ],
@@ -105,7 +105,7 @@ export const profile = {
     },
   ],
   highlights: [
-    { label: 'Peer-reviewed papers (SCI/SCIE)', value: '21' },
+    { label: 'Peer-reviewed papers (SCI/SCIE)', value: '24' },
     { label: 'Co-first author', value: '6' },
     { label: 'Corresponding author', value: '1' },
   ],
@@ -491,10 +491,10 @@ export const experience: ExperienceItem[] = [
     location: 'Seoul, KR',
     period: '2025.03.01 – 2026.02.28',
     bullets: [
-      'Build and deploy QCA analysis pipelines with clinician QA interfaces, improving measurement consistency and reviewer efficiency.',
-      'Prototype 2D→3D vascular geometry reconstruction from routine angiographic sequences for TAVI planning.',
-      'Develop semi-automated catheter / wire tracking systems on angiographic video with SAM 2-assisted segmentation.',
-      'Integrate structured clinical variables with imaging model outputs for clinician-facing decision support.',
+      'Built and deployed QCA analysis pipelines with clinician QA interfaces, improving measurement consistency and reviewer efficiency.',
+      'Prototyped 2D→3D vascular geometry reconstruction from routine angiographic sequences for TAVI planning.',
+      'Developed semi-automated catheter / wire tracking systems on angiographic video with SAM 2-assisted segmentation.',
+      'Integrated structured clinical variables with imaging model outputs for clinician-facing decision support.',
     ],
   },
   {
