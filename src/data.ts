@@ -71,7 +71,7 @@ export const profile = {
   shortBio:
     'Researcher bridging a rigorous mathematical foundation with applied medical AI — quantitative coronary angiography, clinical outcome prediction, and LLM hallucination mitigation in scientific Q&A.',
   longBio: [
-    "I'm a researcher at the Institute of Biomedical Engineering, Asan Medical Center, working at the intersection of coronary-angiography AI, clinical risk prediction, and LLM reliability.",
+    "I'm an independent researcher working at the intersection of coronary-angiography AI, clinical risk prediction (suicidal ideation, substance use & addiction), and LLM reliability.",
     'Co-authored 21 SCI/SCIE papers (6 co-first, 1 corresponding) in venues including The Lancet Regional Health, JAMA Network Open, JMIR, and Scientific Reports.',
     'In 2024 I was a fully-funded MSIT fellow at the University of Toronto and MIT. There I worked on mitigating LLM hallucination in scientific Q&A — combining parameter-efficient fine-tuning, soft prompting, and knowledge-graph-based RAG to constrain model outputs with domain knowledge.',
     'Currently most interested in how LLMs can reason reliably over structured medical knowledge — what it takes for retrieval and constraint mechanisms to hold up in high-stakes clinical contexts.',
@@ -79,6 +79,7 @@ export const profile = {
   interests: [
     'Quantitative Coronary Angiography',
     'Clinical Outcome Prediction',
+    'Mental Health & Addiction Risk Modeling',
     'Epidemiology & XAI',
     'LLM Fine-tuning · PEFT · KG-RAG',
     'Knowledge Graphs & Schema Design',
