@@ -173,7 +173,7 @@ export const publications: Publication[] = [
     title:
       'National prevalence of atopic dermatitis in Korean adolescents from 2009 to 2022',
     authors:
-      'M Kattih*, **H Lee***, H Jo*, J Jeong, H Kim, J Park, H Yang, A Nguyen, HJ Kim, et al.',
+      'M Kattih*, **H Lee***, H Jo*, J Jeong*, H Kim*, J Park, H Yang, A Nguyen, HJ Kim, et al.',
     venue: 'Scientific Reports',
     year: 2024,
     month: 'May',
@@ -190,11 +190,12 @@ export const publications: Publication[] = [
     title:
       'Machine Learning–Based Prediction of Suicidality in Adolescents with Allergic Rhinitis: Derivation and Validation in 2 Independent Nationwide Cohorts',
     authors:
-      '**H Lee**, JK Cho, J Park, H Lee, G Fond, L Boyer, HJ Kim, S Park, W Cho, et al.',
+      '**H Lee***, JK Cho*, J Park*, H Lee*, G Fond, L Boyer, HJ Kim, S Park, W Cho, et al.',
     venue: 'Journal of Medical Internet Research',
     year: 2024,
     kind: 'Journal',
     selected: true,
+    badge: 'Co-first author',
     citations: 33,
     abstract:
       'Derived a tree-ensemble suicidality risk model in adolescents with allergic rhinitis and externally validated it on an independent nationwide cohort, with calibration and SHAP-based feature attribution.',
@@ -205,11 +206,12 @@ export const publications: Publication[] = [
     title:
       'Prediction model for cardiovascular disease in patients with diabetes using machine learning derived and validated in two independent Korean cohorts',
     authors:
-      'H Sang, **H Lee**, M Lee, J Park, S Kim, HG Woo, M Rahmati, A Koyanagi, et al.',
+      'H Sang*, **H Lee***, M Lee, J Park, S Kim, HG Woo, M Rahmati, A Koyanagi, et al.',
     venue: 'Scientific Reports',
     year: 2024,
     kind: 'Journal',
     selected: true,
+    badge: 'Co-first author',
     citations: 29,
     abstract:
       'A gradient-boosted CVD risk model for diabetic patients, derived and externally validated across two independent Korean cohorts with clinician-interpretable XAI outputs.',
@@ -220,10 +222,11 @@ export const publications: Publication[] = [
     title:
       'Machine Learning–Based Prediction of Suicidal Thinking in Adolescents by Derivation and Validation in 3 Independent Worldwide Cohorts',
     authors:
-      'H Kim, Y Son, **H Lee**, J Kang, A Hammoodi, Y Choi, HJ Kim, H Lee, et al.',
+      'H Kim*, Y Son*, **H Lee***, J Kang, A Hammoodi, Y Choi, HJ Kim, H Lee, et al.',
     venue: 'Journal of Medical Internet Research',
     year: 2024,
     kind: 'Journal',
+    badge: 'Co-first author',
     citations: 30,
     abstract:
       'Algorithm development and tri-cohort external validation (Korea, Norway, USA) of an ML model for adolescent suicidal ideation — the basis of the author’s M.S. thesis.',
@@ -326,10 +329,11 @@ export const publications: Publication[] = [
     title:
       'National Trends in Allergic Rhinitis and Chronic Rhinosinusitis and COVID-19 Pandemic-Related Factors in South Korea, from 1998 to 2021',
     authors:
-      '**H Lee**, J Park, M Lee, HJ Kim, M Kim, R Kwon, SW Lee, A Koyanagi, et al.',
+      '**H Lee***, J Park*, M Lee, HJ Kim, M Kim, R Kwon, SW Lee, A Koyanagi, et al.',
     venue: 'International Archives of Allergy and Immunology',
     year: 2024,
     kind: 'Journal',
+    badge: 'Co-first author',
     citations: 14,
   },
   {
