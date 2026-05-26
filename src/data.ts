@@ -584,7 +584,7 @@ export const contacts: ContactLink[] = [
 export const news: NewsItem[] = [
   {
     date: '2026-01',
-    text: 'Started a new project thread on stent-marker localization in 2D coronary angiograms — end-to-end DL segmentation over RCA/LAD/LCX with bifurcation diameter profiling.',
+    text: 'Completed an end-to-end DL pipeline for stent-marker localization in 2D coronary angiograms — segmentation over RCA/LAD/LCX with bifurcation detection and diameter profiling.',
   },
   {
     date: '2025-02',
