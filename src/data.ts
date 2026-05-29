@@ -71,12 +71,12 @@ export const profile = {
   cvUrl: '/cv.pdf',
   avatarUrl: '/portrait.png',
   shortBio:
-    'Healthcare AI researcher with a B.S. in Mathematics and 24 SCI/SCIE papers in 2 years (The Lancet Regional Health, JMIR, Scientific Reports). Builds end-to-end coronary imaging pipelines and LLM reliability systems for clinical contexts. Seeking a PhD research environment to pursue these problems at depth.',
+    'Healthcare AI researcher. 24 SCI/SCIE papers, 404 citations (The Lancet Regional Health, JMIR, Scientific Reports). Builds coronary imaging pipelines and LLM reliability systems for clinical contexts. B.S. Mathematics, Korea University. Seeking PhD research environment, Fall 2027.',
   longBio: [
-    'Leveraging a rigorous mathematical foundation (B.S. Mathematics, Korea University), I work at the intersection of coronary-angiography AI, clinical risk prediction, and LLM reliability in high-stakes medical contexts.',
-    'Co-authored 24 SCI/SCIE papers (6 co-first, 1 corresponding) in venues including The Lancet Regional Health, JAMA Network Open, JMIR, and Scientific Reports.',
-    'In 2024, as a fully-funded MSIT/IITP fellow at the University of Toronto and MIT, I worked on mitigating LLM hallucination in scientific Q&A — combining parameter-efficient fine-tuning (PEFT), soft prompting, and knowledge-graph-based RAG to achieve near-fine-tuning accuracy at only 0.78–0.94% of the parameter cost (200k vs. 20–25M trainable parameters).',
-    'I am now focused on two open problems: how to make automated coronary imaging systems that respect physiological constraints by design — not just by post-hoc validation — and how to build LLM reasoning pipelines that cannot hallucinate their way through structured medical knowledge. I am seeking a research environment where I can pursue these questions at depth.',
+    'My research focuses on two problems where wrong answers have clinical consequences: automated coronary vessel analysis, where a mis-measured diameter can alter a treatment decision, and LLM reliability in medical Q&A, where a hallucinated fact can mislead a clinician. Both problems share a common question: how do you make a learned system behave as if it understands the rules, not just the patterns?',
+    'I have authored 24 SCI/SCIE papers (6 co-first, 1 corresponding, 404 citations) in venues including The Lancet Regional Health, JMIR, and Scientific Reports — published within two years of graduate research at Kyung Hee University\'s Center for Digital Health and Asan Medical Center.',
+    'In 2024, selected as a fully-funded MSIT/IITP government fellow, I conducted applied AI research at the University of Toronto and MIT — implementing PEFT and soft prompting to match fine-tuning accuracy at 0.78–0.94% of the parameter cost (200k vs. 20–25M trainable parameters), and extending the system with a physics ontology-based KG-RAG pipeline grounded in Chain-of-Knowledge.',
+    'I am now focused on making coronary imaging systems that respect physiological constraints by construction — not just by post-hoc validation — and on LLM reasoning pipelines that cannot hallucinate through structured medical knowledge. I am seeking a research environment where I can pursue these questions at depth.',
   ],
   interests: [
     'Quantitative Coronary Angiography',
@@ -437,11 +437,11 @@ export const projects: Project[] = [
     title: 'End-to-End Coronary Vessel Analysis for Stent-Marker Localization',
     subtitle: 'Deep-learning segmentation · Mask refinement · Diameter profiling',
     description:
-      "An end-to-end QCA pipeline engineered from scratch at Asan Medical Center — one of Asia's largest cardiac intervention centers. The system performs sub-pixel vessel boundary segmentation across all three coronary trees (RCA / LAD / LCX), automatically extracts centerlines and bifurcation points, and generates per-branch diameter profiles with OCR-calibrated pixel-to-mm conversion. Critically, the pipeline outputs were cross-validated against Murray's Law (the governing physiological equation for vascular branching), yielding R² > 0.8 across 1,190+ vessel samples — demonstrating that the system does not just detect patterns, but respects the underlying hemodynamic physics. This validation was only possible because of a B.S. Mathematics background applied directly to clinical engineering.",
+      "End-to-end QCA pipeline built from scratch at Asan Medical Center — one of Asia's largest cardiac intervention centers. Performs sub-pixel vessel boundary segmentation across all three coronary trees (RCA / LAD / LCX), extracts centerlines and bifurcation points automatically, and generates per-branch diameter profiles with OCR-calibrated pixel-to-mm conversion. Pipeline outputs were validated against Murray's Law — the governing equation for vascular branching — yielding R² > 0.8 across 1,190+ vessel samples. This validation was only possible because of a B.S. Mathematics background applied directly to clinical engineering.",
     metrics: [
-      { label: 'Validation', value: "Murray's Law (R² > 0.8)" },
+      { label: 'Validation', value: "Murray's Law R² > 0.8" },
       { label: 'Sample size', value: 'n > 1,190 vessels' },
-      { label: 'Vessels', value: 'RCA · LAD · LCX' },
+      { label: 'Coverage',   value: 'RCA · LAD · LCX' },
     ],
     stack: ['Python', 'PyTorch', 'OpenCV', 'scikit-image', 'pytesseract'],
     imageUrl: '/projects/qca-angiogram.png',
@@ -454,11 +454,11 @@ export const projects: Project[] = [
     subtitle: 'PEFT · Soft Prompting · KG-RAG',
     collaboration: 'MIT (6.2410 ChatTutor) & University of Toronto — MSIT/IITP Government Fellowship',
     description:
-      "Developed a research stack to reduce factual hallucination in LLMs deployed for university-level physics Q&A (MIT's ChatTutor service, 6.2410). The core constraint: the solution had to be efficient enough for the service to self-host and fine-tune. Implemented PEFT + Soft Prompting to match full fine-tuning accuracy using only 0.78–0.94% of trainable parameters (200k vs. 20–25M). Extended with KG-RAG: built a physics ontology mapping concepts, formulas, and symbolic relationships, then used Chain-of-Knowledge as the retrieval baseline to inject domain constraints directly into generation. Evaluated on ScienceQA and SciQ; soft-prompt model outperformed all baselines except full fine-tune.",
+      'Reduced factual hallucination in LLMs deployed for university-level physics Q&A (MIT ChatTutor, 6.2410). Core constraint: the solution had to be efficient enough for the service to self-host. Implemented PEFT + soft prompting to match full fine-tuning accuracy using only 0.78–0.94% of trainable parameters (200k vs. 20–25M). Extended with a physics ontology mapped to Chain-of-Knowledge KG-RAG baseline — embedding symbolic domain constraints directly into generation. Evaluated on ScienceQA and SciQ.',
     metrics: [
-      { label: 'Param reduction', value: '0.78–0.94% of FT' },
-      { label: 'Datasets', value: 'ScienceQA · SciQ' },
-      { label: 'Baseline', value: 'Chain-of-Knowledge (CoK)' },
+      { label: 'Param reduction', value: '0.78–0.94% of FT cost' },
+      { label: 'Datasets',        value: 'ScienceQA · SciQ' },
+      { label: 'RAG baseline',    value: 'Chain-of-Knowledge' },
     ],
     stack: ['Python', 'PyTorch', 'LLMs', 'PEFT', 'KG-RAG', 'HuggingFace'],
     imageUrl: '/projects/llm-performance.png',
@@ -573,7 +573,7 @@ export const contacts: ContactLink[] = [
   { label: 'Email',          href: 'mailto:iceanon1@gmail.com',                                  icon: 'mail' },
   { label: 'GitHub',         href: 'https://github.com/hjl777',                                  icon: 'github' },
   { label: 'LinkedIn',       href: 'https://www.linkedin.com/in/lee-ho-jae-247b29266/',         icon: 'linkedin' },
-  { label: 'Google Scholar', href: 'https://scholar.google.com/citations?user=o2RGCNQAAAAJ',    icon: 'scholar' },
+  { label: 'Google Scholar', href: 'https://scholar.google.com/citations?user=o2RGCNQAAAAJ&hl=en', icon: 'scholar' },
   { label: 'ORCID',          href: 'https://orcid.org/0009-0002-1737-2540',                     icon: 'orcid' },
 ];
 
