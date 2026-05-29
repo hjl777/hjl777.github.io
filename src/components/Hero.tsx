@@ -41,9 +41,6 @@ export default function Hero() {
             <div className="section-kicker">About</div>
             <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-ink-900 sm:text-5xl lg:text-[3.4rem] dark:text-ink-50">
               {profile.name}
-              <span className="ml-2 align-middle text-xl font-normal text-ink-400 sm:text-2xl dark:text-ink-500">
-                {profile.nameKr}
-              </span>
             </h1>
 
             <p className="mt-4 text-base text-ink-600 sm:text-lg dark:text-ink-400">
