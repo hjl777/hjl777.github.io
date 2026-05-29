@@ -71,12 +71,12 @@ export const profile = {
   cvUrl: '/cv.pdf',
   avatarUrl: '/portrait.png',
   shortBio:
-    'Healthcare AI researcher focused on two convergent problems: (1) end-to-end automated analysis of coronary angiography — building pipelines that translate raw X-ray video into physiologically validated vessel measurements; and (2) reliable LLM reasoning over structured medical knowledge — constraining model outputs via PEFT and knowledge-graph-based retrieval. 24 SCI/SCIE papers in 2 years, including The Lancet Regional Health.',
+    'Healthcare AI researcher with a B.S. in Mathematics and 24 SCI/SCIE papers in 2 years (The Lancet Regional Health, JMIR, Scientific Reports). Builds end-to-end coronary imaging pipelines and LLM reliability systems for clinical contexts. Seeking a PhD research environment to pursue these problems at depth.',
   longBio: [
-    "I build AI systems that have to be right — not probably right. My work sits at the intersection of two problems where errors have real clinical consequences: automated coronary vessel analysis, where a mis-measured diameter can change a treatment decision; and LLM reliability in scientific Q&A, where a hallucinated fact in a medical context can mislead a clinician. Both problems share a common thread: how do you make a learned system behave like it understands the rules, not just the patterns?",
+    'Leveraging a rigorous mathematical foundation (B.S. Mathematics, Korea University), I work at the intersection of coronary-angiography AI, clinical risk prediction, and LLM reliability in high-stakes medical contexts.',
     'Co-authored 24 SCI/SCIE papers (6 co-first, 1 corresponding) in venues including The Lancet Regional Health, JAMA Network Open, JMIR, and Scientific Reports.',
-    'In 2024 I was a fully-funded MSIT fellow at the University of Toronto and MIT. There I worked on mitigating LLM hallucination in scientific Q&A — combining parameter-efficient fine-tuning, soft prompting, and knowledge-graph-based RAG to constrain model outputs with domain knowledge.',
-    'Currently most interested in how LLMs can reason reliably over structured medical knowledge — what it takes for retrieval and constraint mechanisms to hold up in high-stakes clinical contexts.',
+    'In 2024, as a fully-funded MSIT/IITP fellow at the University of Toronto and MIT, I worked on mitigating LLM hallucination in scientific Q&A — combining parameter-efficient fine-tuning (PEFT), soft prompting, and knowledge-graph-based RAG to achieve near-fine-tuning accuracy at only 0.78–0.94% of the parameter cost (200k vs. 20–25M trainable parameters).',
+    'I am now focused on two open problems: how to make automated coronary imaging systems that respect physiological constraints by design — not just by post-hoc validation — and how to build LLM reasoning pipelines that cannot hallucinate their way through structured medical knowledge. I am seeking a research environment where I can pursue these questions at depth.',
   ],
   interests: [
     'Quantitative Coronary Angiography',
