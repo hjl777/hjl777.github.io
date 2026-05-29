@@ -34,6 +34,8 @@ export interface Project {
   metrics?: { label: string; value: string }[];
   stack: string[];
   links?: { label: string; href: string }[];
+  imageUrl?: string;
+  imageCaption?: string;
 }
 
 export interface ExperienceItem {
@@ -62,16 +64,16 @@ export interface NewsItem {
 export const profile = {
   name: 'Hojae Lee',
   nameKr: '이호재',
-  role: 'Applied AI Scientist · Biostatistician · Healthcare AI Researcher',
+  role: 'Healthcare AI Researcher — Medical Imaging · LLM Reliability · Clinical ML',
   affiliation: '',
   location: 'Seoul, Republic of Korea',
   email: 'iceanon1@gmail.com',
   cvUrl: '/cv.pdf',
   avatarUrl: '/portrait.png',
   shortBio:
-    'Researcher bridging a rigorous mathematical foundation with applied medical AI — quantitative coronary angiography, clinical outcome prediction (including mental health & addiction risk), and LLM hallucination mitigation in scientific Q&A.',
+    'Healthcare AI researcher focused on two convergent problems: (1) end-to-end automated analysis of coronary angiography — building pipelines that translate raw X-ray video into physiologically validated vessel measurements; and (2) reliable LLM reasoning over structured medical knowledge — constraining model outputs via PEFT and knowledge-graph-based retrieval. 24 SCI/SCIE papers in 2 years, including The Lancet Regional Health.',
   longBio: [
-    "I'm an independent researcher working at the intersection of coronary-angiography AI, clinical risk prediction (suicidal ideation, substance use & addiction), and LLM reliability.",
+    "I build AI systems that have to be right — not probably right. My work sits at the intersection of two problems where errors have real clinical consequences: automated coronary vessel analysis, where a mis-measured diameter can change a treatment decision; and LLM reliability in scientific Q&A, where a hallucinated fact in a medical context can mislead a clinician. Both problems share a common thread: how do you make a learned system behave like it understands the rules, not just the patterns?",
     'Co-authored 24 SCI/SCIE papers (6 co-first, 1 corresponding) in venues including The Lancet Regional Health, JAMA Network Open, JMIR, and Scientific Reports.',
     'In 2024 I was a fully-funded MSIT fellow at the University of Toronto and MIT. There I worked on mitigating LLM hallucination in scientific Q&A — combining parameter-efficient fine-tuning, soft prompting, and knowledge-graph-based RAG to constrain model outputs with domain knowledge.',
     'Currently most interested in how LLMs can reason reliably over structured medical knowledge — what it takes for retrieval and constraint mechanisms to hold up in high-stakes clinical contexts.',
@@ -87,10 +89,10 @@ export const profile = {
   ],
   education: [
     {
-      degree: 'M.S. in Pharmacy — Pharmaceutical Big Data Analysis',
-      org: 'Kyung Hee University',
+      degree: 'M.S. — Computational Health & Biomedical Data Science',
+      org: 'Kyung Hee University (School of Pharmacy)',
       period: '2023 – 2025',
-      detail: 'Thesis on ML-based suicidal-ideation prediction (3 cohorts)',
+      detail: 'Thesis: ML-based suicidal ideation prediction validated across 3 independent worldwide cohorts · GPA 4.25/4.5',
     },
     {
       degree: 'Applied AI Program',
@@ -431,44 +433,37 @@ export const publications: Publication[] = [
 // -----------------------------------------------------------------------------
 export const projects: Project[] = [
   {
-    id: 'proj-llm',
-    title: 'Mitigating LLM Hallucinations in Scientific Q&A',
-    subtitle: 'PEFT · Soft Prompting · KG-RAG',
-    collaboration: 'with University of Toronto & MIT (MSIT-funded)',
-    description:
-      'A research stack to reduce factual drift of LLMs over scientific Q&A: Parameter-Efficient Fine-Tuning (PEFT) and Soft Prompting that match full-FT performance with <1% of parameters, plus Knowledge-Graph-based RAG that injects domain-specific physical-science constraints into model outputs.',
-    metrics: [
-      { label: 'FT params', value: '<1%' },
-      { label: 'Domain', value: 'Sci Q&A' },
-      { label: 'Method', value: 'PEFT + KG-RAG' },
-    ],
-    stack: ['Python', 'PyTorch', 'LLMs', 'PEFT', 'KG-RAG', 'HuggingFace'],
-  },
-  {
     id: 'proj-stent-marker',
     title: 'End-to-End Coronary Vessel Analysis for Stent-Marker Localization',
     subtitle: 'Deep-learning segmentation · Mask refinement · Diameter profiling',
     description:
-      'An end-to-end pipeline I built from scratch for stent-marker localization on 2D coronary angiograms. I trained a deep-learning segmentation model over the three coronary trees (RCA / LAD / LCX) and refined the predicted masks, then used the cleaned vessel geometry with OCR-derived calibration (pixel→mm) to auto-detect points of bifurcation, measure vessel-wall diameter at multiple cross-sections, classify main vessel vs. side branch, and generate per-branch diameter profile diagrams.',
+      "An end-to-end QCA pipeline engineered from scratch at Asan Medical Center — one of Asia's largest cardiac intervention centers. The system performs sub-pixel vessel boundary segmentation across all three coronary trees (RCA / LAD / LCX), automatically extracts centerlines and bifurcation points, and generates per-branch diameter profiles with OCR-calibrated pixel-to-mm conversion. Critically, the pipeline outputs were cross-validated against Murray's Law (the governing physiological equation for vascular branching), yielding R² > 0.8 across 1,190+ vessel samples — demonstrating that the system does not just detect patterns, but respects the underlying hemodynamic physics. This validation was only possible because of a B.S. Mathematics background applied directly to clinical engineering.",
     metrics: [
-      { label: 'Segmentation', value: 'DL-trained' },
+      { label: 'Validation', value: "Murray's Law (R² > 0.8)" },
+      { label: 'Sample size', value: 'n > 1,190 vessels' },
       { label: 'Vessels', value: 'RCA · LAD · LCX' },
-      { label: 'Targets', value: 'POB · Diameter' },
     ],
     stack: ['Python', 'PyTorch', 'OpenCV', 'scikit-image', 'pytesseract'],
+    imageUrl: '/projects/qca-angiogram.png',
+    imageCaption:
+      'Live output of the automated QCA pipeline on a real coronary angiogram (Asan Medical Center). Yellow line: auto-extracted vessel centerline. Colored markers: bifurcation points (POB) and diameter measurement sites. Bottom panel: per-branch diameter profile (mm) along vessel path.',
   },
   {
-    id: 'proj-math-platform',
-    title: 'AI-Assisted Math Problem Platform (K-12)',
-    subtitle: 'Prompt engineering · TikZ figure generation · Trend analysis',
+    id: 'proj-llm',
+    title: 'Mitigating LLM Hallucinations in Scientific Q&A',
+    subtitle: 'PEFT · Soft Prompting · KG-RAG',
+    collaboration: 'MIT (6.2410 ChatTutor) & University of Toronto — MSIT/IITP Government Fellowship',
     description:
-      'Contributing as a mathematics domain expert (B.S. Mathematics) to a Korean K-12 math problem management platform. Three threads of contribution: (1) prompt engineering to advance AI math-problem generation and variation quality, (2) AI-assisted figure generation for problem visuals (TikZ / LaTeX), and (3) longitudinal year-over-year problem-trend analysis reports for curriculum guidance.',
+      "Developed a research stack to reduce factual hallucination in LLMs deployed for university-level physics Q&A (MIT's ChatTutor service, 6.2410). The core constraint: the solution had to be efficient enough for the service to self-host and fine-tune. Implemented PEFT + Soft Prompting to match full fine-tuning accuracy using only 0.78–0.94% of trainable parameters (200k vs. 20–25M). Extended with KG-RAG: built a physics ontology mapping concepts, formulas, and symbolic relationships, then used Chain-of-Knowledge as the retrieval baseline to inject domain constraints directly into generation. Evaluated on ScienceQA and SciQ; soft-prompt model outperformed all baselines except full fine-tune.",
     metrics: [
-      { label: 'Role', value: 'Domain expert' },
-      { label: 'Threads', value: 'Prompt · Figures · Trends' },
-      { label: 'Stack', value: 'LLM · TikZ' },
+      { label: 'Param reduction', value: '0.78–0.94% of FT' },
+      { label: 'Datasets', value: 'ScienceQA · SciQ' },
+      { label: 'Baseline', value: 'Chain-of-Knowledge (CoK)' },
     ],
-    stack: ['Python', 'LLM Prompting', 'TikZ', 'LaTeX'],
+    stack: ['Python', 'PyTorch', 'LLMs', 'PEFT', 'KG-RAG', 'HuggingFace'],
+    imageUrl: '/projects/llm-performance.png',
+    imageCaption:
+      'Model accuracy on ScienceQA and SciQ benchmarks. The soft-prompt model (200k trainable params = 0.78–0.94% of full fine-tuning cost) matches or exceeds all baselines except the full fine-tuned model — validating the efficiency-accuracy tradeoff at the core of this project.',
   },
   {
     id: 'proj-outcomes',
@@ -586,6 +581,10 @@ export const contacts: ContactLink[] = [
 // NEWS / UPDATES — most-recent first.
 // -----------------------------------------------------------------------------
 export const news: NewsItem[] = [
+  {
+    date: '2026-05',
+    text: 'Actively seeking Fall 2027 PhD positions in AI, Computer Science, or Biomedical Engineering at US research universities. Open to discussing research fit with faculty working on medical imaging AI, LLM reliability, or clinical decision support.',
+  },
   {
     date: '2026-01',
     text: 'Completed an end-to-end DL pipeline for stent-marker localization in 2D coronary angiograms — segmentation over RCA/LAD/LCX with bifurcation detection and diameter profiling.',

@@ -67,6 +67,23 @@ export default function Projects() {
                 {p.description}
               </p>
 
+              {p.imageUrl && (
+                <figure className="project-img-figure">
+                  <img
+                    src={p.imageUrl}
+                    alt={p.imageCaption ?? p.title}
+                    className="project-img"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  {p.imageCaption && (
+                    <figcaption className="project-img-caption">
+                      {p.imageCaption}
+                    </figcaption>
+                  )}
+                </figure>
+              )}
+
               <div className="mt-4 flex flex-wrap gap-1.5">
                 {p.stack.map((s) => (
                   <span
