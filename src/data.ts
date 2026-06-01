@@ -444,9 +444,6 @@ export const projects: Project[] = [
       { label: 'Coverage',   value: 'RCA · LAD · LCX' },
     ],
     stack: ['Python', 'PyTorch', 'OpenCV', 'scikit-image', 'pytesseract'],
-    imageUrl: '/projects/qca-angiogram.png',
-    imageCaption:
-      'Live output of the automated QCA pipeline on a real coronary angiogram (Asan Medical Center). Yellow line: auto-extracted vessel centerline. Colored markers: bifurcation points (POB) and diameter measurement sites. Bottom panel: per-branch diameter profile (mm) along vessel path.',
   },
   {
     id: 'proj-llm',
