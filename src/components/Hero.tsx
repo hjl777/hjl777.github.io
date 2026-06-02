@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import {
   ArrowRight,
   MapPin,
   Mail,
+  Check,
+  Copy,
   FileText,
   Github,
   Linkedin,
@@ -9,6 +12,9 @@ import {
   Fingerprint,
 } from 'lucide-react';
 import { profile, contacts } from '../data';
+import CountUp from './CountUp';
+import AnimatedHeadline from './AnimatedHeadline';
+import { renderRich } from '../lib/richtext';
 
 const SOCIAL_ICONS = {
   mail: Mail,
@@ -19,6 +25,18 @@ const SOCIAL_ICONS = {
 } as const;
 
 export default function Hero() {
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      window.location.href = `mailto:${profile.email}`;
+    }
+  };
+
   return (
     <section
       id="home"
@@ -53,16 +71,36 @@ export default function Hero() {
               )}
             </p>
 
-            <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-500 dark:text-ink-400">
+            {profile.thesis && (
+              <p className="mt-6 max-w-2xl font-serif text-2xl font-medium leading-snug tracking-tight text-ink-900 sm:text-[1.75rem] dark:text-ink-100">
+                <AnimatedHeadline text={profile.thesis} />
+              </p>
+            )}
+
+            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-500 dark:text-ink-400">
               <span className="inline-flex items-center gap-1.5">
                 <MapPin size={14} /> {profile.location}
               </span>
-              <a
-                href={`mailto:${profile.email}`}
+              <button
+                type="button"
+                onClick={copyEmail}
+                title="Copy email"
                 className="inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-ink-800 dark:hover:text-ink-100"
               >
-                <Mail size={14} /> {profile.email}
-              </a>
+                {copied ? (
+                  <Check size={14} className="text-emerald-600 dark:text-emerald-400" />
+                ) : (
+                  <Mail size={14} />
+                )}
+                {profile.email}
+                {copied ? (
+                  <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                    Copied!
+                  </span>
+                ) : (
+                  <Copy size={12} className="opacity-50" />
+                )}
+              </button>
               <span className="inline-flex items-center gap-2.5 border-l border-ink-200 pl-5 dark:border-ink-800">
                 {contacts
                   .filter((c) => c.icon !== 'mail')
@@ -87,7 +125,7 @@ export default function Hero() {
 
             <div className="mt-8 space-y-4 text-[15.5px] leading-relaxed text-ink-700 dark:text-ink-300">
               {profile.longBio.map((p, i) => (
-                <p key={i}>{p}</p>
+                <p key={i}>{renderRich(p)}</p>
               ))}
             </div>
 
@@ -116,17 +154,29 @@ export default function Hero() {
               {profile.highlights.map((h) => (
                 <div
                   key={h.label}
-                  className="rounded-xl border border-ink-200 bg-white p-4 text-center dark:border-ink-800 dark:bg-ink-900"
+                  className="rounded-xl border border-ink-200 bg-white p-4 text-center transition-colors duration-200 hover:border-indigo-300 dark:border-ink-800 dark:bg-ink-900 dark:hover:border-indigo-700"
                 >
-                  <div className="font-serif text-2xl font-semibold text-ink-900 dark:text-ink-50">
-                    {h.value}
-                  </div>
+                  <CountUp
+                    value={h.value}
+                    className="block font-serif text-2xl font-semibold text-ink-900 dark:text-ink-50"
+                  />
                   <div className="mt-1 text-[10.5px] font-medium uppercase tracking-wider text-ink-500 dark:text-ink-400">
                     {h.label}
                   </div>
                 </div>
               ))}
             </div>
+
+            {profile.approach && (
+              <div className="mt-10 rounded-2xl border border-ink-200 bg-ink-50/60 p-6 dark:border-ink-800 dark:bg-ink-900/50">
+                <p className="section-kicker !mb-3">How I work</p>
+                <div className="space-y-3 text-[14.5px] leading-relaxed text-ink-700 dark:text-ink-300">
+                  {profile.approach.map((p, i) => (
+                    <p key={i}>{renderRich(p)}</p>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="mt-8">
               <p className="mb-3 text-xs font-medium uppercase tracking-wider text-ink-400 dark:text-ink-500">

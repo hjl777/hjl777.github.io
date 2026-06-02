@@ -70,13 +70,21 @@ export const profile = {
   email: 'iceanon1@gmail.com',
   cvUrl: '/cv.pdf',
   avatarUrl: '/portrait.png',
+  // One-line research thesis — used as the animated hero headline.
+  thesis: 'Connecting what a model decides with why a clinician can trust it.',
   shortBio:
-    'Healthcare AI researcher. 24 SCI/SCIE papers, 404 citations (The Lancet Regional Health, JMIR, Scientific Reports). Builds coronary imaging pipelines and LLM reliability systems for clinical contexts. B.S. Mathematics, Korea University. Seeking PhD research environment, Fall 2027.',
+    'Healthcare AI researcher. 25 SCI/SCIE papers, h-index 12, 404 citations (The Lancet Regional Health, JMIR, Scientific Reports). Builds coronary imaging pipelines and LLM reliability systems for clinical contexts. B.S. Mathematics, Korea University. Seeking PhD research environment, Fall 2027.',
   longBio: [
     'My research focuses on two problems where wrong answers have clinical consequences: automated coronary vessel analysis, where a mis-measured diameter can alter a treatment decision, and LLM reliability in medical Q&A, where a hallucinated fact can mislead a clinician. Both problems share a common question: how do you make a learned system behave as if it understands the rules, not just the patterns?',
-    'I have authored 24 SCI/SCIE papers (6 co-first, 1 corresponding, 404 citations) in venues including The Lancet Regional Health, JMIR, and Scientific Reports — published within two years of graduate research at Kyung Hee University\'s Center for Digital Health and Asan Medical Center.',
-    'In 2024, selected as a fully-funded MSIT/IITP government fellow, I conducted applied AI research at the University of Toronto and MIT — implementing PEFT and soft prompting to match fine-tuning accuracy at 0.78–0.94% of the parameter cost (200k vs. 20–25M trainable parameters), and extending the system with a physics ontology-based KG-RAG pipeline grounded in Chain-of-Knowledge.',
-    'I am now focused on making coronary imaging systems that respect physiological constraints by construction — not just by post-hoc validation — and on LLM reasoning pipelines that cannot hallucinate through structured medical knowledge. I am seeking a research environment where I can pursue these questions at depth.',
+    'I have authored 25 SCI/SCIE papers (6 co-first, 1 corresponding, 404 citations, h-index 12) in venues including The Lancet Regional Health, JMIR, and Scientific Reports — published within two years of graduate research at Kyung Hee University\'s Center for Digital Health and Asan Medical Center.',
+    'In 2024, selected as a fully-funded MSIT/IITP government fellow, I conducted applied AI research at the University of Toronto and MIT — implementing `PEFT` and soft prompting to match fine-tuning accuracy at 0.78–0.94% of the parameter cost (200k vs. 20–25M trainable parameters), and extending the system with a physics ontology-based `KG-RAG` pipeline grounded in Chain-of-Knowledge.',
+    'Across both problems my method is the same: rather than reaching for the newest technique, I first ask whether it actually fits the problem, then verify it with experiments. My mathematics background is the engine of this — it lets me reason about *why* a model\'s output should be trusted, not just whether it scores well. I am seeking a research environment where I can pursue these questions at depth.',
+  ],
+  // Research-approach statement (Pranav-style "how I work" block).
+  approach: [
+    'I treat a new method as a hypothesis, not a default. Before adopting the latest architecture I check whether it fits the actual constraint — then settle the question with an experiment rather than a citation.',
+    'My training in mathematics is what makes this rigorous: it lets me read the mechanics of an `XAI` method like `SHAP` and judge how far an output can be trusted, instead of taking a saliency map at face value.',
+    'And I build for the clinic. A radiologist asks whether a measurement is clinically valid; I ask why the model produced it. Holding both views at once — and connecting them — is, to me, the real work of an explainable-AI researcher.',
   ],
   interests: [
     'Quantitative Coronary Angiography',
@@ -107,9 +115,9 @@ export const profile = {
     },
   ],
   highlights: [
-    { label: 'Peer-reviewed papers (SCI/SCIE)', value: '24' },
-    { label: 'Co-first author', value: '6' },
-    { label: 'Corresponding author', value: '1' },
+    { label: 'Peer-reviewed papers (SCI/SCIE)', value: '25' },
+    { label: 'Citations', value: '404' },
+    { label: 'h-index', value: '12' },
   ],
 };
 
@@ -463,6 +471,20 @@ export const projects: Project[] = [
       'Model accuracy on ScienceQA and SciQ benchmarks. The soft-prompt model (200k trainable params = 0.78–0.94% of full fine-tuning cost) matches or exceeds all baselines except the full fine-tuned model — validating the efficiency-accuracy tradeoff at the core of this project.',
   },
   {
+    id: 'proj-defines',
+    title: 'DEFINES — Hallucination Suppression in Multimodal Math Reasoning',
+    subtitle: 'Multi-agent VLM · LangGraph · Knowledge-graph retrieval',
+    collaboration: 'DEFINES LAB — Independent Research (continuation of the UofT/MIT work)',
+    description:
+      'An ongoing independent extension of the Toronto/MIT hallucination research into the multimodal mathematics domain. A LangGraph-based multi-agent workflow pairs domain-specialized problem generation with knowledge-graph-based structured retrieval to constrain a VLM toward verifiable reasoning, with a self-built PyTorch OCR pipeline feeding the system. Methods are adopted only after their fit is tested experimentally — the same verify-before-adopt principle that anchors my work.',
+    metrics: [
+      { label: 'Orchestration', value: 'Multi-agent' },
+      { label: 'Retrieval',     value: 'KG-structured' },
+      { label: 'Status',        value: 'Ongoing' },
+    ],
+    stack: ['Python', 'PyTorch', 'LangGraph', 'VLM', 'Knowledge Graphs', 'OCR'],
+  },
+  {
     id: 'proj-outcomes',
     title: 'Clinical Outcome Prediction at Population Scale',
     subtitle: 'Nationwide ML risk models · XAI · external validation',
@@ -489,18 +511,19 @@ export const experience: ExperienceItem[] = [
     bullets: [
       'Built and deployed QCA analysis pipelines with clinician QA interfaces, improving measurement consistency and reviewer efficiency.',
       'Prototyped 2D→3D vascular geometry reconstruction from routine angiographic sequences for TAVI planning.',
-      'Developed semi-automated catheter / wire tracking systems on angiographic video with SAM 2-assisted segmentation.',
+      'Developed semi-automated catheter / wire tracking systems on routine 2D angiographic sequences with MEDSAM 2-assisted segmentation.',
       'Integrated structured clinical variables with imaging model outputs for clinician-facing decision support.',
     ],
   },
   {
-    role: 'ML Engineer',
-    org: 'Independent Research Team — Private Academy',
+    role: 'Independent Researcher',
+    org: 'DEFINES LAB — Independent Research',
     location: 'Seoul, KR',
-    period: '2025.01 – Present',
+    period: '2025.03 – Present',
     bullets: [
-      'Engineer a multi-agent LLM pipeline for curriculum-aligned mathematics problem generation with Human-in-the-Loop validation and RAG.',
-      'Build an AI-assisted workflow for reading/grammar item generation and QC — choice-set consistency, distractor validity, automated rationale generation.',
+      'Extend the Toronto/MIT hallucination work into multimodal mathematical reasoning — building a LangGraph multi-agent workflow with knowledge-graph-based structured retrieval to suppress VLM hallucination.',
+      'Implemented a self-built PyTorch OCR pipeline; apply each new method only after testing its fit, in the same verify-before-adopt style as the original research.',
+      'Engineer a Human-in-the-Loop pipeline for curriculum-aligned mathematics problem generation and reading/grammar item QC (choice-set consistency, distractor validity, automated rationale).',
     ],
   },
   {

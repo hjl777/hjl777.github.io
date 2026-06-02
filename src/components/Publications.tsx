@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react';
-import { FileText, Code2, ExternalLink, BookOpen } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { FileText, Code2, ExternalLink, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
 import { publications, type Publication } from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
 
 type Filter = 'All' | 'Selected' | 'Journal' | 'Conference';
 const FILTERS: Filter[] = ['All', 'Selected', 'Journal', 'Conference'];
+const COLLAPSED_COUNT = 6;
 
 function renderAuthors(authors: string) {
   // Split on **name** segments, bolding the wrapped portion.
@@ -49,6 +50,12 @@ function PubLinks({ pub }: { pub: Publication }) {
 
 export default function Publications() {
   const [filter, setFilter] = useState<Filter>('Selected');
+  const [expanded, setExpanded] = useState(false);
+
+  // Collapse back to the preview whenever the filter changes.
+  useEffect(() => {
+    setExpanded(false);
+  }, [filter]);
 
   const filtered = useMemo(() => {
     const list = publications.filter((p) => {
@@ -58,6 +65,9 @@ export default function Publications() {
     });
     return list.sort((a, b) => b.year - a.year);
   }, [filter]);
+
+  const hidden = Math.max(0, filtered.length - COLLAPSED_COUNT);
+  const visiblePubs = expanded ? filtered : filtered.slice(0, COLLAPSED_COUNT);
 
   const counts = useMemo(
     () => ({
@@ -114,7 +124,7 @@ export default function Publications() {
         </div>
 
         <ol className="mt-10 divide-y divide-ink-200 border-t border-ink-200 dark:divide-ink-800 dark:border-ink-800">
-          {filtered.map((p, idx) => (
+          {visiblePubs.map((p, idx) => (
             <li
               key={p.id}
               className="group grid grid-cols-12 gap-x-6 gap-y-2 py-7 transition-colors hover:bg-white dark:hover:bg-ink-900/60"
@@ -156,6 +166,21 @@ export default function Publications() {
             </li>
           ))}
         </ol>
+
+        {hidden > 0 && (
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={() => setExpanded((v) => !v)}
+              className="inline-flex items-center gap-1.5 rounded-full border border-ink-200 bg-white px-4 py-2 text-sm font-medium text-ink-700 transition-colors duration-200 hover:border-indigo-300 hover:text-indigo-700 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300 dark:hover:border-indigo-500 dark:hover:text-indigo-300"
+            >
+              {expanded ? (
+                <><ChevronUp size={15} /> Show fewer</>
+              ) : (
+                <><ChevronDown size={15} /> Show all {filtered.length} publications</>
+              )}
+            </button>
+          </div>
+        )}
 
         {!filtered.length && (
           <p className="py-12 text-center text-sm text-ink-500 dark:text-ink-500">

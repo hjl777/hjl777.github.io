@@ -26,6 +26,13 @@
   .dark ::selection {
     @apply bg-indigo-500/30 text-indigo-100;
   }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-word-rise,
+    .animate-fade-up,
+    .animate-fade-in {
+      animation: none !important;
+    }
+  }
 }
 
 @layer components {

@@ -42,6 +42,7 @@ export default {
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out',
         'fade-up': 'fadeUp 0.7s ease-out',
+        'word-rise': 'wordRise 0.7s cubic-bezier(0.22, 1, 0.36, 1)',
         'blob-1': 'blobFloat1 28s ease-in-out infinite',
         'blob-2': 'blobFloat2 36s ease-in-out infinite',
         'blob-3': 'blobFloat3 32s ease-in-out infinite',
@@ -53,6 +54,10 @@ export default {
         },
         fadeUp: {
           '0%': { opacity: '0', transform: 'translateY(8px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        wordRise: {
+          '0%': { opacity: '0', transform: 'translateY(100%)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         blobFloat1: {
