@@ -56,6 +56,8 @@ export interface NewsItem {
   date: string;       // ISO YYYY-MM
   text: string;
   href?: string;
+  title?: string;     // Optional headline — used by the spotlight callout.
+  highlight?: boolean; // Render as the spotlight banner instead of a timeline row.
 }
 
 // -----------------------------------------------------------------------------
@@ -115,7 +117,7 @@ export const profile = {
     },
   ],
   highlights: [
-    { label: 'Peer-reviewed papers (SCI/SCIE)', value: '25' },
+    { label: 'SCI/SCIE Papers', value: '25' },
     { label: 'Citations', value: '404' },
     { label: 'h-index', value: '12' },
   ],
@@ -452,6 +454,9 @@ export const projects: Project[] = [
       { label: 'Coverage',   value: 'RCA · LAD · LCX' },
     ],
     stack: ['Python', 'PyTorch', 'OpenCV', 'scikit-image', 'pytesseract'],
+    imageUrl: '/projects/qca-murrays-law.png',
+    imageCaption:
+      "Murray's Law validation of the QCA pipeline — predicted vs. measured branch diameters across 1,190+ vessel samples (R² > 0.8). The governing equation of vascular branching, used as an independent mathematical check on the segmentation.",
   },
   {
     id: 'proj-llm',
@@ -603,7 +608,9 @@ export const contacts: ContactLink[] = [
 export const news: NewsItem[] = [
   {
     date: '2026-05',
-    text: 'Actively seeking Fall 2027 PhD positions in AI, Computer Science, or Biomedical Engineering at US research universities. Open to discussing research fit with faculty working on medical imaging AI, LLM reliability, or clinical decision support.',
+    highlight: true,
+    title: 'Seeking Fall 2027 PhD positions',
+    text: 'Open to AI, Computer Science, or Biomedical Engineering programs at US research universities — happy to discuss research fit with faculty working on medical imaging AI, LLM reliability, or clinical decision support.',
   },
   {
     date: '2026-01',

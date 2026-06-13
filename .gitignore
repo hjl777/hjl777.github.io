@@ -11,6 +11,8 @@ dist-ssr
 
 # Session handoff notes (internal — not for public repo)
 HANDOFF.md
+SITE_OVERVIEW.md
+DESIGN_PROMPTS.md
 
 .vscode/*
 !.vscode/extensions.json

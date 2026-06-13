@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import {
   ArrowRight,
   MapPin,
@@ -14,6 +14,7 @@ import {
 import { profile, contacts } from '../data';
 import CountUp from './CountUp';
 import AnimatedHeadline from './AnimatedHeadline';
+import VesselField from './VesselField';
 import { renderRich } from '../lib/richtext';
 
 const SOCIAL_ICONS = {
@@ -26,6 +27,7 @@ const SOCIAL_ICONS = {
 
 export default function Hero() {
   const [copied, setCopied] = useState(false);
+  const thesisRef = useRef<HTMLParagraphElement>(null);
 
   const copyEmail = async () => {
     try {
@@ -37,42 +39,54 @@ export default function Hero() {
     }
   };
 
+  // P2: as the user scrolls out of the hero, the thesis statement subtly
+  // recedes (shrink + fade, transform/opacity only — no layout shift).
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const el = thesisRef.current;
+        if (!el) return;
+        const p = Math.min(window.scrollY / 520, 1);
+        el.style.transform = `translateY(${window.scrollY * 0.12}px) scale(${1 - p * 0.04})`;
+        el.style.opacity = String(1 - p * 0.55);
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
     <section
       id="home"
       className="section relative overflow-hidden pt-28 sm:pt-36"
     >
-      {/* Ambient glow blobs (subtle, decorative) */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 select-none"
-      >
-        <div className="absolute left-[8%] top-[18%] h-72 w-72 rounded-[42%_58%_45%_55%/55%_45%_60%_40%] bg-indigo-300/40 blur-3xl mix-blend-multiply animate-blob-1 dark:bg-indigo-500/25 dark:mix-blend-screen" />
-        <div className="absolute right-[6%] top-[8%] h-80 w-80 rounded-[60%_40%_55%_45%/40%_60%_45%_55%] bg-fuchsia-200/40 blur-3xl mix-blend-multiply animate-blob-2 dark:bg-fuchsia-500/20 dark:mix-blend-screen" />
-        <div className="absolute left-[38%] top-[58%] h-64 w-64 rounded-[55%_45%_60%_40%/50%_55%_45%_50%] bg-teal-200/35 blur-3xl mix-blend-multiply animate-blob-3 dark:bg-teal-500/15 dark:mix-blend-screen" />
-      </div>
+      {/* Ambient coronary-tree network (draws on load, then pulses) */}
+      <VesselField />
 
       <div className="container-prose relative">
         <div className="grid grid-cols-1 items-start gap-12 md:grid-cols-12 md:gap-16">
           {/* Left: bio */}
           <div className="md:col-span-7 animate-fade-up">
-            <div className="section-kicker">About</div>
-            <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-ink-900 sm:text-5xl lg:text-[3.4rem] dark:text-ink-50">
+            <div className="section-kicker">
+              {profile.role}
+              {profile.affiliation && <> · {profile.affiliation}</>}
+            </div>
+            <h1 className="font-serif text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl dark:text-ink-50">
               {profile.name}
             </h1>
 
-            <p className="mt-4 text-base text-ink-600 sm:text-lg dark:text-ink-400">
-              {profile.role}
-              {profile.affiliation && (
-                <>
-                  {' · '}
-                  <span className="text-ink-700 dark:text-ink-300">{profile.affiliation}</span>
-                </>
-              )}
-            </p>
-
             {profile.thesis && (
-              <p className="mt-6 max-w-2xl font-serif text-2xl font-medium leading-snug tracking-tight text-ink-900 sm:text-[1.75rem] dark:text-ink-100">
+              <p
+                ref={thesisRef}
+                className="mt-7 max-w-3xl origin-top-left font-serif text-[2rem] font-medium leading-[1.12] tracking-tight text-ink-900 will-change-transform sm:text-[2.6rem] lg:text-[3.2rem] dark:text-ink-100"
+              >
                 <AnimatedHeadline text={profile.thesis} />
               </p>
             )}
@@ -151,16 +165,17 @@ export default function Hero() {
             </div>
 
             <div className="mt-10 grid grid-cols-3 gap-3">
-              {profile.highlights.map((h) => (
+              {profile.highlights.map((h, i) => (
                 <div
                   key={h.label}
-                  className="rounded-xl border border-ink-200 bg-white p-4 text-center transition-colors duration-200 hover:border-indigo-300 dark:border-ink-800 dark:bg-ink-900 dark:hover:border-indigo-700"
+                  className="stat-card rounded-xl border border-ink-200 bg-white p-4 text-center hover:border-indigo-300 dark:border-ink-800 dark:bg-ink-900 dark:hover:border-indigo-700"
+                  style={{ '--d': `${300 + i * 120}ms` } as CSSProperties}
                 >
                   <CountUp
                     value={h.value}
                     className="block font-serif text-2xl font-semibold text-ink-900 dark:text-ink-50"
                   />
-                  <div className="mt-1 text-[10.5px] font-medium uppercase tracking-wider text-ink-500 dark:text-ink-400">
+                  <div className="mt-1 whitespace-nowrap text-[10.5px] font-medium uppercase tracking-wider text-ink-500 dark:text-ink-400">
                     {h.label}
                   </div>
                 </div>

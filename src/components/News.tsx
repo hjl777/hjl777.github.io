@@ -1,5 +1,6 @@
-import { ArrowUpRight } from 'lucide-react';
-import { news } from '../data';
+import { useState } from 'react';
+import { ArrowUpRight, Check, Mail } from 'lucide-react';
+import { news, profile } from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
 
 function formatDate(iso: string) {
@@ -11,6 +12,20 @@ function formatDate(iso: string) {
 
 export default function News() {
   const { ref, visible } = useReveal<HTMLDivElement>();
+  const [copied, setCopied] = useState(false);
+
+  const spotlight = news.find((n) => n.highlight);
+  const timeline = news.filter((n) => !n.highlight);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      window.location.href = `mailto:${profile.email}`;
+    }
+  };
 
   if (!news.length) return null;
 
@@ -25,12 +40,49 @@ export default function News() {
           </p>
         </div>
 
-        <ol className="mt-10 relative max-w-3xl">
+        {/* Spotlight callout — the one message this page exists to deliver */}
+        {spotlight && (
+          <div className="relative mt-10 overflow-hidden rounded-2xl border border-indigo-200/80 bg-white p-6 sm:p-8 dark:border-indigo-500/30 dark:bg-ink-900">
+            <div aria-hidden className="spotlight-glow pointer-events-none absolute -inset-x-24 -inset-y-20" />
+            <div className="relative">
+              <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-400">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                </span>
+                Open to opportunities
+              </p>
+              <h3 className="mt-3 font-serif text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl dark:text-ink-50">
+                {spotlight.title ?? spotlight.text}
+              </h3>
+              {spotlight.title && (
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-600 sm:text-[15px] dark:text-ink-400">
+                  {spotlight.text}
+                </p>
+              )}
+              <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
+                <button
+                  type="button"
+                  onClick={copyEmail}
+                  className="inline-flex items-center gap-2 rounded-full bg-ink-900 px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-ink-800 dark:bg-indigo-500 dark:hover:bg-indigo-400"
+                >
+                  {copied ? <Check size={15} /> : <Mail size={15} />}
+                  {copied ? 'Email copied!' : 'Email me about research fit'}
+                </button>
+                <span className="font-mono text-xs text-ink-500 dark:text-ink-400">
+                  {profile.email}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <ol className="relative mt-10 max-w-3xl">
           <span
             aria-hidden
             className="absolute left-[6.5rem] top-2 bottom-2 w-px bg-ink-200 hidden sm:block dark:bg-ink-800"
           />
-          {news.map((n, i) => (
+          {timeline.map((n, i) => (
             <li
               key={`${n.date}-${i}`}
               className="relative grid grid-cols-1 gap-y-1 pb-6 last:pb-0 sm:grid-cols-[6.5rem_1.5rem_1fr] sm:gap-x-4"

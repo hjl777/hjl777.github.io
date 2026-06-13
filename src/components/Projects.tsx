@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { ArrowUpRight, Users, ChevronDown, ChevronUp } from 'lucide-react';
 import { projects } from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
+import ProjectScene from './ProjectScene';
 
 const PREVIEW_LENGTH = 160;
 
 function ProjectCard({ p }: { p: (typeof projects)[number] }) {
   const [expanded, setExpanded] = useState(false);
+  const { ref, visible } = useReveal<HTMLElement>({ threshold: 0.2 });
   const isLong = p.description.length > PREVIEW_LENGTH;
   const displayText =
     isLong && !expanded
@@ -14,17 +16,13 @@ function ProjectCard({ p }: { p: (typeof projects)[number] }) {
       : p.description;
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-ink-200 bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-[0_18px_40px_-22px_rgba(79,70,229,0.35)] dark:border-ink-800 dark:bg-ink-900 dark:hover:border-indigo-600 dark:hover:shadow-[0_18px_40px_-22px_rgba(99,102,241,0.5)]">
-      {/* Architecture / metrics placeholder */}
+    <article
+      ref={ref}
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-ink-200 bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-[0_18px_40px_-22px_rgba(79,70,229,0.35)] dark:border-ink-800 dark:bg-ink-900 dark:hover:border-indigo-600 dark:hover:shadow-[0_18px_40px_-22px_rgba(99,102,241,0.5)]"
+    >
+      {/* Animated subject scene + metrics overlay */}
       <div className="relative mb-5 h-28 overflow-hidden rounded-lg bg-gradient-to-br from-indigo-50 via-white to-ink-100 ring-1 ring-ink-200/60 dark:from-indigo-500/15 dark:via-ink-900 dark:to-ink-800 dark:ring-ink-700/60">
-        <div
-          className="absolute inset-0 opacity-[0.08] dark:opacity-[0.18]"
-          style={{
-            backgroundImage:
-              'linear-gradient(to right, #4f46e5 1px, transparent 1px), linear-gradient(to bottom, #4f46e5 1px, transparent 1px)',
-            backgroundSize: '16px 16px',
-          }}
-        />
+        <ProjectScene id={p.id} active={visible} />
         {p.metrics && (
           <div className="absolute inset-0 flex items-center justify-around px-4">
             {p.metrics.map((m) => (
@@ -135,7 +133,7 @@ export default function Projects() {
           </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
           {projects.map((p) => (
             <ProjectCard key={p.id} p={p} />
           ))}

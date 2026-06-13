@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { FileText, Code2, ExternalLink, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
 import { publications, type Publication } from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
+import CountUp from './CountUp';
 
 type Filter = 'All' | 'Selected' | 'Journal' | 'Conference';
 const FILTERS: Filter[] = ['All', 'Selected', 'Journal', 'Conference'];
@@ -155,7 +156,15 @@ export default function Publications() {
                 <p className="mt-1.5 text-sm text-ink-600 dark:text-ink-400">
                   {renderAuthors(p.authors)}
                 </p>
-                <p className="mt-1 text-sm italic text-ink-500 dark:text-ink-500">{p.venue}</p>
+                <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <p className="text-sm italic text-ink-500 dark:text-ink-500">{p.venue}</p>
+                  {typeof p.citations === 'number' && p.citations > 0 && (
+                    <span className="inline-flex items-center rounded-md bg-ink-100 px-1.5 py-0.5 font-mono text-[10.5px] text-ink-600 dark:bg-ink-800 dark:text-ink-300">
+                      Cited by&nbsp;
+                      <CountUp value={String(p.citations)} duration={900} />
+                    </span>
+                  )}
+                </div>
                 {p.abstract && (
                   <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-600 dark:text-ink-400">
                     {p.abstract}

@@ -50,10 +50,11 @@ export function useReveal<T extends HTMLElement>(options?: {
 }
 
 export function revealClass(visible: boolean) {
+  // Slight scale gives section entrances a camera-like settle (P5).
   return [
     'transition-all duration-700 ease-out',
     visible
-      ? 'opacity-100 translate-y-0'
-      : 'opacity-0 translate-y-3',
+      ? 'opacity-100 translate-y-0 scale-100'
+      : 'opacity-0 translate-y-3 scale-[0.985]',
   ].join(' ');
 }

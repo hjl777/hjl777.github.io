@@ -24,6 +24,9 @@ export default function Highlights() {
 
   const { ref, visible } = useReveal<HTMLDivElement>();
 
+  // Scale impact bars against the most-cited paper across the whole record.
+  const maxCitations = Math.max(...publications.map((p) => p.citations ?? 0), 1);
+
   if (!featured.length) return null;
 
   return (
@@ -84,6 +87,24 @@ export default function Highlights() {
                 <p className="mt-auto pt-3 text-[12px] italic text-ink-500 dark:text-ink-500">
                   {p.venue}
                 </p>
+                {typeof p.citations === 'number' && p.citations > 0 && (
+                  <div className="mt-3">
+                    <p className="font-mono text-[10.5px] text-ink-500 dark:text-ink-400">
+                      Cited by {p.citations}
+                    </p>
+                    <div className="mt-1.5 h-[3px] overflow-hidden rounded-full bg-ink-100 dark:bg-ink-800">
+                      <div
+                        className="scene-anim h-full rounded-full bg-indigo-500/80"
+                        style={{
+                          width: visible
+                            ? `${Math.max((p.citations / maxCitations) * 100, 6)}%`
+                            : '0%',
+                          transition: 'width 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.25s',
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
               </article>
             );
 
