@@ -31,7 +31,7 @@ export default function News() {
 
   return (
     <section id="news" className="section">
-      <div ref={ref} className={`container-prose ${revealClass(visible)}`}>
+      <div ref={ref} className={`container-prose ${revealClass(visible, 'left')}`}>
         <div className="max-w-2xl">
           <div className="section-kicker">News</div>
           <h2 className="section-title">Recent updates</h2>

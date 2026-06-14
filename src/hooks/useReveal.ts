@@ -49,12 +49,22 @@ export function useReveal<T extends HTMLElement>(options?: {
   return { ref, visible };
 }
 
-export function revealClass(visible: boolean) {
-  // Slight scale gives section entrances a camera-like settle (P5).
+/**
+ * Reveal transition classes. `from` picks the entrance direction:
+ *   'up'    — rise + slight scale settle (default, camera-like)
+ *   'left'  — slide in from the left
+ *   'right' — slide in from the right
+ * Sections alternate left/right to read as "sliding sideways" on scroll.
+ */
+export function revealClass(visible: boolean, from: 'up' | 'left' | 'right' = 'up') {
+  const hidden =
+    from === 'left'
+      ? 'opacity-0 -translate-x-16'
+      : from === 'right'
+        ? 'opacity-0 translate-x-16'
+        : 'opacity-0 translate-y-3 scale-[0.985]';
   return [
-    'transition-all duration-700 ease-out',
-    visible
-      ? 'opacity-100 translate-y-0 scale-100'
-      : 'opacity-0 translate-y-3 scale-[0.985]',
+    'transition-all duration-[900ms] ease-out will-change-transform motion-reduce:transition-none',
+    visible ? 'opacity-100 translate-x-0 translate-y-0 scale-100' : hidden,
   ].join(' ');
 }

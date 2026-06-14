@@ -84,7 +84,7 @@ export default function Publications() {
 
   return (
     <section id="publications" className="section bg-ink-50/50 dark:bg-ink-900/40">
-      <div ref={ref} className={`container-prose ${revealClass(visible)}`}>
+      <div ref={ref} className={`container-prose ${revealClass(visible, 'left')}`}>
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
             <div className="section-kicker">Publications</div>

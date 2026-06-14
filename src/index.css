@@ -125,6 +125,21 @@
   75%, 100% { transform: scale(2.4); opacity: 0; }
 }
 
+/* ── Typewriter caret (Typed.js-style hero line) ──── */
+.typewriter-caret {
+  margin-left: 1px;
+  font-weight: 400;
+  color: theme('colors.indigo.500');
+  animation: caretBlink 1s step-end infinite;
+}
+.dark .typewriter-caret {
+  color: theme('colors.indigo.400');
+}
+@keyframes caretBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 /* ── P1: hero vessel-network background ──────────── */
 .vessel-path {
   stroke-dasharray: 1;

@@ -68,6 +68,14 @@ export const profile = {
   nameKr: '이호재',
   role: 'Healthcare AI Researcher — Medical Imaging · LLM Reliability · Clinical ML',
   affiliation: '',
+  // Cycled in the hero typewriter line (inspired by classic Typed.js portfolios).
+  typedRoles: [
+    'Medical Imaging AI',
+    'LLM Reliability',
+    'Clinical Risk Modeling',
+    'Quantitative Coronary Angiography',
+    'Explainable AI',
+  ],
   location: 'Seoul, Republic of Korea',
   email: 'iceanon1@gmail.com',
   cvUrl: '/cv.pdf',

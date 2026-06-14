@@ -31,7 +31,7 @@ export default function Highlights() {
 
   return (
     <section id="highlights" className="section bg-white dark:bg-ink-950">
-      <div ref={ref} className={`container-prose ${revealClass(visible)}`}>
+      <div ref={ref} className={`container-prose ${revealClass(visible, 'right')}`}>
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div className="max-w-2xl">
             <div className="section-kicker">Highlights</div>

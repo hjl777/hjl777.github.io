@@ -15,6 +15,7 @@ import { profile, contacts } from '../data';
 import CountUp from './CountUp';
 import AnimatedHeadline from './AnimatedHeadline';
 import VesselField from './VesselField';
+import Typewriter from './Typewriter';
 import { renderRich } from '../lib/richtext';
 
 const SOCIAL_ICONS = {
@@ -75,12 +76,20 @@ export default function Hero() {
           {/* Left: bio */}
           <div className="md:col-span-7 animate-fade-up">
             <div className="section-kicker">
-              {profile.role}
+              {profile.role.split('—')[0].trim()}
               {profile.affiliation && <> · {profile.affiliation}</>}
             </div>
             <h1 className="font-serif text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl dark:text-ink-50">
               {profile.name}
             </h1>
+
+            <p className="mt-2.5 font-mono text-sm text-ink-600 sm:text-[15px] dark:text-ink-400">
+              <span className="text-indigo-500 dark:text-indigo-400">{'>'} </span>
+              <Typewriter
+                words={profile.typedRoles}
+                className="text-ink-800 dark:text-ink-200"
+              />
+            </p>
 
             {profile.thesis && (
               <p

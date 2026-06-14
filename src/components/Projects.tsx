@@ -122,7 +122,7 @@ export default function Projects() {
   const { ref, visible } = useReveal<HTMLDivElement>();
   return (
     <section id="projects" className="section">
-      <div ref={ref} className={`container-prose ${revealClass(visible)}`}>
+      <div ref={ref} className={`container-prose ${revealClass(visible, 'right')}`}>
         <div className="max-w-2xl">
           <div className="section-kicker">Research & Projects</div>
           <h2 className="section-title">Selected systems & studies</h2>

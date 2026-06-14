@@ -13,7 +13,7 @@ export default function App() {
     <div className="min-h-screen bg-white text-ink-800 selection:bg-indigo-100 selection:text-indigo-900 dark:bg-ink-950 dark:text-ink-200 dark:selection:bg-indigo-500/30 dark:selection:text-indigo-100">
       <Nav />
       <JourneyRail />
-      <main>
+      <main className="overflow-x-clip">
         <Hero />
         <News />
         <Highlights />
