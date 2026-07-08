@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FileText, Code2, ExternalLink, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
-import { publications, type Publication } from '../data';
+import { publications, contacts, type Publication } from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
 import CountUp from './CountUp';
 
@@ -49,9 +49,21 @@ function PubLinks({ pub }: { pub: Publication }) {
   );
 }
 
+const scholarUrl = contacts.find((c) => c.icon === 'scholar')?.href;
+
 export default function Publications() {
   const [filter, setFilter] = useState<Filter>('Selected');
   const [expanded, setExpanded] = useState(false);
+  // Abstracts are collapsed by default; each entry toggles independently.
+  const [openAbstracts, setOpenAbstracts] = useState<Set<string>>(new Set());
+
+  const toggleAbstract = (id: string) =>
+    setOpenAbstracts((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
 
   // Collapse back to the preview whenever the filter changes.
   useEffect(() => {
@@ -166,9 +178,23 @@ export default function Publications() {
                   )}
                 </div>
                 {p.abstract && (
-                  <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-600 dark:text-ink-400">
-                    {p.abstract}
-                  </p>
+                  <div className="mt-2">
+                    <button
+                      onClick={() => toggleAbstract(p.id)}
+                      className="inline-flex items-center gap-1 text-xs font-medium text-ink-400 transition-colors duration-200 hover:text-indigo-600 dark:text-ink-500 dark:hover:text-indigo-400"
+                    >
+                      {openAbstracts.has(p.id) ? (
+                        <><ChevronUp size={13} /> Hide abstract</>
+                      ) : (
+                        <><ChevronDown size={13} /> Abstract</>
+                      )}
+                    </button>
+                    {openAbstracts.has(p.id) && (
+                      <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-600 dark:text-ink-400">
+                        {p.abstract}
+                      </p>
+                    )}
+                  </div>
                 )}
                 <PubLinks pub={p} />
               </div>
@@ -176,8 +202,8 @@ export default function Publications() {
           ))}
         </ol>
 
-        {hidden > 0 && (
-          <div className="mt-8 flex justify-center">
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          {hidden > 0 && (
             <button
               onClick={() => setExpanded((v) => !v)}
               className="inline-flex items-center gap-1.5 rounded-full border border-ink-200 bg-white px-4 py-2 text-sm font-medium text-ink-700 transition-colors duration-200 hover:border-indigo-300 hover:text-indigo-700 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300 dark:hover:border-indigo-500 dark:hover:text-indigo-300"
@@ -188,8 +214,19 @@ export default function Publications() {
                 <><ChevronDown size={15} /> Show all {filtered.length} publications</>
               )}
             </button>
-          </div>
-        )}
+          )}
+          {scholarUrl && (
+            <a
+              href={scholarUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-500 transition-colors duration-200 hover:text-indigo-600 dark:text-ink-400 dark:hover:text-indigo-400"
+            >
+              View all {publications.length} on Google Scholar
+              <ExternalLink size={14} />
+            </a>
+          )}
+        </div>
 
         {!filtered.length && (
           <p className="py-12 text-center text-sm text-ink-500 dark:text-ink-500">

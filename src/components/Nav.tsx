@@ -8,6 +8,7 @@ const sections = [
   { id: 'news', label: 'News' },
   { id: 'publications', label: 'Publications' },
   { id: 'projects', label: 'Research' },
+  { id: 'about', label: 'About' },
 ];
 
 export default function Nav() {

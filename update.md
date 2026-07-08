@@ -197,3 +197,32 @@ Of these, 2 are also literal first-author position (#5 IAAI, #6 JMIR suicidality
 ### Notes for next session
 - Gemini-feedback items left unaddressed: verify mobile stacking (Hero left/right columns), already have sticky nav + dark mode.
 - Consider whether to add 2025 Author Correction (Liposuction) — currently excluded since corrections aren't typically counted as separate publications.
+
+---
+
+## 11. Session log — 2026-07-08 (6-second-scan restructure)
+
+Restructured the site around recruiter scanning behavior: evidence (numbers, proper nouns) surfaces in the first screen; prose moves behind folds. Based on an external structural review.
+
+### Hero rebuilt (`Hero.tsx`, `data.ts`)
+- New order: name → static role line → thesis → **stat cards** (25 papers / 404 citations / h-index 12, moved up from below the fold) → **credibility bar** (new) → 2-sentence `shortBio` → contacts → CTAs.
+- `profile.credibility` added: Lancet Regional Health · JAMA Network Open · JMIR · Sci Rep · MIT · UofT · Asan.
+- `shortBio` rewritten without stat duplication (cards above carry the numbers).
+- Removed from hero: `longBio` (4 paras), `approach` box, interests chips.
+
+### Typewriter removed
+- `Typewriter.tsx` deleted; `profile.typedRoles` deleted. Replaced with static specialty line from `profile.role`. Remaining motion: CountUp, scroll reveals, thesis headline.
+
+### New About section (`About.tsx`, after Experience)
+- `longBio` first paragraph visible; rest + "How I work" behind a "Read the full story" toggle. Interests chips live here now. Nav gained an "About" link.
+
+### Publications polish
+- Abstracts now collapsed by default with per-item toggle.
+- "View all N on Google Scholar →" link added next to Show-all (URL derived from `contacts`).
+
+### Experience bullet diet
+- 2 bullets shown per role, rest behind "+N more" (`BULLETS_SHOWN = 2`).
+- Bullets rewritten result-first and reordered so the strongest two are visible: UofT/MIT leads with `<1% trainable parameters`; KHU leads with `21 papers in two years`; DEFINES #2 trimmed (verify-before-adopt duplicated About's approach).
+
+### Remaining
+- **QCA hero visual**: slot for a de-identified segmentation result (original → overlay → quantification) still pending — needs the image asset from the user.

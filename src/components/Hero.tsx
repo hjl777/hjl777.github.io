@@ -15,8 +15,6 @@ import { profile, contacts } from '../data';
 import CountUp from './CountUp';
 import AnimatedHeadline from './AnimatedHeadline';
 import VesselField from './VesselField';
-import Typewriter from './Typewriter';
-import { renderRich } from '../lib/richtext';
 
 const SOCIAL_ICONS = {
   mail: Mail,
@@ -84,11 +82,7 @@ export default function Hero() {
             </h1>
 
             <p className="mt-2.5 font-mono text-sm text-ink-600 sm:text-[15px] dark:text-ink-400">
-              <span className="text-indigo-500 dark:text-indigo-400">{'>'} </span>
-              <Typewriter
-                words={profile.typedRoles}
-                className="text-ink-800 dark:text-ink-200"
-              />
+              {profile.role.split('—')[1]?.trim()}
             </p>
 
             {profile.thesis && (
@@ -100,7 +94,41 @@ export default function Hero() {
               </p>
             )}
 
-            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-500 dark:text-ink-400">
+            {/* Evidence first: stats, then the proof bar of proper nouns. */}
+            <div className="mt-8 grid max-w-xl grid-cols-3 gap-3">
+              {profile.highlights.map((h, i) => (
+                <div
+                  key={h.label}
+                  className="stat-card rounded-xl border border-ink-200 bg-white p-4 text-center hover:border-indigo-300 dark:border-ink-800 dark:bg-ink-900 dark:hover:border-indigo-700"
+                  style={{ '--d': `${300 + i * 120}ms` } as CSSProperties}
+                >
+                  <CountUp
+                    value={h.value}
+                    className="block font-serif text-2xl font-semibold text-ink-900 dark:text-ink-50"
+                  />
+                  <div className="mt-1 whitespace-nowrap text-[10.5px] font-medium uppercase tracking-wider text-ink-500 dark:text-ink-400">
+                    {h.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-ink-500 dark:text-ink-400">
+              {profile.credibility.map((c, i) => (
+                <span key={c}>
+                  {i > 0 && (
+                    <span className="mx-1.5 text-ink-300 dark:text-ink-700">·</span>
+                  )}
+                  <span className="font-medium text-ink-700 dark:text-ink-300">{c}</span>
+                </span>
+              ))}
+            </p>
+
+            <p className="mt-6 max-w-2xl text-[15.5px] leading-relaxed text-ink-700 dark:text-ink-300">
+              {profile.shortBio}
+            </p>
+
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-500 dark:text-ink-400">
               <span className="inline-flex items-center gap-1.5">
                 <MapPin size={14} /> {profile.location}
               </span>
@@ -146,12 +174,6 @@ export default function Hero() {
               </span>
             </div>
 
-            <div className="mt-8 space-y-4 text-[15.5px] leading-relaxed text-ink-700 dark:text-ink-300">
-              {profile.longBio.map((p, i) => (
-                <p key={i}>{renderRich(p)}</p>
-              ))}
-            </div>
-
             <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href="#publications"
@@ -173,47 +195,6 @@ export default function Hero() {
               </a>
             </div>
 
-            <div className="mt-10 grid grid-cols-3 gap-3">
-              {profile.highlights.map((h, i) => (
-                <div
-                  key={h.label}
-                  className="stat-card rounded-xl border border-ink-200 bg-white p-4 text-center hover:border-indigo-300 dark:border-ink-800 dark:bg-ink-900 dark:hover:border-indigo-700"
-                  style={{ '--d': `${300 + i * 120}ms` } as CSSProperties}
-                >
-                  <CountUp
-                    value={h.value}
-                    className="block font-serif text-2xl font-semibold text-ink-900 dark:text-ink-50"
-                  />
-                  <div className="mt-1 whitespace-nowrap text-[10.5px] font-medium uppercase tracking-wider text-ink-500 dark:text-ink-400">
-                    {h.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {profile.approach && (
-              <div className="mt-10 rounded-2xl border border-ink-200 bg-ink-50/60 p-6 dark:border-ink-800 dark:bg-ink-900/50">
-                <p className="section-kicker !mb-3">How I work</p>
-                <div className="space-y-3 text-[14.5px] leading-relaxed text-ink-700 dark:text-ink-300">
-                  {profile.approach.map((p, i) => (
-                    <p key={i}>{renderRich(p)}</p>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="mt-8">
-              <p className="mb-3 text-xs font-medium uppercase tracking-wider text-ink-400 dark:text-ink-500">
-                Research interests
-              </p>
-              <ul className="flex flex-wrap gap-2">
-                {profile.interests.map((i) => (
-                  <li key={i} className="chip">
-                    {i}
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
 
           {/* Right: portrait + facts */}

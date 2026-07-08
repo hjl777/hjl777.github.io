@@ -6,6 +6,7 @@ import Highlights from './components/Highlights';
 import Publications from './components/Publications';
 import Projects from './components/Projects';
 import Experience from './components/Experience';
+import About from './components/About';
 import Footer from './components/Footer';
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
         <Publications />
         <Projects />
         <Experience />
+        <About />
       </main>
       <Footer />
     </div>

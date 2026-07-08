@@ -7,6 +7,8 @@ import {
   MapPin,
   Award,
   Fingerprint,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { experience, contacts, profile, honors, type ExperienceItem } from '../data';
@@ -20,13 +22,19 @@ const ICONS = {
   orcid: Fingerprint,
 } as const;
 
+// Bullets shown per role before the "+N more" toggle — keeps each entry scannable.
+const BULLETS_SHOWN = 2;
+
 /** P8: each waypoint ignites (dot color + ring pulse, staggered bullets) when it scrolls into view. */
 function TimelineItem({ e }: { e: ExperienceItem }) {
   const { ref, visible } = useReveal<HTMLLIElement>({
     threshold: 0.15,
     rootMargin: '0px 0px -12% 0px',
   });
+  const [showAll, setShowAll] = useState(false);
   const isNow = e.period.includes('Present');
+  const hiddenCount = e.bullets.length - BULLETS_SHOWN;
+  const bullets = showAll ? e.bullets : e.bullets.slice(0, BULLETS_SHOWN);
 
   return (
     <li
@@ -69,7 +77,7 @@ function TimelineItem({ e }: { e: ExperienceItem }) {
           {e.location ? ` · ${e.location}` : ''}
         </p>
         <ul className="mt-2.5 list-disc space-y-1 pl-5 text-sm text-ink-600 marker:text-ink-300 dark:text-ink-400 dark:marker:text-ink-600">
-          {e.bullets.map((b, i) => (
+          {bullets.map((b, i) => (
             <li
               key={i}
               className={[
@@ -82,6 +90,18 @@ function TimelineItem({ e }: { e: ExperienceItem }) {
             </li>
           ))}
         </ul>
+        {hiddenCount > 0 && (
+          <button
+            onClick={() => setShowAll((v) => !v)}
+            className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-ink-400 transition-colors duration-200 hover:text-indigo-600 dark:text-ink-500 dark:hover:text-indigo-400"
+          >
+            {showAll ? (
+              <><ChevronUp size={13} /> Show less</>
+            ) : (
+              <><ChevronDown size={13} /> +{hiddenCount} more</>
+            )}
+          </button>
+        )}
       </div>
     </li>
   );

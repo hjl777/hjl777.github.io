@@ -68,22 +68,26 @@ export const profile = {
   nameKr: '이호재',
   role: 'Healthcare AI Researcher — Medical Imaging · LLM Reliability · Clinical ML',
   affiliation: '',
-  // Cycled in the hero typewriter line (inspired by classic Typed.js portfolios).
-  typedRoles: [
-    'Medical Imaging AI',
-    'LLM Reliability',
-    'Clinical Risk Modeling',
-    'Quantitative Coronary Angiography',
-    'Explainable AI',
-  ],
   location: 'Seoul, Republic of Korea',
   email: 'iceanon1@gmail.com',
   cvUrl: '/cv.pdf',
   avatarUrl: '/portrait.png',
   // One-line research thesis — used as the animated hero headline.
   thesis: 'Connecting what a model decides with why a clinician can trust it.',
+  // Two-sentence hero bio — the stats and credibility bar above it carry the
+  // numbers, so this stays prose-light.
   shortBio:
-    'Healthcare AI researcher. 25 SCI/SCIE papers, h-index 12, 404 citations (The Lancet Regional Health, JMIR, Scientific Reports). Builds coronary imaging pipelines and LLM reliability systems for clinical contexts. B.S. Mathematics, Korea University. Seeking PhD research environment, Fall 2027.',
+    'I build coronary imaging pipelines and LLM reliability systems for clinical contexts — where a mis-measured vessel or a hallucinated fact can change a treatment decision. Mathematics background (Korea University); seeking a PhD research environment for Fall 2027.',
+  // One-line proof bar rendered under the hero stats — proper nouns over adjectives.
+  credibility: [
+    'The Lancet Regional Health',
+    'JAMA Network Open',
+    'JMIR',
+    'Scientific Reports',
+    'MIT',
+    'University of Toronto',
+    'Asan Medical Center',
+  ],
   longBio: [
     'My research focuses on two problems where wrong answers have clinical consequences: automated coronary vessel analysis, where a mis-measured diameter can alter a treatment decision, and LLM reliability in medical Q&A, where a hallucinated fact can mislead a clinician. Both problems share a common question: how do you make a learned system behave as if it understands the rules, not just the patterns?',
     'I have authored 25 SCI/SCIE papers (6 co-first, 1 corresponding, 404 citations, h-index 12) in venues including The Lancet Regional Health, JMIR, and Scientific Reports — published within two years of graduate research at Kyung Hee University\'s Center for Digital Health and Asan Medical Center.',
@@ -522,8 +526,8 @@ export const experience: ExperienceItem[] = [
     location: 'Seoul, KR',
     period: '2025.03.01 – 2026.02.28',
     bullets: [
-      'Built and deployed QCA analysis pipelines with clinician QA interfaces, improving measurement consistency and reviewer efficiency.',
-      'Prototyped 2D→3D vascular geometry reconstruction from routine angiographic sequences for TAVI planning.',
+      'Improved QCA measurement consistency and reviewer efficiency — built and deployed analysis pipelines with clinician-facing QA interfaces.',
+      'Enabled 3D vascular geometry for TAVI planning from routine 2D angiographic sequences via 2D→3D reconstruction prototyping.',
       'Developed semi-automated catheter / wire tracking systems on routine 2D angiographic sequences with MEDSAM 2-assisted segmentation.',
       'Integrated structured clinical variables with imaging model outputs for clinician-facing decision support.',
     ],
@@ -534,8 +538,8 @@ export const experience: ExperienceItem[] = [
     location: 'Seoul, KR',
     period: '2025.03 – Present',
     bullets: [
-      'Extend the Toronto/MIT hallucination work into multimodal mathematical reasoning — building a LangGraph multi-agent workflow with knowledge-graph-based structured retrieval to suppress VLM hallucination.',
-      'Implemented a self-built PyTorch OCR pipeline; apply each new method only after testing its fit, in the same verify-before-adopt style as the original research.',
+      'Extending the Toronto/MIT hallucination work to multimodal math reasoning — LangGraph multi-agent workflow with KG-based structured retrieval to suppress VLM hallucination.',
+      'Implemented a self-built PyTorch OCR pipeline for document-to-structured-input conversion.',
       'Engineer a Human-in-the-Loop pipeline for curriculum-aligned mathematics problem generation and reading/grammar item QC (choice-set consistency, distractor validity, automated rationale).',
     ],
   },
@@ -545,9 +549,9 @@ export const experience: ExperienceItem[] = [
     location: 'Toronto, CA · Cambridge, MA',
     period: '2023.12 – 2024.06',
     bullets: [
-      'Mitigated hallucinations of LLMs over complex scientific Q&A datasets in cross-functional research teams.',
-      'Implemented PEFT and Soft Prompting techniques, matching full fine-tuning performance with <1% of parameters.',
-      'Applied Knowledge-Graph-based RAG to embed domain-specific physical-science constraints, boosting factual accuracy.',
+      'Matched full fine-tuning accuracy with <1% of trainable parameters (~200k vs. 20–25M) via PEFT and soft prompting.',
+      'Boosted factual accuracy on complex scientific Q&A by embedding physics-ontology constraints through KG-RAG.',
+      'Mitigated LLM hallucination in cross-functional research teams across scientific Q&A datasets.',
     ],
   },
   {
@@ -556,10 +560,10 @@ export const experience: ExperienceItem[] = [
     location: 'Seoul, KR',
     period: '2023.01 – 2025.02',
     bullets: [
-      'Developed and externally validated ML risk-prediction models for neurodegenerative, cardiovascular, and diabetic-retinopathy outcomes in T2D, across two independent Korean cohorts.',
+      'Authored / co-authored 21 peer-reviewed papers within two years; built reproducible code-first reporting environments (Python / R).',
+      'Externally validated ML risk-prediction models across two independent Korean cohorts — neurodegenerative, cardiovascular, and diabetic-retinopathy outcomes in T2D.',
       'Standardized end-to-end clinical ML pipelines with SHAP-based XAI outputs for clinician interpretability.',
       'Led nationwide time-series analyses of adolescent health behaviors (2005–2022), quantifying epidemiological trends and policy impacts.',
-      'Authored / co-authored 21 peer-reviewed papers; built reproducible code-first reporting environments (Python / R).',
     ],
   },
   {
