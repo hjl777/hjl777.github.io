@@ -148,3 +148,52 @@ These are the only assets the site references but doesn't yet contain:
 - **Author rendering** uses a small regex split (`/(\*\*[^*]+\*\*)/g`) so you never write JSX in `data.ts`.
 - **Filter counts** are memoized and shown inline in each tab.
 - **No external icon font** — `lucide-react` is tree-shaken; only the ~10 icons used are bundled.
+
+---
+
+## 10. Session log — 2026-05-26 (content accuracy pass)
+
+Full review of `src/data.ts` against current reality and official CV. All changes committed and pushed to `main`.
+
+### Commit `85f0f2c` — Bio update: drop Asan affiliation, add mental health & addiction
+- **longBio[0]**: removed `"I'm a researcher at the Institute of Biomedical Engineering, Asan Medical Center..."` → `"I'm an independent researcher..."` (contract ended; currently job-seeking).
+- **longBio[0]**: integrated mental health / addiction into existing scope → `"clinical risk prediction (suicidal ideation, substance use & addiction)"`.
+- **interests**: added `'Mental Health & Addiction Risk Modeling'`.
+
+### Commit `fa22a5c` — News item tense fix
+- **news[2026-01]**: `"Started a new project thread on stent-marker localization..."` → `"Completed an end-to-end DL pipeline for stent-marker localization..."`. Project is finished; "Started" framing was misleading.
+
+### Commit `fd64a7a` — Bio accuracy + Hero icon size
+- **longBio / highlights**: paper count `21 → 24`, verified against Google Scholar (26 entries on Scholar, minus 1 Author Correction and 1 duplicate listing = 24 unique).
+- **shortBio**: added `"(including mental health & addiction risk)"` to clinical outcome prediction.
+- **experience[Asan].bullets**: present tense → past tense (`Build → Built`, `Prototype → Prototyped`, `Develop → Developed`, `Integrate → Integrated`) — period `2025.03.01 – 2026.02.28`, contract concluded.
+- **Hero.tsx**: social link icons `size={16} → size={20}` per user feedback (Gemini review + own observation that icons felt too small).
+
+### Commit `7c44681` — Co-first author badges + asterisk corrections
+Cross-checked against official CV. 4 publications were missing the `"Co-first author"` badge despite the user being marked `*` in the official list:
+| Publication | Official author line |
+|---|---|
+| `pub-jmir-suicidality-2024` | `Lee H*, Cho JK*, Park J*, Lee H*` |
+| `pub-scirep-cvd-2024` | `Sang H*, Lee H*` |
+| `pub-jmir-suicidal-thinking-2024` | `Kim H*, Son Y*, Lee H*` |
+| `pub-iaai-rhinitis-2024` | `Lee H*, Park J*` |
+
+Also fixed **`pub-scirep-atopic-2024`** authors string: 5 co-first authors on the CV (`Kattih M*, Lee H*, Jo H*, Jeong J*, Kim H*`) but only 3 had `*` markers in the rendered author line.
+
+After this commit, total **6 co-first author papers** are now correctly badged on the site (matching `highlights.Co-first author = 6`):
+1. Sci Rep — Neurodegenerative in T2D (2024)
+2. Sci Rep — CVD in diabetes (2024)
+3. Sci Rep — Atopic dermatitis (2024)
+4. JMIR — Suicidal thinking in 3 cohorts (2024)
+5. IAAI — Allergic rhinitis & rhinosinusitis (2024)
+6. JMIR — Suicidality in allergic rhinitis (2024)
+
+Of these, 2 are also literal first-author position (#5 IAAI, #6 JMIR suicidality).
+
+### Verified but unchanged
+- **`experience[Private Academy].period: '2025.01 – Present'`** — confirmed by user as still ongoing.
+- **`pub-scirep-ra-2023`** (Rheumatoid arthritis) and **`pub-scirep-liposuction-2024`** (original Liposuction paper) — present in `data.ts` but absent from the official CV list shared this session. User confirmed both are theirs; the CV list omitted them. Kept on site.
+
+### Notes for next session
+- Gemini-feedback items left unaddressed: verify mobile stacking (Hero left/right columns), already have sticky nav + dark mode.
+- Consider whether to add 2025 Author Correction (Liposuction) — currently excluded since corrections aren't typically counted as separate publications.
