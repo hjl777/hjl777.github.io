@@ -34,7 +34,7 @@ export default function Highlights() {
       <div ref={ref} className={`container-prose ${revealClass(visible, 'right')}`}>
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div className="max-w-2xl">
-            <div className="section-kicker">Highlights</div>
+            <div className="section-kicker">02 · Highlights</div>
             <h2 className="section-title">Selected publications</h2>
             <p className="mt-3 text-ink-600 dark:text-ink-400">
               A few recent papers that best represent my work. Co-first

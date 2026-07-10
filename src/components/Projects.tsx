@@ -1,116 +1,68 @@
-import { ArrowRight, ArrowUpRight, Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import { projects } from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
-import ProjectScene from './ProjectScene';
+import BrowserFrame from './BrowserFrame';
 
-const PREVIEW_LENGTH = 160;
-
-function ProjectCard({ p }: { p: (typeof projects)[number] }) {
-  const { ref, visible } = useReveal<HTMLElement>({ threshold: 0.2 });
-  const isLong = p.description.length > PREVIEW_LENGTH;
-  const displayText = isLong
-    ? p.description.slice(0, PREVIEW_LENGTH).trimEnd() + '…'
-    : p.description;
+/**
+ * Home "Selected Works": the three featured projects as a minimal card grid.
+ * Thumbnails use the same 16:10 BrowserFrame as /projects (and the same
+ * view-transition-name), so navigating between the two morphs each window.
+ */
+function SelectedCard({ p }: { p: (typeof projects)[number] }) {
+  const { ref, visible } = useReveal<HTMLAnchorElement>({ threshold: 0.15 });
 
   return (
-    <article
-      ref={ref}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-ink-200 bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-[0_18px_40px_-22px_rgba(79,70,229,0.35)] dark:border-ink-800 dark:bg-ink-900 dark:hover:border-indigo-600 dark:hover:shadow-[0_18px_40px_-22px_rgba(99,102,241,0.5)]"
-    >
-      {/* Animated subject scene + metrics overlay */}
-      <div className="relative mb-5 h-28 overflow-hidden rounded-lg bg-gradient-to-br from-indigo-50 via-white to-ink-100 ring-1 ring-ink-200/60 dark:from-indigo-500/15 dark:via-ink-900 dark:to-ink-800 dark:ring-ink-700/60">
-        <ProjectScene id={p.id} active={visible} />
-        {p.metrics && (
-          <div className="absolute inset-0 flex items-center justify-around px-4">
-            {p.metrics.map((m) => (
-              <div key={m.label} className="text-center">
-                <div className="font-serif text-lg font-semibold text-ink-900 dark:text-ink-50">
-                  {m.value}
-                </div>
-                <div className="mt-0.5 text-[10px] uppercase tracking-wider text-ink-500 dark:text-ink-400">
-                  {m.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+    <Link ref={ref} to={`/projects/${p.id}`} viewTransition className="group block">
+      <BrowserFrame p={p} active={visible} />
 
-      <h3 className="font-serif text-lg font-semibold leading-snug text-ink-900 dark:text-ink-50">
+      <div className="mt-4 flex items-center justify-between gap-3">
+        {p.period && (
+          <span className="font-mono text-[11px] text-ink-400 dark:text-ink-500">
+            {p.period}
+          </span>
+        )}
+        {p.status && <span className="badge-soft">{p.status}</span>}
+      </div>
+      <h3 className="mt-1.5 font-serif text-base font-semibold leading-snug text-ink-900 transition-colors duration-200 group-hover:text-indigo-700 dark:text-ink-50 dark:group-hover:text-indigo-300">
         {p.title}
       </h3>
       {p.subtitle && (
-        <p className="mt-0.5 text-sm text-ink-500 dark:text-ink-400">{p.subtitle}</p>
+        <p className="mt-1 font-mono text-xs text-ink-500 dark:text-ink-500">{p.subtitle}</p>
       )}
-
-      {p.collaboration && (
-        <p className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-indigo-700 dark:text-indigo-400">
-          <Users size={12} />
-          {p.collaboration}
-        </p>
-      )}
-
-      <p className="mt-3 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
-        {displayText}
-      </p>
-
-      <a
-        href={`#/project/${p.id}`}
-        className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 transition-colors duration-200 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
-      >
-        View project
-        <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
-      </a>
-
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        {p.stack.map((s) => (
-          <span
-            key={s}
-            className="rounded-md bg-ink-100 px-2 py-0.5 font-mono text-[10.5px] text-ink-700 dark:bg-ink-800 dark:text-ink-300"
-          >
-            {s}
-          </span>
-        ))}
-      </div>
-
-      {p.links && p.links.length > 0 && (
-        <div className="mt-5 flex flex-wrap gap-x-4 gap-y-1 border-t border-ink-100 pt-4 dark:border-ink-800">
-          {p.links.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 text-xs font-medium text-indigo-700 transition-colors duration-200 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
-            >
-              {l.label}
-              <ArrowUpRight size={12} />
-            </a>
-          ))}
-        </div>
-      )}
-    </article>
+    </Link>
   );
 }
 
 export default function Projects() {
   const { ref, visible } = useReveal<HTMLDivElement>();
+  const featured = projects.filter((p) => p.featured);
+
   return (
     <section id="projects" className="section">
       <div ref={ref} className={`container-prose ${revealClass(visible, 'right')}`}>
-        <div className="max-w-2xl">
-          <div className="section-kicker">Research & Projects</div>
-          <h2 className="section-title">Selected systems & studies</h2>
-          <p className="mt-3 text-ink-600 dark:text-ink-400">
-            Applied research bridging mathematical foundations and clinical
-            problems — from population-scale prediction to medical vision and
-            trustworthy LLMs.
-          </p>
+        <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+          <div className="max-w-2xl">
+            <div className="section-kicker">04 · Research & Projects</div>
+            <h2 className="section-title">Selected Works</h2>
+            <p className="mt-3 text-ink-600 dark:text-ink-400">
+              Applied research bridging mathematical foundations and clinical
+              problems.
+            </p>
+          </div>
+          <Link
+            to="/projects"
+            viewTransition
+            className="group inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 transition-colors duration-200 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
+          >
+            All projects
+            <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+          </Link>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-          {projects.map((p) => (
-            <ProjectCard key={p.id} p={p} />
+        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+          {featured.map((p) => (
+            <SelectedCard key={p.id} p={p} />
           ))}
         </div>
       </div>

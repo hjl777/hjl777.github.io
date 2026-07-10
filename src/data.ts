@@ -29,6 +29,13 @@ export interface Project {
   id: string;
   title: string;
   subtitle?: string;
+  period?: string;          // e.g. "2025 – 2026"
+  status?: string;          // e.g. "Deployed", "Ongoing", "Published"
+  featured?: boolean;       // Shown in the home "Selected Works" section; the
+                            // rest appear only on the /projects index page.
+  mediaFit?: 'cover' | 'contain'; // 'contain' for charts/graphs — rendered on a
+                            // white background with inner padding instead of
+                            // being cropped to fill the 16:10 frame.
   collaboration?: string;
   description: string;
   metrics?: { label: string; value: string }[];
@@ -458,6 +465,9 @@ export const projects: Project[] = [
     id: 'proj-stent-marker',
     title: 'End-to-End Coronary Vessel Analysis for Stent-Marker Localization',
     subtitle: 'Deep-learning segmentation · Mask refinement · Diameter profiling',
+    period: '2025 – 2026',
+    status: 'Deployed',
+    featured: true,
     description:
       "End-to-end QCA pipeline built from scratch at Asan Medical Center — one of Asia's largest cardiac intervention centers. Performs sub-pixel vessel boundary segmentation across all three coronary trees (RCA / LAD / LCX), extracts centerlines and bifurcation points automatically, and generates per-branch diameter profiles with OCR-calibrated pixel-to-mm conversion. Pipeline outputs were validated against Murray's Law — the governing equation for vascular branching — yielding R² > 0.8 across 1,190+ vessel samples. This validation was only possible because of a B.S. Mathematics background applied directly to clinical engineering.",
     metrics: [
@@ -485,6 +495,10 @@ export const projects: Project[] = [
     id: 'proj-llm',
     title: 'Mitigating LLM Hallucinations in Scientific Q&A',
     subtitle: 'PEFT · Soft Prompting · KG-RAG',
+    period: '2023 – 2024',
+    status: 'Completed',
+    featured: true,
+    mediaFit: 'contain',
     collaboration: 'MIT (6.2410 ChatTutor) & University of Toronto — MSIT/IITP Government Fellowship',
     description:
       'Reduced factual hallucination in LLMs deployed for university-level physics Q&A (MIT ChatTutor, 6.2410). Core constraint: the solution had to be efficient enough for the service to self-host. Implemented PEFT + soft prompting to match full fine-tuning accuracy using only 0.78–0.94% of trainable parameters (200k vs. 20–25M). Extended with a physics ontology mapped to Chain-of-Knowledge KG-RAG baseline — embedding symbolic domain constraints directly into generation. Evaluated on ScienceQA and SciQ.',
@@ -507,9 +521,13 @@ export const projects: Project[] = [
     id: 'proj-defines',
     title: 'DEFINES — Hallucination Suppression in Multimodal Math Reasoning',
     subtitle: 'Multi-agent VLM · LangGraph · Knowledge-graph retrieval',
+    period: '2025 – Present',
+    status: 'Ongoing',
+    featured: true,
     collaboration: 'DEFINES LAB — Independent Research (continuation of the UofT/MIT work)',
     description:
-      'An ongoing independent extension of the Toronto/MIT hallucination research into the multimodal mathematics domain. A LangGraph-based multi-agent workflow pairs domain-specialized problem generation with knowledge-graph-based structured retrieval to constrain a VLM toward verifiable reasoning, with a self-built PyTorch OCR pipeline feeding the system. Methods are adopted only after their fit is tested experimentally — the same verify-before-adopt principle that anchors my work.',
+      'An ongoing independent extension of the Toronto/MIT hallucination research into the multimodal mathematics domain. A LangGraph-based multi-agent workflow pairs domain-specialized problem generation with knowledge-graph-based structured retrieval to constrain a VLM toward verifiable reasoning, with a self-built PyTorch OCR pipeline feeding the system. The research powers DEFINES, a live AI problem-bank platform for Korean mathematics teachers — scanned test papers are OCR-digitized into clean LaTeX, then AI agents generate variations and step-by-step solutions.',
+    links: [{ label: 'Live — defines-lab.com (Korean)', href: 'https://defines-lab.com/' }],
     metrics: [
       { label: 'Orchestration', value: 'Multi-agent' },
       { label: 'Retrieval',     value: 'KG-structured' },
@@ -521,6 +539,9 @@ export const projects: Project[] = [
     id: 'proj-outcomes',
     title: 'Clinical Outcome Prediction at Population Scale',
     subtitle: 'Nationwide ML risk models · XAI · external validation',
+    period: '2023 – 2025',
+    status: 'Published',
+    mediaFit: 'contain',
     description:
       'Derivation and external validation of ML risk models for neurodegenerative, cardiovascular, and diabetic-retinopathy outcomes in T2D patients, across two independent Korean cohorts. Standardized clinical ML pipeline (curation → features → benchmarking → calibration → external validation) with SHAP-based clinician-interpretable outputs.',
     metrics: [
@@ -529,6 +550,26 @@ export const projects: Project[] = [
       { label: 'XAI', value: 'SHAP' },
     ],
     stack: ['Python', 'R', 'XGBoost', 'scikit-learn', 'SHAP', 'SAS'],
+    gallery: [
+      {
+        src: '/projects/neuro-architecture.jpg',
+        alt: 'Model architecture: EMR dataset through tenfold AdaBoost cross-validation with external NIA-cohort validation',
+        caption:
+          'The standardized pipeline, shown for the neurodegenerative-disease model (JMIR, 2024): an EMR dataset trains a tenfold cross-validated AdaBoost ensemble (mean AUROC 82%), then is confirmed on an entirely separate NIA cohort from two other hospitals (AUROC 83%). This derive-then-externally-validate structure is reused across all three outcomes.',
+      },
+      {
+        src: '/projects/cvd-roc.jpg',
+        alt: 'Random-forest ROC curves across tenfold cross-validation, mean AUC 0.83',
+        caption:
+          'Discrimination of the cardiovascular-disease risk model (Scientific Reports, 2024): random-forest ROC across tenfold cross-validation, mean AUC 0.83 ± 0.02, holding to 0.72 on the independent external cohort — one of the three outcomes modelled with this pipeline.',
+      },
+      {
+        src: '/projects/cvd-importance.jpg',
+        alt: 'Top-15 random-forest feature importances for cardiovascular-disease prediction',
+        caption:
+          'Top-15 feature importances from the same model — creatinine, HbA1c, and liver-enzyme ranges lead, and the fact that the *range* (fluctuation) of these labs outranks their baseline values is the kind of clinician-interpretable signal the XAI layer is built to surface.',
+      },
+    ],
   },
 ];
 

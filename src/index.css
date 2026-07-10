@@ -211,6 +211,43 @@
   50% { box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.18); }
 }
 
+/* ── View Transitions (route changes) ────────────── */
+/* Old page fades/slides out, new page fades/slides in (250ms ease-out).
+   Card thumbnails carry view-transition-name: project-<id>, so matching
+   elements morph between the home Selected Works grid and /projects.
+   Browsers without the API fall back to instant navigation (react-router
+   only calls document.startViewTransition when it exists). */
+@keyframes vt-slide-out {
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+@keyframes vt-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+::view-transition-old(root) {
+  animation: vt-slide-out 250ms ease-out both;
+}
+::view-transition-new(root) {
+  animation: vt-slide-in 250ms ease-out both;
+}
+::view-transition-group(*) {
+  animation-duration: 250ms;
+  animation-timing-function: ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*),
+  ::view-transition-image-pair(*) {
+    animation: none !important;
+  }
+}
+
 /* ── Reduced-motion: everything resolves to its final static state ── */
 @media (prefers-reduced-motion: reduce) {
   .spotlight-glow,

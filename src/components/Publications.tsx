@@ -99,7 +99,7 @@ export default function Publications() {
       <div ref={ref} className={`container-prose ${revealClass(visible, 'left')}`}>
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
-            <div className="section-kicker">Publications</div>
+            <div className="section-kicker">03 · Publications</div>
             <h2 className="section-title">Selected Work</h2>
             <p className="mt-3 max-w-xl text-ink-600 dark:text-ink-400">
               Peer-reviewed work and preprints across medical AI, clinical

@@ -33,7 +33,7 @@ export default function News() {
     <section id="news" className="section">
       <div ref={ref} className={`container-prose ${revealClass(visible, 'left')}`}>
         <div className="max-w-2xl">
-          <div className="section-kicker">News</div>
+          <div className="section-kicker">01 · News</div>
           <h2 className="section-title">Recent updates</h2>
           <p className="mt-3 text-ink-600 dark:text-ink-400">
             Recent papers, projects, and fellowships.

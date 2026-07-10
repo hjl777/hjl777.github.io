@@ -18,7 +18,7 @@ export default function About() {
   return (
     <section id="about" className="section">
       <div ref={ref} className={`container-prose ${revealClass(visible, 'right')}`}>
-        <div className="section-kicker">About</div>
+        <div className="section-kicker">06 · About</div>
         <h2 className="section-title">The Longer Story</h2>
 
         <div className="mt-6 max-w-3xl space-y-4 text-[15.5px] leading-relaxed text-ink-700 dark:text-ink-300">

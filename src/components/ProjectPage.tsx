@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowUpRight, Users, X, ZoomIn } from 'lucide-react';
 import { projects, type Project } from '../data';
 
@@ -52,7 +53,8 @@ function Lightbox({ image, onClose }: { image: GalleryImage; onClose: () => void
  * overview — big title, metric cards, full description — followed by a
  * gallery whose images open in a lightbox with a short explanation.
  */
-export default function ProjectPage({ id }: { id: string }) {
+export default function ProjectPage() {
+  const { id } = useParams<{ id: string }>();
   const project = projects.find((p) => p.id === id);
   const [lightbox, setLightbox] = useState<GalleryImage | null>(null);
 
@@ -70,12 +72,13 @@ export default function ProjectPage({ id }: { id: string }) {
       <section className="section pt-32">
         <div className="container-prose">
           <p className="text-ink-600 dark:text-ink-400">Project not found.</p>
-          <a
-            href="#projects"
+          <Link
+            to="/projects"
+            viewTransition
             className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
           >
             <ArrowLeft size={15} /> Back to all projects
-          </a>
+          </Link>
         </div>
       </section>
     );
@@ -84,12 +87,13 @@ export default function ProjectPage({ id }: { id: string }) {
   return (
     <section className="section pt-28 sm:pt-32">
       <div className="container-prose">
-        <a
-          href="#projects"
+        <Link
+          to="/projects"
+          viewTransition
           className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-500 transition-colors duration-200 hover:text-indigo-600 dark:text-ink-400 dark:hover:text-indigo-400"
         >
           <ArrowLeft size={15} /> All projects
-        </a>
+        </Link>
 
         {/* Overview */}
         <div className="mt-8 max-w-3xl">
@@ -99,6 +103,16 @@ export default function ProjectPage({ id }: { id: string }) {
           </h1>
           {project.subtitle && (
             <p className="mt-3 text-lg text-ink-600 dark:text-ink-400">{project.subtitle}</p>
+          )}
+          {(project.period || project.status) && (
+            <div className="mt-4 flex items-center gap-2.5">
+              {project.period && (
+                <span className="font-mono text-xs text-ink-500 dark:text-ink-400">
+                  {project.period}
+                </span>
+              )}
+              {project.status && <span className="badge-soft">{project.status}</span>}
+            </div>
           )}
           {project.collaboration && (
             <p className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-700 dark:text-indigo-400">

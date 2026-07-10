@@ -1,20 +1,25 @@
 import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { profile } from '../data';
 import ThemeToggle from './ThemeToggle';
 
+// Section links use "/#id" so they lead back to the home page from /projects
+// and project detail routes; on the home page they scroll in place.
 const sections = [
-  { id: 'home', label: 'Home' },
-  { id: 'news', label: 'News' },
-  { id: 'publications', label: 'Publications' },
-  { id: 'projects', label: 'Research' },
-  { id: 'about', label: 'About' },
+  { id: 'home', label: 'Home', to: '/' },
+  { id: 'news', label: 'News', to: '/#news' },
+  { id: 'publications', label: 'Publications', to: '/#publications' },
+  { id: 'projects', label: 'Research', to: '/#projects' },
+  { id: 'about', label: 'About', to: '/#about' },
 ];
 
 export default function Nav() {
   const [active, setActive] = useState('home');
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { pathname } = useLocation();
+  const isHome = pathname === '/';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -23,7 +28,14 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Section elements only exist on the home route, so the observer re-attaches
+  // whenever we navigate back there.
   useEffect(() => {
+    if (!isHome) {
+      setActive('');
+      return;
+    }
+    setActive('home');
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -37,7 +49,7 @@ export default function Nav() {
       if (el) observer.observe(el);
     });
     return () => observer.disconnect();
-  }, []);
+  }, [isHome]);
 
   return (
     <header
@@ -49,22 +61,24 @@ export default function Nav() {
       ].join(' ')}
     >
       <nav className="container-prose flex h-16 items-center justify-between">
-        <a
-          href="#home"
+        <Link
+          to="/"
+          viewTransition
           className="group flex items-center gap-2.5 font-serif text-base font-semibold tracking-tight text-ink-900 dark:text-ink-50"
         >
           <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-ink-900 text-[11px] font-bold text-indigo-200 ring-1 ring-ink-900/10 dark:bg-ink-50 dark:text-indigo-700 dark:ring-ink-50/10">
             HL
           </span>
           <span className="hidden sm:inline">{profile.name}</span>
-        </a>
+        </Link>
 
         {/* Desktop */}
         <ul className="hidden items-center gap-1 md:flex">
           {sections.map((s) => (
             <li key={s.id}>
-              <a
-                href={`#${s.id}`}
+              <Link
+                to={s.to}
+                viewTransition
                 className={[
                   'relative rounded-full px-3.5 py-1.5 text-sm transition-colors',
                   active === s.id
@@ -76,7 +90,7 @@ export default function Nav() {
                 {active === s.id && (
                   <span className="absolute inset-0 -z-10 rounded-full bg-ink-100 dark:bg-ink-800" />
                 )}
-              </a>
+              </Link>
             </li>
           ))}
           <li className="ml-2">
@@ -113,8 +127,9 @@ export default function Nav() {
           <ul className="container-prose flex flex-col py-3">
             {sections.map((s) => (
               <li key={s.id}>
-                <a
-                  href={`#${s.id}`}
+                <Link
+                  to={s.to}
+                  viewTransition
                   onClick={() => setOpen(false)}
                   className={[
                     'block rounded-md px-3 py-2 text-sm',
@@ -124,7 +139,7 @@ export default function Nav() {
                   ].join(' ')}
                 >
                   {s.label}
-                </a>
+                </Link>
               </li>
             ))}
             <li>

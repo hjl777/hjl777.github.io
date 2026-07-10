@@ -143,7 +143,7 @@ export default function Experience() {
       <div ref={ref} className={`container-prose ${revealClass(visible, 'left')}`}>
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
-            <div className="section-kicker">CV & Contact</div>
+            <div className="section-kicker">05 · CV & Contact</div>
             <h2 className="section-title">Experience</h2>
             <p className="mt-3 max-w-xl text-ink-600 dark:text-ink-400">
               A timeline of research positions, programs, and industry
