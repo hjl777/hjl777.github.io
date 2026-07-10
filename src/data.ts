@@ -34,8 +34,9 @@ export interface Project {
   metrics?: { label: string; value: string }[];
   stack: string[];
   links?: { label: string; href: string }[];
-  imageUrl?: string;
-  imageCaption?: string;
+  // Detail-page gallery (route: #/project/<id>). Click opens a lightbox
+  // showing the image with its short caption.
+  gallery?: { src: string; alt: string; caption: string }[];
 }
 
 export interface ExperienceItem {
@@ -77,7 +78,7 @@ export const profile = {
   // Two-sentence hero bio — the stats and credibility bar above it carry the
   // numbers, so this stays prose-light.
   shortBio:
-    'I build coronary imaging pipelines and LLM reliability systems for clinical contexts — where a mis-measured vessel or a hallucinated fact can change a treatment decision. Mathematics background (Korea University); seeking a PhD research environment for Fall 2027.',
+    'I build coronary imaging pipelines and LLM reliability systems for clinical contexts — where a mis-measured vessel or a hallucinated fact can change a treatment decision. Mathematics background (Korea University); seeking an environment — graduate program, research lab, or industry team — to pursue these questions at depth.',
   // One-line proof bar rendered under the hero stats — proper nouns over adjectives.
   credibility: [
     'The Lancet Regional Health',
@@ -156,7 +157,7 @@ export const publications: Publication[] = [
     citations: 39,
     abstract:
       'A nationally representative longitudinal serial study (KNHANES, 2011–2021) quantifying decade-long trends in cardiovascular-kidney-metabolic syndrome across age, sex, and socioeconomic strata in South Korea.',
-    links: { publisher: 'https://doi.org/10.1016/j.lanwpc.2024.101329' },
+    links: { publisher: 'https://www.thelancet.com/journals/lanwpc/article/PIIS2666-6065(25)00011-2/fulltext' },
   },
   {
     id: 'pub-jmir-neurodeg-2024',
@@ -173,7 +174,23 @@ export const publications: Publication[] = [
     citations: 9,
     abstract:
       'Derived and externally validated gradient-boosted and survival models for incident neurodegenerative disease in T2D patients across two independent Korean cohorts, with SHAP-based clinician-interpretable outputs.',
-    links: { publisher: 'https://www.jmir.org/' },
+    links: { publisher: 'https://www.jmir.org/2024/1/e56922/' },
+  },
+  {
+    id: 'pub-scirep-cvd-2024',
+    title:
+      'Prediction model for cardiovascular disease in patients with diabetes using machine learning derived and validated in two independent Korean cohorts',
+    authors:
+      'H Sang*, **H Lee***, M Lee, J Park, S Kim, HG Woo, M Rahmati, A Koyanagi, et al.',
+    venue: 'Scientific Reports',
+    year: 2024,
+    kind: 'Journal',
+    selected: true,
+    badge: 'Co-first author',
+    citations: 29,
+    abstract:
+      'A gradient-boosted CVD risk model for diabetic patients, derived and externally validated across two independent Korean cohorts with clinician-interpretable XAI outputs.',
+    links: { publisher: 'https://www.nature.com/articles/s41598-024-63798-y' },
   },
   {
     id: 'pub-scirep-smoking-2024',
@@ -185,12 +202,11 @@ export const publications: Publication[] = [
     year: 2024,
     month: 'Apr',
     kind: 'Journal',
-    selected: true,
     badge: 'Corresponding author',
     citations: 16,
     abstract:
       'Nationwide serial analysis of adolescent smoking prevalence (KYRBS, 2005–2022), quantifying the impact of the 2015 tobacco tax hike and the COVID-19 pandemic on age- and sex-specific trajectories.',
-    links: { publisher: 'https://www.nature.com/srep/' },
+    links: { publisher: 'https://www.nature.com/articles/s41598-024-58446-4' },
   },
   {
     id: 'pub-scirep-atopic-2024',
@@ -207,7 +223,7 @@ export const publications: Publication[] = [
     citations: 6,
     abstract:
       'A 13-year nationally representative serial study of atopic-dermatitis prevalence in Korean adolescents, with sub-population trends and pandemic-era shifts.',
-    links: { publisher: 'https://www.nature.com/srep/' },
+    links: { publisher: 'https://www.nature.com/articles/s41598-024-62475-4' },
   },
   {
     id: 'pub-jmir-suicidality-2024',
@@ -223,23 +239,7 @@ export const publications: Publication[] = [
     citations: 33,
     abstract:
       'Derived a tree-ensemble suicidality risk model in adolescents with allergic rhinitis and externally validated it on an independent nationwide cohort, with calibration and SHAP-based feature attribution.',
-    links: { publisher: 'https://www.jmir.org/' },
-  },
-  {
-    id: 'pub-scirep-cvd-2024',
-    title:
-      'Prediction model for cardiovascular disease in patients with diabetes using machine learning derived and validated in two independent Korean cohorts',
-    authors:
-      'H Sang*, **H Lee***, M Lee, J Park, S Kim, HG Woo, M Rahmati, A Koyanagi, et al.',
-    venue: 'Scientific Reports',
-    year: 2024,
-    kind: 'Journal',
-    selected: true,
-    badge: 'Co-first author',
-    citations: 29,
-    abstract:
-      'A gradient-boosted CVD risk model for diabetic patients, derived and externally validated across two independent Korean cohorts with clinician-interpretable XAI outputs.',
-    links: { publisher: 'https://www.nature.com/srep/' },
+    links: { publisher: 'https://www.jmir.org/2024/1/e51473' },
   },
   {
     id: 'pub-jmir-suicidal-thinking-2024',
@@ -254,7 +254,7 @@ export const publications: Publication[] = [
     citations: 30,
     abstract:
       'Algorithm development and tri-cohort external validation (Korea, Norway, USA) of an ML model for adolescent suicidal ideation — the basis of the author’s M.S. thesis.',
-    links: { publisher: 'https://www.jmir.org/' },
+    links: { publisher: 'https://www.jmir.org/2024/1/e55913' },
   },
   {
     id: 'pub-jmir-substance-2025',
@@ -269,7 +269,7 @@ export const publications: Publication[] = [
     citations: 9,
     abstract:
       'Cross-national ML prediction of adolescent substance use, derived and validated across three independent worldwide cohorts.',
-    links: { publisher: 'https://www.jmir.org/' },
+    links: { publisher: 'https://www.jmir.org/2025/1/e62805' },
   },
   {
     id: 'pub-jmir-medinfo-retinopathy-2025',
@@ -466,9 +466,20 @@ export const projects: Project[] = [
       { label: 'Coverage',   value: 'RCA · LAD · LCX' },
     ],
     stack: ['Python', 'PyTorch', 'OpenCV', 'scikit-image', 'pytesseract'],
-    imageUrl: '/projects/qca-murrays-law.png',
-    imageCaption:
-      "Murray's Law validation of the QCA pipeline — predicted vs. measured branch diameters across 1,190+ vessel samples (R² > 0.8). The governing equation of vascular branching, used as an independent mathematical check on the segmentation.",
+    gallery: [
+      {
+        src: '/projects/qca-angiogram.png',
+        alt: 'QCA pipeline output on a 2D coronary angiogram with segmentation overlay and diameter profile',
+        caption:
+          'Full pipeline output on a routine 2D angiogram: automated vessel-boundary segmentation (cyan), centerline extraction (yellow), bifurcation detection with proximal/distal reference points (P1–P3, B1), and the resulting per-branch diameter profile with 1 / 2 / 3 mm reference measurements — everything a reviewer needs on one screen.',
+      },
+      {
+        src: '/projects/qca-murrays-law.png',
+        alt: "Murray's Law validation scatter plot of the QCA pipeline",
+        caption:
+          "Murray's Law validation of the QCA pipeline — predicted vs. measured branch diameters across 1,190+ vessel samples (R² > 0.8). The governing equation of vascular branching, used as an independent mathematical check on the segmentation.",
+      },
+    ],
   },
   {
     id: 'proj-llm',
@@ -483,9 +494,14 @@ export const projects: Project[] = [
       { label: 'RAG baseline',    value: 'Chain-of-Knowledge' },
     ],
     stack: ['Python', 'PyTorch', 'LLMs', 'PEFT', 'KG-RAG', 'HuggingFace'],
-    imageUrl: '/projects/llm-performance.png',
-    imageCaption:
-      'Model accuracy on ScienceQA and SciQ benchmarks. The soft-prompt model (200k trainable params = 0.78–0.94% of full fine-tuning cost) matches or exceeds all baselines except the full fine-tuned model — validating the efficiency-accuracy tradeoff at the core of this project.',
+    gallery: [
+      {
+        src: '/projects/llm-performance.png',
+        alt: 'Model accuracy comparison on ScienceQA and SciQ benchmarks',
+        caption:
+          'Model accuracy on ScienceQA and SciQ benchmarks. The soft-prompt model (200k trainable params = 0.78–0.94% of full fine-tuning cost) matches or exceeds all baselines except the full fine-tuned model — validating the efficiency-accuracy tradeoff at the core of this project.',
+      },
+    ],
   },
   {
     id: 'proj-defines',
@@ -621,8 +637,8 @@ export const news: NewsItem[] = [
   {
     date: '2026-05',
     highlight: true,
-    title: 'Seeking Fall 2027 PhD positions',
-    text: 'Open to AI, Computer Science, or Biomedical Engineering programs at US research universities — happy to discuss research fit with faculty working on medical imaging AI, LLM reliability, or clinical decision support.',
+    title: 'Open to research opportunities',
+    text: 'Seeking environments to pursue medical imaging AI, LLM reliability, and clinical decision support at depth — graduate programs, research labs, or industry teams. Always happy to discuss research fit or collaboration.',
   },
   {
     date: '2026-01',

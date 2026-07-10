@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { ArrowUpRight, Users, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Users } from 'lucide-react';
 import { projects } from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
 import ProjectScene from './ProjectScene';
@@ -7,13 +6,11 @@ import ProjectScene from './ProjectScene';
 const PREVIEW_LENGTH = 160;
 
 function ProjectCard({ p }: { p: (typeof projects)[number] }) {
-  const [expanded, setExpanded] = useState(false);
   const { ref, visible } = useReveal<HTMLElement>({ threshold: 0.2 });
   const isLong = p.description.length > PREVIEW_LENGTH;
-  const displayText =
-    isLong && !expanded
-      ? p.description.slice(0, PREVIEW_LENGTH).trimEnd() + '…'
-      : p.description;
+  const displayText = isLong
+    ? p.description.slice(0, PREVIEW_LENGTH).trimEnd() + '…'
+    : p.description;
 
   return (
     <article
@@ -53,39 +50,17 @@ function ProjectCard({ p }: { p: (typeof projects)[number] }) {
         </p>
       )}
 
-      {p.imageUrl && (
-        <figure className="project-img-figure">
-          <img
-            src={p.imageUrl}
-            alt={p.imageCaption ?? p.title}
-            className="project-img"
-            loading="lazy"
-            decoding="async"
-          />
-          {p.imageCaption && (
-            <figcaption className="project-img-caption">
-              {p.imageCaption}
-            </figcaption>
-          )}
-        </figure>
-      )}
-
       <p className="mt-3 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
         {displayText}
       </p>
 
-      {isLong && (
-        <button
-          onClick={() => setExpanded((v) => !v)}
-          className="mt-1.5 inline-flex items-center gap-0.5 text-xs font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
-        >
-          {expanded ? (
-            <><ChevronUp size={13} /> Show less</>
-          ) : (
-            <><ChevronDown size={13} /> Read more</>
-          )}
-        </button>
-      )}
+      <a
+        href={`#/project/${p.id}`}
+        className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 transition-colors duration-200 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
+      >
+        View project
+        <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
+      </a>
 
       <div className="mt-4 flex flex-wrap gap-1.5">
         {p.stack.map((s) => (
