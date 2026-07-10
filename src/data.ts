@@ -534,6 +534,26 @@ export const projects: Project[] = [
       { label: 'Status',        value: 'Ongoing' },
     ],
     stack: ['Python', 'PyTorch', 'LangGraph', 'VLM', 'Knowledge Graphs', 'OCR'],
+    gallery: [
+      {
+        src: '/projects/defines-home.png',
+        alt: 'DEFINES Math landing page — an AI partner for Korean mathematics teachers',
+        caption:
+          'The live platform at defines-lab.com: “an AI partner for math teachers.” A scanned test paper becomes a searchable problem DB — the Input Scan → AI Processing → Output flow shown here is the production face of the research pipeline.',
+      },
+      {
+        src: '/projects/defines-extract.png',
+        alt: 'DEFINES problem-extraction workspace: upload, detection/OCR, save to personal DB',
+        caption:
+          'The problem-extraction workspace, powered by the self-built PyTorch OCR pipeline: teachers upload a test-paper image or PDF, problem regions are auto-detected, each problem is OCR-converted to clean LaTeX, and the results are saved to a personal problem DB.',
+      },
+      {
+        src: '/projects/defines-problems.png',
+        alt: 'DEFINES problem-bank explorer with source tree of national mock exams and school exams',
+        caption:
+          'The problem-bank explorer: problems are organized by source (KICE mock exams and CSAT, school exams by region) and by curriculum unit — the structured organization that the knowledge-graph retrieval layer is built on.',
+      },
+    ],
   },
   {
     id: 'proj-outcomes',
