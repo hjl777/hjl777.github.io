@@ -463,15 +463,15 @@ export const publications: Publication[] = [
 export const projects: Project[] = [
   {
     id: 'proj-stent-marker',
-    title: 'End-to-End Coronary Vessel Analysis for Stent-Marker Localization',
+    title: 'End-to-End Quantitative Coronary Angiography Pipeline',
     subtitle: 'Deep-learning segmentation · Mask refinement · Diameter profiling',
     period: '2025 – 2026',
     status: 'Deployed',
     featured: true,
     description:
-      "End-to-end QCA pipeline built from scratch at Asan Medical Center — one of Asia's largest cardiac intervention centers. Performs sub-pixel vessel boundary segmentation across all three coronary trees (RCA / LAD / LCX), extracts centerlines and bifurcation points automatically, and generates per-branch diameter profiles with OCR-calibrated pixel-to-mm conversion. Pipeline outputs were validated against Murray's Law — the governing equation for vascular branching — yielding R² > 0.8 across 1,190+ vessel samples. This validation was only possible because of a B.S. Mathematics background applied directly to clinical engineering.",
+      "End-to-end QCA pipeline built from scratch at Asan Medical Center — one of Asia's largest cardiac intervention centers. Performs sub-pixel vessel boundary segmentation across all three coronary trees (RCA / LAD / LCX), extracts centerlines and bifurcation points automatically, and generates per-branch diameter profiles with OCR-calibrated pixel-to-mm conversion. Pipeline outputs were checked for physiological consistency against Murray's Law — the governing equation for vascular branching — yielding R² > 0.8 across 1,190+ vessel samples. This check was only possible because of a B.S. Mathematics background applied directly to clinical engineering.",
     metrics: [
-      { label: 'Validation', value: "Murray's Law R² > 0.8" },
+      { label: 'Physiological check', value: "Murray's Law R² > 0.8" },
       { label: 'Sample size', value: 'n > 1,190 vessels' },
       { label: 'Coverage',   value: 'RCA · LAD · LCX' },
     ],
@@ -485,9 +485,9 @@ export const projects: Project[] = [
       },
       {
         src: '/projects/qca-murrays-law.png',
-        alt: "Murray's Law validation scatter plot of the QCA pipeline",
+        alt: "Murray's Law consistency-check scatter plot of the QCA pipeline",
         caption:
-          "Murray's Law validation of the QCA pipeline — predicted vs. measured branch diameters across 1,190+ vessel samples (R² > 0.8). The governing equation of vascular branching, used as an independent mathematical check on the segmentation.",
+          "Murray's Law consistency check of the QCA pipeline — predicted vs. measured branch diameters across 1,190+ vessel samples (R² > 0.8). The governing equation of vascular branching, used as an independent physiological plausibility check on the segmentation (not a reference-standard comparison).",
       },
     ],
   },
@@ -503,7 +503,7 @@ export const projects: Project[] = [
     description:
       'Reduced factual hallucination in LLMs deployed for university-level physics Q&A (MIT ChatTutor, 6.2410). Core constraint: the solution had to be efficient enough for the service to self-host. Implemented PEFT + soft prompting to match full fine-tuning accuracy using only 0.78–0.94% of trainable parameters (200k vs. 20–25M). Extended with a physics ontology mapped to Chain-of-Knowledge KG-RAG baseline — embedding symbolic domain constraints directly into generation. Evaluated on ScienceQA and SciQ.',
     metrics: [
-      { label: 'Param reduction', value: '0.78–0.94% of FT cost' },
+      { label: 'Param reduction', value: '0.78–0.94% of FT params' },
       { label: 'Datasets',        value: 'ScienceQA · SciQ' },
       { label: 'RAG baseline',    value: 'Chain-of-Knowledge' },
     ],
@@ -703,7 +703,7 @@ export const news: NewsItem[] = [
   },
   {
     date: '2026-01',
-    text: 'Completed an end-to-end DL pipeline for stent-marker localization in 2D coronary angiograms — segmentation over RCA/LAD/LCX with bifurcation detection and diameter profiling.',
+    text: 'Completed an end-to-end deep-learning QCA pipeline for 2D coronary angiograms — segmentation over RCA/LAD/LCX with bifurcation detection and diameter profiling.',
   },
   {
     date: '2025-02',
