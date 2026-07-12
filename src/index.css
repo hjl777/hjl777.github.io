@@ -17,17 +17,16 @@
     text-rendering: optimizeLegibility;
   }
   body {
-    @apply bg-white text-ink-800 font-sans antialiased dark:bg-ink-950 dark:text-ink-200;
+    @apply bg-paper text-ink-800 font-sans antialiased dark:bg-ink-950 dark:text-ink-200;
     font-feature-settings: 'cv11', 'ss01', 'ss03';
   }
   ::selection {
-    @apply bg-indigo-100 text-indigo-900;
+    @apply bg-clinic-100 text-clinic-900;
   }
   .dark ::selection {
-    @apply bg-indigo-500/30 text-indigo-100;
+    @apply bg-clinic-500/30 text-clinic-100;
   }
   @media (prefers-reduced-motion: reduce) {
-    .animate-word-rise,
     .animate-fade-up,
     .animate-fade-in {
       animation: none !important;
@@ -46,14 +45,14 @@
     @apply font-serif text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl dark:text-ink-50;
   }
   .section-kicker {
-    @apply mb-3 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-400;
+    @apply mb-3 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-clinic-700 dark:text-clinic-400;
   }
   .section-kicker::before {
     content: '';
-    @apply h-px w-8 bg-indigo-300 dark:bg-indigo-700;
+    @apply h-px w-8 bg-clinic-300 dark:bg-clinic-700;
   }
   .link-underline {
-    @apply relative inline-flex items-center gap-1 text-indigo-700 transition hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300;
+    @apply relative inline-flex items-center gap-1 text-clinic-700 transition hover:text-clinic-900 dark:text-clinic-400 dark:hover:text-clinic-300;
   }
   .link-underline::after {
     content: '';
@@ -66,157 +65,19 @@
     @apply inline-flex items-center rounded-full border border-ink-200 bg-white px-2.5 py-0.5 text-xs font-medium text-ink-600 dark:border-ink-800 dark:bg-ink-900 dark:text-ink-300;
   }
   .badge-soft {
-    @apply inline-flex items-center rounded-md bg-indigo-50 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-indigo-700 ring-1 ring-inset ring-indigo-100 dark:bg-indigo-500/15 dark:text-indigo-300 dark:ring-indigo-500/30;
+    @apply inline-flex items-center rounded-md bg-clinic-50 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-clinic-700 ring-1 ring-inset ring-clinic-100 dark:bg-clinic-500/15 dark:text-clinic-300 dark:ring-clinic-500/30;
+  }
+  /* Status chip — availability line in the hero. */
+  .status-chip {
+    @apply inline-flex items-center gap-2 rounded-full border border-clinic-200 bg-clinic-50/70 px-3 py-1 text-[13px] font-medium text-clinic-800 dark:border-clinic-500/30 dark:bg-clinic-500/10 dark:text-clinic-200;
   }
 }
 
-/* ── Project image figure ────────────────────────── */
-.project-img-figure {
-  margin: 1.5rem 0 1.25rem;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid var(--color-border, #e2e8f0);
-  background: #000;
-}
-
-.project-img {
-  width: 100%;
-  height: auto;
-  display: block;
-  max-height: 400px;
-  object-fit: contain;
-  object-position: center center;
-  background: #000;
-}
-
-.project-img-caption {
-  font-size: 0.775rem;
-  line-height: 1.5;
-  color: var(--color-text-muted, #64748b);
-  padding: 0.55rem 0.85rem;
-  background: var(--color-surface-subtle, #f8fafc);
-  border-top: 1px solid var(--color-border, #e2e8f0);
-}
-
-@media (max-width: 640px) {
-  .project-img {
-    max-height: 240px;
-  }
-  .project-img-caption {
-    font-size: 0.72rem;
-  }
-}
-
-/* ── P3: PhD spotlight callout ───────────────────── */
-.spotlight-glow {
-  background:
-    radial-gradient(42% 58% at 16% 28%, rgba(99, 102, 241, 0.16), transparent 70%),
-    radial-gradient(36% 52% at 86% 72%, rgba(168, 85, 247, 0.1), transparent 70%);
-  animation: glowDrift 8s ease-in-out infinite alternate;
-}
-@keyframes glowDrift {
-  from { transform: translate3d(-1.5%, -2%, 0); }
-  to { transform: translate3d(1.5%, 3%, 0); }
-}
-.animate-ping-slow {
-  animation: pingSlow 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-@keyframes pingSlow {
-  75%, 100% { transform: scale(2.4); opacity: 0; }
-}
-
-/* ── Typewriter caret (Typed.js-style hero line) ──── */
-.typewriter-caret {
-  margin-left: 1px;
-  font-weight: 400;
-  color: theme('colors.indigo.500');
-  animation: caretBlink 1s step-end infinite;
-}
-.dark .typewriter-caret {
-  color: theme('colors.indigo.400');
-}
-@keyframes caretBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* ── P1: hero vessel-network background ──────────── */
-.vessel-path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: vesselDraw 2.4s cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-@keyframes vesselDraw {
-  to { stroke-dashoffset: 0; }
-}
-.vessel-node {
-  opacity: 0;
-  animation: vesselNode 0.8s ease-out both;
-}
-@keyframes vesselNode {
-  to { opacity: 1; }
-}
-.vessel-group {
-  animation: vesselPulse 5.5s ease-in-out 3.6s infinite;
-}
-@keyframes vesselPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.55; }
-}
-
-/* ── P7: credential stat cards ───────────────────── */
-.stat-card {
-  position: relative;
-  animation: statRise 0.7s ease-out backwards;
-  animation-delay: var(--d, 0ms);
-  transition: transform 0.3s ease, border-color 0.2s ease;
-}
-.stat-card:hover {
-  transform: perspective(800px) rotateX(2deg) rotateY(-3deg);
-}
-.stat-card::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 0.75rem;
-  background: radial-gradient(60% 70% at 50% 35%, rgba(99, 102, 241, 0.22), transparent 70%);
-  opacity: 0;
-  pointer-events: none;
-  animation: statBloom 0.7s ease-out backwards;
-  animation-delay: calc(var(--d, 0ms) + 450ms);
-}
-@keyframes statRise {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes statBloom {
-  0% { opacity: 0; }
-  40% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-/* ── P8: experience timeline ignition ────────────── */
-.dot-ignite {
-  animation: dotIgnite 0.9s ease-out 1;
-}
-.dot-now {
-  animation: dotIgnite 0.9s ease-out 1, nowPulse 3s ease-in-out 1.2s infinite;
-}
-@keyframes dotIgnite {
-  0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.45); }
-  100% { box-shadow: 0 0 0 14px rgba(99, 102, 241, 0); }
-}
-@keyframes nowPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
-  50% { box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.18); }
-}
-
-/* ── View Transitions (route changes) ────────────── */
-/* Old page fades/slides out, new page fades/slides in (250ms ease-out).
+/* ── View Transitions (route changes) ────────────────
+   Old page fades/slides out, new page fades/slides in (250ms ease-out).
    Card thumbnails carry view-transition-name: project-<id>, so matching
    elements morph between the home Selected Works grid and /projects.
-   Browsers without the API fall back to instant navigation (react-router
-   only calls document.startViewTransition when it exists). */
+   Browsers without the API fall back to instant navigation. */
 @keyframes vt-slide-out {
   to {
     opacity: 0;
@@ -245,35 +106,5 @@
   ::view-transition-group(*),
   ::view-transition-image-pair(*) {
     animation: none !important;
-  }
-}
-
-/* ── Reduced-motion: everything resolves to its final static state ── */
-@media (prefers-reduced-motion: reduce) {
-  .spotlight-glow,
-  .animate-ping-slow,
-  .vessel-group,
-  .dot-ignite,
-  .dot-now {
-    animation: none !important;
-  }
-  .vessel-path {
-    animation: none !important;
-    stroke-dashoffset: 0;
-  }
-  .vessel-node {
-    animation: none !important;
-    opacity: 1;
-  }
-  .stat-card,
-  .stat-card::after {
-    animation: none !important;
-  }
-  .stat-card:hover {
-    transform: none;
-  }
-  .scene-anim,
-  .scene-anim * {
-    transition: none !important;
   }
 }

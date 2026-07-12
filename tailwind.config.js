@@ -31,6 +31,38 @@ export default {
           900: '#0f172a',
           950: '#020617',
         },
+        // Warm "radiograph paper" page background.
+        paper: '#f7f5ef',
+        // Clinical accent — segmentation cyan, sampled from the actual QCA
+        // analysis overlays rather than a generic brand hue.
+        clinic: {
+          50: '#edfafb',
+          100: '#d2f2f5',
+          200: '#a9e6ec',
+          300: '#71d4de',
+          400: '#35bccb',
+          500: '#16a7b7',
+          600: '#0d8695',
+          700: '#106b78',
+          800: '#145762',
+          900: '#154954',
+          950: '#072e35',
+        },
+        // Legacy accent name still used across components — aliased onto the
+        // clinical cyan so a single palette governs the whole site.
+        indigo: {
+          50: '#edfafb',
+          100: '#d2f2f5',
+          200: '#a9e6ec',
+          300: '#71d4de',
+          400: '#35bccb',
+          500: '#16a7b7',
+          600: '#0d8695',
+          700: '#106b78',
+          800: '#145762',
+          900: '#154954',
+          950: '#072e35',
+        },
       },
       typography: {
         DEFAULT: {

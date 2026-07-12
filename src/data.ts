@@ -41,6 +41,10 @@ export interface Project {
   metrics?: { label: string; value: string }[];
   stack: string[];
   links?: { label: string; href: string }[];
+  // Structured case-study body for the detail page, in the order a research
+  // reviewer reads: problem → contribution → data → method → evaluation →
+  // result → limitations. Falls back to `description` when absent.
+  caseStudy?: { heading: string; body: string }[];
   // Detail-page gallery (route: #/project/<id>). Click opens a lightbox
   // showing the image with its short caption.
   gallery?: { src: string; alt: string; caption: string }[];
@@ -80,12 +84,14 @@ export const profile = {
   email: 'iceanon1@gmail.com',
   cvUrl: '/cv.pdf',
   avatarUrl: '/portrait.png',
-  // One-line research thesis — used as the animated hero headline.
-  thesis: 'Connecting what a model decides with why a clinician can trust it.',
-  // Two-sentence hero bio — the stats and credibility bar above it carry the
-  // numbers, so this stays prose-light.
+  // One-line research thesis — the static hero headline.
+  thesis: 'I build clinical AI whose measurements and reasoning a clinician can inspect.',
+  // Short, one-line availability status — rendered as a chip in the hero.
+  status: 'Open to multimodal clinical-AI research roles',
+  // Two-sentence hero bio — concrete, evidence-first. The stats line carries
+  // the numbers, so this stays prose-light.
   shortBio:
-    'I build coronary imaging pipelines and LLM reliability systems for clinical contexts — where a mis-measured vessel or a hallucinated fact can change a treatment decision. Mathematics background (Korea University); seeking an environment — graduate program, research lab, or industry team — to pursue these questions at depth.',
+    'From coronary-angiography measurement to reliable medical language models, I build systems where a mis-measured vessel or a hallucinated fact would change a treatment decision — so both the number and the reasoning behind it have to hold up. My background is in mathematics (Korea University), and I work at the point where a model\'s output has to be trusted by a clinician, not just score well.',
   // One-line proof bar rendered under the hero stats — proper nouns over adjectives.
   credibility: [
     'The Lancet Regional Health',
@@ -476,6 +482,36 @@ export const projects: Project[] = [
       { label: 'Coverage',   value: 'RCA · LAD · LCX' },
     ],
     stack: ['Python', 'PyTorch', 'OpenCV', 'scikit-image', 'pytesseract'],
+    caseStudy: [
+      {
+        heading: 'Clinical problem',
+        body: 'Quantitative coronary angiography (QCA) measurements — vessel diameter, percent stenosis, lesion length — drive stenosis grading and stent sizing. Manual QCA is slow and reader-dependent, so an automated pipeline is only useful if its numbers are trustworthy enough to inform those decisions.',
+      },
+      {
+        heading: 'My contribution',
+        body: 'I built the pipeline end to end at Asan Medical Center: the segmentation model, the morphological mask-refinement step, automatic centerline and bifurcation extraction, the OCR-calibrated pixel-to-mm conversion, and the clinician-facing QA interface that lets a reviewer accept or correct the output.',
+      },
+      {
+        heading: 'Data & constraints',
+        body: 'Routine, de-identified 2D angiographic sequences spanning all three coronary trees (RCA / LAD / LCX). The pipeline had to run on standard-of-care acquisitions — varied projection angles, contrast, and image quality — not a curated research set.',
+      },
+      {
+        heading: 'Method',
+        body: 'Sub-pixel vessel-boundary segmentation → morphological mask refinement → automatic centerline and bifurcation detection → per-branch diameter profiling, with pixel-to-mm scale read from the catheter by an OCR step.',
+      },
+      {
+        heading: 'Evaluation & reference standard',
+        body: 'Outputs were checked for physiological consistency against Murray’s Law — the governing equation of vascular branching — across 1,190+ vessel samples (R² > 0.8). This is an independent plausibility check, not a reference-standard accuracy comparison. Validation against manual QCA / clinician annotation is the planned next step.',
+      },
+      {
+        heading: 'Result',
+        body: 'Consistent per-branch diameter profiles across all three coronary trees, surfaced on a single QA screen for review, with Murray’s-Law R² > 0.8 on 1,190+ samples as a physiological consistency signal.',
+      },
+      {
+        heading: 'Limitations & next step',
+        body: 'No accuracy comparison yet against manual QCA or IVUS, and results are from a single center. The next stage is a reference-standard study measuring agreement on diameter, percent stenosis, and lesion length against clinician QCA.',
+      },
+    ],
     gallery: [
       {
         src: '/projects/qca-angiogram.png',
@@ -508,12 +544,38 @@ export const projects: Project[] = [
       { label: 'RAG baseline',    value: 'Chain-of-Knowledge' },
     ],
     stack: ['Python', 'PyTorch', 'LLMs', 'PEFT', 'KG-RAG', 'HuggingFace'],
+    caseStudy: [
+      {
+        heading: 'Research problem',
+        body: 'University-level physics Q&A (MIT ChatTutor, 6.2410) needs answers that are factually reliable, but a hallucinated fact can mislead a student. The added constraint: the fix had to be light enough for the service to self-host, so full fine-tuning of a large model was off the table.',
+      },
+      {
+        heading: 'My contribution',
+        body: 'I implemented the parameter-efficient tuning (PEFT + soft prompting) and built the physics-ontology KG-RAG layer that grounds generation in symbolic domain constraints (Chain-of-Knowledge).',
+      },
+      {
+        heading: 'Method',
+        body: 'Soft prompts and PEFT adapters instead of full fine-tuning, plus a knowledge-graph retrieval layer mapped from a physics ontology so the model retrieves structured constraints rather than free text.',
+      },
+      {
+        heading: 'Evaluation & baselines',
+        body: 'Evaluated on ScienceQA and SciQ against zero-shot, retrieval, and full fine-tuning baselines, reporting accuracy alongside the share of trainable parameters each approach uses.',
+      },
+      {
+        heading: 'Result',
+        body: 'The soft-prompt model trains only ~200k parameters — 0.78–0.94% of the trainable parameters of full fine-tuning (20–25M) — and matches or exceeds every baseline except the full fine-tuned model, recovering most of the accuracy at a fraction of the tunable footprint.',
+      },
+      {
+        heading: 'Limitations & next step',
+        body: 'Gains are shown on two science-QA benchmarks; the “parameter ratio” is a tunable-footprint measure, not a wall-clock or GPU-cost measurement. The DEFINES project extends this line into multimodal math reasoning.',
+      },
+    ],
     gallery: [
       {
         src: '/projects/llm-performance.png',
         alt: 'Model accuracy comparison on ScienceQA and SciQ benchmarks',
         caption:
-          'Model accuracy on ScienceQA and SciQ benchmarks. The soft-prompt model (200k trainable params = 0.78–0.94% of full fine-tuning cost) matches or exceeds all baselines except the full fine-tuned model — validating the efficiency-accuracy tradeoff at the core of this project.',
+          'Model accuracy on ScienceQA and SciQ. The soft-prompt model trains only 200k parameters — 0.78–0.94% of full fine-tuning’s trainable parameters — and matches or exceeds every baseline except the full fine-tuned model, the efficiency-accuracy tradeoff at the core of this project.',
       },
     ],
   },
@@ -534,6 +596,24 @@ export const projects: Project[] = [
       { label: 'Status',        value: 'Ongoing' },
     ],
     stack: ['Python', 'PyTorch', 'LangGraph', 'VLM', 'Knowledge Graphs', 'OCR'],
+    caseStudy: [
+      {
+        heading: 'Research problem',
+        body: 'Vision-language models are strong at reading math but prone to plausible-looking wrong reasoning. DEFINES asks whether structured retrieval and multi-agent decomposition can push a VLM toward verifiable, step-checkable solutions in the multimodal mathematics domain.',
+      },
+      {
+        heading: 'My contribution',
+        body: 'I designed the LangGraph multi-agent workflow, the knowledge-graph retrieval schema the agents query, and the self-built PyTorch OCR pipeline that turns scanned test papers into clean LaTeX for the system to reason over.',
+      },
+      {
+        heading: 'Method',
+        body: 'A LangGraph workflow pairs domain-specialized problem generation with knowledge-graph-structured retrieval to constrain the VLM, with a human-in-the-loop step for curriculum alignment and item QC.',
+      },
+      {
+        heading: 'Result & status',
+        body: 'The research powers DEFINES, a live problem-bank platform for Korean mathematics teachers: scanned papers are OCR-digitized to LaTeX, then agents generate variations and step-by-step solutions. Ongoing independent research — an extension of the Toronto/MIT hallucination work.',
+      },
+    ],
     gallery: [
       {
         src: '/projects/defines-home.png',
@@ -637,7 +717,7 @@ export const experience: ExperienceItem[] = [
     location: 'Seoul, KR',
     period: '2023.01 – 2025.02',
     bullets: [
-      'Authored / co-authored 21 peer-reviewed papers within two years; built reproducible code-first reporting environments (Python / R).',
+      'Authored / co-authored more than 20 peer-reviewed papers within two years; built reproducible code-first reporting environments (Python / R).',
       'Externally validated ML risk-prediction models across two independent Korean cohorts — neurodegenerative, cardiovascular, and diabetic-retinopathy outcomes in T2D.',
       'Standardized end-to-end clinical ML pipelines with SHAP-based XAI outputs for clinician interpretability.',
       'Led nationwide time-series analyses of adolescent health behaviors (2005–2022), quantifying epidemiological trends and policy impacts.',
@@ -695,12 +775,6 @@ export const contacts: ContactLink[] = [
 // NEWS / UPDATES — most-recent first.
 // -----------------------------------------------------------------------------
 export const news: NewsItem[] = [
-  {
-    date: '2026-05',
-    highlight: true,
-    title: 'Open to research opportunities',
-    text: 'Seeking environments to pursue medical imaging AI, LLM reliability, and clinical decision support at depth — graduate programs, research labs, or industry teams. Always happy to discuss research fit or collaboration.',
-  },
   {
     date: '2026-01',
     text: 'Completed an end-to-end deep-learning QCA pipeline for 2D coronary angiograms — segmentation over RCA/LAD/LCX with bifurcation detection and diameter profiling.',

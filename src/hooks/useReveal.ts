@@ -1,32 +1,36 @@
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 /**
- * IntersectionObserver-based reveal hook.
- * Returns a ref to attach and a boolean that flips true once the element
- * scrolls into view (and stays true afterwards). Honors prefers-reduced-motion
- * by skipping the animation gate.
+ * Progressive-enhancement reveal hook.
+ *
+ * Content is visible by default — if JavaScript never runs, the observer is
+ * unavailable, or the element already sits in the initial viewport, nothing is
+ * ever hidden. Only elements that start *below* the fold are armed into their
+ * hidden state (in a layout effect, before paint, so there is no flash) and
+ * then revealed as they scroll in. Honors prefers-reduced-motion.
  */
 export function useReveal<T extends HTMLElement>(options?: {
   threshold?: number;
   rootMargin?: string;
 }) {
   const ref = useRef<T>(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (typeof window === 'undefined') return;
 
     const prefersReducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)',
     ).matches;
-    if (prefersReducedMotion) {
-      setVisible(true);
-      return;
-    }
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) return;
 
     const el = ref.current;
     if (!el) return;
 
+    // Already in (or above) the viewport → leave it visible, never animate.
+    if (el.getBoundingClientRect().top < window.innerHeight * 0.92) return;
+
+    setVisible(false);
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -50,21 +54,13 @@ export function useReveal<T extends HTMLElement>(options?: {
 }
 
 /**
- * Reveal transition classes. `from` picks the entrance direction:
- *   'up'    — rise + slight scale settle (default, camera-like)
- *   'left'  — slide in from the left
- *   'right' — slide in from the right
- * Sections alternate left/right to read as "sliding sideways" on scroll.
+ * Reveal transition classes. A single, restrained motion: a short fade with a
+ * small upward settle (transform/opacity only). The direction argument is kept
+ * for call-site compatibility but no longer slides sideways.
  */
-export function revealClass(visible: boolean, from: 'up' | 'left' | 'right' = 'up') {
-  const hidden =
-    from === 'left'
-      ? 'opacity-0 -translate-x-16'
-      : from === 'right'
-        ? 'opacity-0 translate-x-16'
-        : 'opacity-0 translate-y-3 scale-[0.985]';
+export function revealClass(visible: boolean, _from?: 'up' | 'left' | 'right') {
   return [
-    'transition-all duration-[900ms] ease-out will-change-transform motion-reduce:transition-none',
-    visible ? 'opacity-100 translate-x-0 translate-y-0 scale-100' : hidden,
+    'transition-all duration-500 ease-out will-change-transform motion-reduce:transition-none',
+    visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2',
   ].join(' ');
 }

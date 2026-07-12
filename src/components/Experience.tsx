@@ -58,9 +58,8 @@ function TimelineItem({ e }: { e: ExperienceItem }) {
           className={[
             'block h-3.5 w-3.5 rounded-full border-2 border-white transition-colors duration-500 dark:border-ink-950',
             visible
-              ? 'bg-indigo-500 ring-2 ring-indigo-200 dark:ring-indigo-700/60'
+              ? 'bg-clinic-500 ring-2 ring-clinic-200 dark:ring-clinic-700/60'
               : 'bg-ink-300 dark:bg-ink-700',
-            visible ? (isNow ? 'dot-now' : 'dot-ignite') : '',
           ].join(' ')}
         />
       </div>
@@ -143,8 +142,8 @@ export default function Experience() {
       <div ref={ref} className={`container-prose ${revealClass(visible, 'left')}`}>
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
-            <div className="section-kicker">05 · CV & Contact</div>
-            <h2 className="section-title">Experience</h2>
+            <div className="section-kicker">03 · Experience</div>
+            <h2 className="section-title">Experience &amp; education</h2>
             <p className="mt-3 max-w-xl text-ink-600 dark:text-ink-400">
               A timeline of research positions, programs, and industry
               experience.
@@ -178,10 +177,37 @@ export default function Experience() {
           ))}
         </ol>
 
+        {/* Education */}
+        <div className="mt-14">
+          <div className="mb-5 flex items-center gap-2">
+            <GraduationCap size={16} className="text-clinic-600 dark:text-clinic-400" />
+            <h3 className="font-serif text-xl font-semibold text-ink-900 dark:text-ink-50">
+              Education
+            </h3>
+          </div>
+          <ul className="space-y-4 border-l border-ink-200 pl-5 dark:border-ink-800">
+            {profile.education.map((e) => (
+              <li key={e.degree}>
+                <div className="font-medium text-ink-900 dark:text-ink-50">{e.degree}</div>
+                <div className="text-sm text-ink-600 dark:text-ink-400">{e.org}</div>
+                <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-ink-500 dark:text-ink-500">
+                  <span className="font-mono">{e.period}</span>
+                  {e.detail && (
+                    <>
+                      <span className="text-ink-300 dark:text-ink-700">·</span>
+                      <span>{e.detail}</span>
+                    </>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         {/* Honors & Awards */}
         <div className="mt-14">
           <div className="mb-5 flex items-center gap-2">
-            <Award size={16} className="text-indigo-600 dark:text-indigo-400" />
+            <Award size={16} className="text-clinic-600 dark:text-clinic-400" />
             <h3 className="font-serif text-xl font-semibold text-ink-900 dark:text-ink-50">
               Honors & Awards
             </h3>

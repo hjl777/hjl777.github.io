@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   ArrowRight,
   MapPin,
@@ -11,9 +12,7 @@ import {
   GraduationCap,
   Fingerprint,
 } from 'lucide-react';
-import { profile, contacts } from '../data';
-import CountUp from './CountUp';
-import AnimatedHeadline from './AnimatedHeadline';
+import { profile, contacts, projects } from '../data';
 import VesselField from './VesselField';
 
 const SOCIAL_ICONS = {
@@ -24,9 +23,16 @@ const SOCIAL_ICONS = {
   orcid: Fingerprint,
 } as const;
 
+// The featured QCA project — the strongest artifact, surfaced in the hero.
+const qca = projects.find((p) => p.id === 'proj-stent-marker');
+const qcaCover = qca?.gallery?.[0];
+
+// One-line credential summary, keyed off the highlight values in data.ts.
+const stat = (label: string) =>
+  profile.highlights.find((h) => h.label.toLowerCase().includes(label))?.value;
+
 export default function Hero() {
   const [copied, setCopied] = useState(false);
-  const thesisRef = useRef<HTMLParagraphElement>(null);
 
   const copyEmail = async () => {
     try {
@@ -38,94 +44,64 @@ export default function Hero() {
     }
   };
 
-  // P2: as the user scrolls out of the hero, the thesis statement subtly
-  // recedes (shrink + fade, transform/opacity only — no layout shift).
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    let raf = 0;
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        const el = thesisRef.current;
-        if (!el) return;
-        const p = Math.min(window.scrollY / 520, 1);
-        el.style.transform = `translateY(${window.scrollY * 0.12}px) scale(${1 - p * 0.04})`;
-        el.style.opacity = String(1 - p * 0.55);
-      });
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
   return (
-    <section
-      id="home"
-      className="section relative overflow-hidden pt-28 sm:pt-36"
-    >
-      {/* Ambient coronary-tree network (draws on load, then pulses) */}
+    <section id="home" className="section relative overflow-hidden pt-28 sm:pt-36">
+      {/* Faint static coronary-tree watermark tied to the research subject. */}
       <VesselField />
 
       <div className="container-prose relative">
-        <div className="grid grid-cols-1 items-start gap-12 md:grid-cols-12 md:gap-16">
-          {/* Left: bio */}
-          <div className="md:col-span-7 animate-fade-up">
-            <div className="section-kicker">
-              {profile.role.split('—')[0].trim()}
-              {profile.affiliation && <> · {profile.affiliation}</>}
-            </div>
-            <h1 className="font-serif text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl dark:text-ink-50">
-              {profile.name}
-            </h1>
+        <div className="grid grid-cols-1 items-start gap-12 md:grid-cols-12 md:gap-14">
+          {/* Left: positioning */}
+          <div className="md:col-span-7">
+            <div className="section-kicker">{profile.role.split('—')[0].trim()}</div>
 
-            <p className="mt-2.5 font-mono text-sm text-ink-600 sm:text-[15px] dark:text-ink-400">
+            <div className="flex items-center gap-3">
+              <h1 className="font-serif text-2xl font-semibold tracking-tight text-ink-900 sm:text-[1.7rem] dark:text-ink-50">
+                {profile.nameKr} · {profile.name}
+              </h1>
+            </div>
+
+            <p className="mt-1.5 font-mono text-sm text-ink-600 dark:text-ink-400">
               {profile.role.split('—')[1]?.trim()}
             </p>
 
             {profile.thesis && (
-              <p
-                ref={thesisRef}
-                className="mt-7 max-w-3xl origin-top-left font-serif text-[2rem] font-medium leading-[1.12] tracking-tight text-ink-900 will-change-transform sm:text-[2.6rem] lg:text-[3.2rem] dark:text-ink-100"
-              >
-                <AnimatedHeadline text={profile.thesis} />
+              <p className="mt-6 max-w-3xl font-serif text-[1.9rem] font-medium leading-[1.14] tracking-tight text-ink-900 sm:text-[2.4rem] lg:text-[2.9rem] dark:text-ink-100">
+                {profile.thesis}
               </p>
             )}
 
-            {/* Evidence first: stats, then the proof bar of proper nouns. */}
-            <div className="mt-8 grid max-w-xl grid-cols-3 gap-3">
-              {profile.highlights.map((h, i) => (
-                <div
-                  key={h.label}
-                  className="stat-card rounded-xl border border-ink-200 bg-white p-4 text-center hover:border-indigo-300 dark:border-ink-800 dark:bg-ink-900 dark:hover:border-indigo-700"
-                  style={{ '--d': `${300 + i * 120}ms` } as CSSProperties}
-                >
-                  <CountUp
-                    value={h.value}
-                    className="block font-serif text-2xl font-semibold text-ink-900 dark:text-ink-50"
-                  />
-                  <div className="mt-1 whitespace-nowrap text-[10.5px] font-medium uppercase tracking-wider text-ink-500 dark:text-ink-400">
-                    {h.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-ink-500 dark:text-ink-400">
-              {profile.credibility.map((c, i) => (
-                <span key={c}>
-                  {i > 0 && (
-                    <span className="mx-1.5 text-ink-300 dark:text-ink-700">·</span>
-                  )}
-                  <span className="font-medium text-ink-700 dark:text-ink-300">{c}</span>
+            {profile.status && (
+              <p className="status-chip mt-6">
+                <span className="relative flex h-2 w-2">
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                 </span>
-              ))}
-            </p>
+                {profile.status}
+              </p>
+            )}
 
             <p className="mt-6 max-w-2xl text-[15.5px] leading-relaxed text-ink-700 dark:text-ink-300">
               {profile.shortBio}
+            </p>
+
+            {/* Credentials as one quiet line, not stat cards. */}
+            <p className="mt-5 text-sm text-ink-600 dark:text-ink-400">
+              <span className="font-medium text-ink-800 dark:text-ink-200">
+                {stat('paper')} peer-reviewed papers
+              </span>
+              <span className="mx-2 text-ink-300 dark:text-ink-700">·</span>
+              h-index {stat('h-index')}
+              <span className="mx-2 text-ink-300 dark:text-ink-700">·</span>
+              {stat('citation')} citations
+              <span className="mx-2 text-ink-300 dark:text-ink-700">·</span>
+              <a
+                href={contacts.find((c) => c.icon === 'scholar')?.href}
+                target="_blank"
+                rel="noreferrer"
+                className="text-clinic-700 hover:text-clinic-900 dark:text-clinic-400 dark:hover:text-clinic-300"
+              >
+                Google Scholar
+              </a>
             </p>
 
             <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-500 dark:text-ink-400">
@@ -175,79 +151,77 @@ export default function Hero() {
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href="#publications"
-                className="group inline-flex items-center gap-2 rounded-full bg-ink-900 px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-ink-800 dark:bg-indigo-500 dark:hover:bg-indigo-400"
-              >
-                See publications
-                <ArrowRight
-                  size={16}
-                  className="transition-transform group-hover:translate-x-0.5"
-                />
-              </a>
+              {qca && (
+                <Link
+                  to={`/projects/${qca.id}`}
+                  viewTransition
+                  className="group inline-flex items-center gap-2 rounded-full bg-ink-900 px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-ink-800 dark:bg-clinic-500 dark:hover:bg-clinic-400"
+                >
+                  View QCA case study
+                  <ArrowRight
+                    size={16}
+                    className="transition-transform group-hover:translate-x-0.5"
+                  />
+                </Link>
+              )}
               <a
                 href={profile.cvUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-ink-300 bg-white px-5 py-2.5 text-sm font-medium text-ink-800 transition-colors duration-200 hover:border-ink-400 hover:bg-ink-50 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-200 dark:hover:border-ink-600 dark:hover:bg-ink-800"
               >
-                <FileText size={16} /> Download CV
+                <FileText size={16} /> CV
               </a>
             </div>
-
           </div>
 
-          {/* Right: portrait + facts */}
+          {/* Right: the signature research artifact, not a portrait */}
           <aside className="md:col-span-5">
-            <div className="sticky top-28 animate-fade-in">
-              <div className="relative mx-auto aspect-[4/5] w-full max-w-[320px] overflow-hidden rounded-2xl bg-ink-50 ring-1 ring-ink-200/70 shadow-[0_10px_40px_-15px_rgba(15,23,42,0.25)] dark:bg-ink-900 dark:ring-ink-800/70 dark:shadow-[0_10px_40px_-15px_rgba(0,0,0,0.6)]">
-                {profile.avatarUrl ? (
+            <div className="sticky top-28">
+              {qcaCover && qca && (
+                <Link
+                  to={`/projects/${qca.id}`}
+                  viewTransition
+                  aria-label="Open the QCA case study"
+                  className="group block overflow-hidden rounded-2xl border border-ink-200 bg-white shadow-[0_10px_40px_-18px_rgba(15,23,42,0.3)] dark:border-ink-800 dark:bg-ink-900"
+                >
+                  <figure>
+                    <div className="relative aspect-[16/10] overflow-hidden bg-ink-950">
+                      <img
+                        src={qcaCover.src}
+                        alt={qcaCover.alt}
+                        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+                      />
+                    </div>
+                    <figcaption className="border-t border-ink-200 px-4 py-3 text-[12.5px] leading-relaxed text-ink-600 dark:border-ink-800 dark:text-ink-400">
+                      <span className="font-medium text-ink-800 dark:text-ink-200">
+                        Signature work — QCA pipeline.
+                      </span>{' '}
+                      Angiogram → vessel segmentation → centerline → per-branch
+                      diameter profile, on one review screen.
+                    </figcaption>
+                  </figure>
+                </Link>
+              )}
+
+              {/* Small portrait badge — identity without dominating the fold. */}
+              {profile.avatarUrl && (
+                <div className="mt-5 flex items-center gap-3">
                   <img
                     src={profile.avatarUrl}
                     alt={profile.name}
-                    className="h-full w-full object-cover object-top"
+                    className="h-14 w-14 shrink-0 rounded-full object-cover object-top ring-1 ring-ink-200 dark:ring-ink-700"
                   />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center">
-                    <div className="text-center">
-                      <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-ink-900 font-serif text-3xl font-semibold text-indigo-200 ring-4 ring-white dark:ring-ink-950">
-                        HL
-                      </div>
-                      <p className="mt-4 text-xs uppercase tracking-[0.2em] text-ink-400 dark:text-ink-500">
-                        Portrait placeholder
-                      </p>
-                      <p className="mt-1 text-[11px] text-ink-400 dark:text-ink-500">
-                        /public/portrait.jpg
-                      </p>
+                  <div className="text-sm">
+                    <div className="font-medium text-ink-900 dark:text-ink-50">
+                      {profile.name}
+                    </div>
+                    <div className="text-ink-500 dark:text-ink-400">
+                      Healthcare AI Researcher
                     </div>
                   </div>
-                )}
-              </div>
-
-              <div className="mt-6 rounded-xl border border-ink-200 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
-                <p className="text-xs font-medium uppercase tracking-wider text-ink-400 dark:text-ink-500">
-                  Education
-                </p>
-                <ul className="mt-3 space-y-3">
-                  {profile.education.map((e) => (
-                    <li key={e.degree} className="text-sm">
-                      <div className="font-medium text-ink-900 dark:text-ink-50">
-                        {e.degree}
-                      </div>
-                      <div className="text-ink-600 dark:text-ink-400">{e.org}</div>
-                      <div className="mt-0.5 flex items-center gap-2 text-xs text-ink-500 dark:text-ink-500">
-                        <span>{e.period}</span>
-                        {e.detail && (
-                          <>
-                            <span className="text-ink-300 dark:text-ink-700">·</span>
-                            <span>{e.detail}</span>
-                          </>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                </div>
+              )}
             </div>
           </aside>
         </div>

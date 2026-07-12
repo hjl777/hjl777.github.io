@@ -17,14 +17,26 @@ export default function About() {
 
   return (
     <section id="about" className="section">
-      <div ref={ref} className={`container-prose ${revealClass(visible, 'right')}`}>
-        <div className="section-kicker">06 · About</div>
-        <h2 className="section-title">The Longer Story</h2>
+      <div ref={ref} className={`container-prose ${revealClass(visible)}`}>
+        <div className="section-kicker">05 · About</div>
+        <h2 className="section-title">The longer story</h2>
 
-        <div className="mt-6 max-w-3xl space-y-4 text-[15.5px] leading-relaxed text-ink-700 dark:text-ink-300">
-          <p>{renderRich(lead)}</p>
+        <div className="mt-6 grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
+          <div className="md:col-span-2 space-y-4 text-[15.5px] leading-relaxed text-ink-700 dark:text-ink-300">
+            <p>{renderRich(lead)}</p>
 
-          {open && rest.map((p, i) => <p key={i}>{renderRich(p)}</p>)}
+            {open && rest.map((p, i) => <p key={i}>{renderRich(p)}</p>)}
+          </div>
+
+          {profile.avatarUrl && (
+            <div className="md:col-span-1">
+              <img
+                src={profile.avatarUrl}
+                alt={profile.name}
+                className="mx-auto aspect-[4/5] w-full max-w-[240px] rounded-2xl object-cover object-top ring-1 ring-ink-200 dark:ring-ink-800"
+              />
+            </div>
+          )}
         </div>
 
         {open && profile.approach && (

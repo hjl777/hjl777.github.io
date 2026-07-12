@@ -7,10 +7,9 @@ import ThemeToggle from './ThemeToggle';
 // Section links use "/#id" so they lead back to the home page from /projects
 // and project detail routes; on the home page they scroll in place.
 const sections = [
-  { id: 'home', label: 'Home', to: '/' },
-  { id: 'news', label: 'News', to: '/#news' },
-  { id: 'publications', label: 'Publications', to: '/#publications' },
-  { id: 'projects', label: 'Research', to: '/#projects' },
+  { id: 'projects', label: 'Work', to: '/#projects' },
+  { id: 'publications', label: 'Papers', to: '/#publications' },
+  { id: 'cv', label: 'Experience', to: '/#cv' },
   { id: 'about', label: 'About', to: '/#about' },
 ];
 
@@ -66,10 +65,12 @@ export default function Nav() {
           viewTransition
           className="group flex items-center gap-2.5 font-serif text-base font-semibold tracking-tight text-ink-900 dark:text-ink-50"
         >
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-ink-900 text-[11px] font-bold text-indigo-200 ring-1 ring-ink-900/10 dark:bg-ink-50 dark:text-indigo-700 dark:ring-ink-50/10">
+          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-ink-900 text-[11px] font-bold text-clinic-200 ring-1 ring-ink-900/10 dark:bg-ink-50 dark:text-clinic-700 dark:ring-ink-50/10">
             HL
           </span>
-          <span className="hidden sm:inline">{profile.name}</span>
+          <span className="hidden sm:inline">
+            {profile.nameKr} · {profile.name}
+          </span>
         </Link>
 
         {/* Desktop */}

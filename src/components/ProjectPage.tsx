@@ -172,6 +172,24 @@ export default function ProjectPage() {
           </div>
         )}
 
+        {/* Structured case study — the order a research reviewer reads */}
+        {project.caseStudy && project.caseStudy.length > 0 && (
+          <div className="mt-14 max-w-3xl border-t border-ink-200 pt-10 dark:border-ink-800">
+            <dl className="space-y-8">
+              {project.caseStudy.map((s) => (
+                <div key={s.heading} className="grid grid-cols-1 gap-2 sm:grid-cols-4 sm:gap-6">
+                  <dt className="text-xs font-semibold uppercase tracking-wider text-clinic-700 dark:text-clinic-400">
+                    {s.heading}
+                  </dt>
+                  <dd className="sm:col-span-3 text-[15px] leading-relaxed text-ink-700 dark:text-ink-300">
+                    {s.body}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )}
+
         {/* Gallery — image on the left, explanation beside it on the right */}
         {(project.gallery?.length ?? 0) > 0 && (
           <div className="mt-14">

@@ -2,7 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { FileText, Code2, ExternalLink, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
 import { publications, contacts, type Publication } from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
-import CountUp from './CountUp';
+
+// Total peer-reviewed papers on Google Scholar; the list here is a curated
+// subset, so the two numbers are shown together rather than left to conflict.
+const TOTAL_PAPERS = 25;
 
 type Filter = 'All' | 'Selected' | 'Journal' | 'Conference';
 const FILTERS: Filter[] = ['All', 'Selected', 'Journal', 'Conference'];
@@ -99,11 +102,12 @@ export default function Publications() {
       <div ref={ref} className={`container-prose ${revealClass(visible, 'left')}`}>
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
-            <div className="section-kicker">03 · Publications</div>
-            <h2 className="section-title">Selected Work</h2>
+            <div className="section-kicker">02 · Publications</div>
+            <h2 className="section-title">Selected papers</h2>
             <p className="mt-3 max-w-xl text-ink-600 dark:text-ink-400">
-              Peer-reviewed work and preprints across medical AI, clinical
-              prediction, and trustworthy language models.
+              A curated view of {publications.length} of {TOTAL_PAPERS}{' '}
+              peer-reviewed papers across medical AI, clinical prediction, and
+              trustworthy language models — the full record is on Google Scholar.
             </p>
           </div>
 
@@ -172,8 +176,7 @@ export default function Publications() {
                   <p className="text-sm italic text-ink-500 dark:text-ink-500">{p.venue}</p>
                   {typeof p.citations === 'number' && p.citations > 0 && (
                     <span className="inline-flex items-center rounded-md bg-ink-100 px-1.5 py-0.5 font-mono text-[10.5px] text-ink-600 dark:bg-ink-800 dark:text-ink-300">
-                      Cited by&nbsp;
-                      <CountUp value={String(p.citations)} duration={900} />
+                      Cited by&nbsp;{p.citations}
                     </span>
                   )}
                 </div>
@@ -222,7 +225,7 @@ export default function Publications() {
               rel="noreferrer"
               className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-500 transition-colors duration-200 hover:text-indigo-600 dark:text-ink-400 dark:hover:text-indigo-400"
             >
-              View all {publications.length} on Google Scholar
+              View all {TOTAL_PAPERS} on Google Scholar
               <ExternalLink size={14} />
             </a>
           )}

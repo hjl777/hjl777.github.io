@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import { ArrowUpRight, Check, Mail } from 'lucide-react';
-import { news, profile } from '../data';
+import { ArrowUpRight } from 'lucide-react';
+import { news } from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
 
 function formatDate(iso: string) {
@@ -10,72 +9,26 @@ function formatDate(iso: string) {
   return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 }
 
+// The home page shows only the latest few updates — a "still active" signal,
+// not a full changelog.
+const HOME_COUNT = 3;
+
 export default function News() {
   const { ref, visible } = useReveal<HTMLDivElement>();
-  const [copied, setCopied] = useState(false);
+  const timeline = news.filter((n) => !n.highlight).slice(0, HOME_COUNT);
 
-  const spotlight = news.find((n) => n.highlight);
-  const timeline = news.filter((n) => !n.highlight);
-
-  const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(profile.email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {
-      window.location.href = `mailto:${profile.email}`;
-    }
-  };
-
-  if (!news.length) return null;
+  if (!timeline.length) return null;
 
   return (
     <section id="news" className="section">
-      <div ref={ref} className={`container-prose ${revealClass(visible, 'left')}`}>
+      <div ref={ref} className={`container-prose ${revealClass(visible)}`}>
         <div className="max-w-2xl">
-          <div className="section-kicker">01 · News</div>
+          <div className="section-kicker">04 · Notes</div>
           <h2 className="section-title">Recent updates</h2>
           <p className="mt-3 text-ink-600 dark:text-ink-400">
-            Recent papers, projects, and fellowships.
+            The latest papers, projects, and fellowships.
           </p>
         </div>
-
-        {/* Spotlight callout — the one message this page exists to deliver */}
-        {spotlight && (
-          <div className="relative mt-10 overflow-hidden rounded-2xl border border-indigo-200/80 bg-white p-6 sm:p-8 dark:border-indigo-500/30 dark:bg-ink-900">
-            <div aria-hidden className="spotlight-glow pointer-events-none absolute -inset-x-24 -inset-y-20" />
-            <div className="relative">
-              <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-400">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                </span>
-                Open to opportunities
-              </p>
-              <h3 className="mt-3 font-serif text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl dark:text-ink-50">
-                {spotlight.title ?? spotlight.text}
-              </h3>
-              {spotlight.title && (
-                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-600 sm:text-[15px] dark:text-ink-400">
-                  {spotlight.text}
-                </p>
-              )}
-              <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
-                <button
-                  type="button"
-                  onClick={copyEmail}
-                  className="inline-flex items-center gap-2 rounded-full bg-ink-900 px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-ink-800 dark:bg-indigo-500 dark:hover:bg-indigo-400"
-                >
-                  {copied ? <Check size={15} /> : <Mail size={15} />}
-                  {copied ? 'Email copied!' : 'Email me about research fit'}
-                </button>
-                <span className="font-mono text-xs text-ink-500 dark:text-ink-400">
-                  {profile.email}
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
 
         <ol className="relative mt-10 max-w-3xl">
           <span
@@ -91,7 +44,7 @@ export default function News() {
                 {formatDate(n.date)}
               </div>
               <div className="relative hidden pt-1.5 sm:block">
-                <span className="block h-2.5 w-2.5 rounded-full border-2 border-white bg-indigo-500 ring-2 ring-indigo-200 dark:border-ink-950 dark:ring-indigo-700/60" />
+                <span className="block h-2.5 w-2.5 rounded-full border-2 border-white bg-clinic-500 ring-2 ring-clinic-200 dark:border-ink-950 dark:ring-clinic-700/60" />
               </div>
               <div>
                 <p className="font-mono text-xs text-ink-500 sm:hidden dark:text-ink-400">
@@ -104,7 +57,7 @@ export default function News() {
                       href={n.href}
                       target="_blank"
                       rel="noreferrer"
-                      className="ml-1 inline-flex items-center gap-0.5 text-indigo-700 transition-colors duration-200 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
+                      className="ml-1 inline-flex items-center gap-0.5 text-clinic-700 transition-colors duration-200 hover:text-clinic-900 dark:text-clinic-400 dark:hover:text-clinic-300"
                       aria-label="External link"
                     >
                       <ArrowUpRight size={12} />

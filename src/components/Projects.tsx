@@ -43,11 +43,11 @@ export default function Projects() {
       <div ref={ref} className={`container-prose ${revealClass(visible, 'right')}`}>
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div className="max-w-2xl">
-            <div className="section-kicker">04 · Research & Projects</div>
-            <h2 className="section-title">Selected Works</h2>
+            <div className="section-kicker">01 · Featured Evidence</div>
+            <h2 className="section-title">What I&apos;ve built</h2>
             <p className="mt-3 text-ink-600 dark:text-ink-400">
-              Applied research bridging mathematical foundations and clinical
-              problems.
+              Three systems, each answering the same question a reviewer asks —
+              what was the problem, what did I own, and how was it evaluated.
             </p>
           </div>
           <Link
