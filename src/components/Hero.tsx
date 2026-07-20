@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { profile, contacts, projects } from '../data';
 import VesselField from './VesselField';
+import EvidenceViewer from './EvidenceViewer';
 
 const SOCIAL_ICONS = {
   mail: Mail,
@@ -25,7 +26,6 @@ const SOCIAL_ICONS = {
 
 // The featured QCA project — the strongest artifact, surfaced in the hero.
 const qca = projects.find((p) => p.id === 'proj-stent-marker');
-const qcaCover = qca?.gallery?.[0];
 
 // One-line credential summary, keyed off the highlight values in data.ts.
 const stat = (label: string) =>
@@ -178,31 +178,7 @@ export default function Hero() {
           {/* Right: the signature research artifact, not a portrait */}
           <aside className="md:col-span-5">
             <div className="sticky top-28">
-              {qcaCover && qca && (
-                <Link
-                  to={`/projects/${qca.id}`}
-                  viewTransition
-                  aria-label="Open the QCA case study"
-                  className="group block overflow-hidden rounded-2xl border border-ink-200 bg-white shadow-[0_10px_40px_-18px_rgba(15,23,42,0.3)] dark:border-ink-800 dark:bg-ink-900"
-                >
-                  <figure>
-                    <div className="relative aspect-[16/10] overflow-hidden bg-ink-950">
-                      <img
-                        src={qcaCover.src}
-                        alt={qcaCover.alt}
-                        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
-                      />
-                    </div>
-                    <figcaption className="border-t border-ink-200 px-4 py-3 text-[12.5px] leading-relaxed text-ink-600 dark:border-ink-800 dark:text-ink-400">
-                      <span className="font-medium text-ink-800 dark:text-ink-200">
-                        Signature work — QCA pipeline.
-                      </span>{' '}
-                      Angiogram → vessel segmentation → centerline → per-branch
-                      diameter profile, on one review screen.
-                    </figcaption>
-                  </figure>
-                </Link>
-              )}
+              {qca && <EvidenceViewer project={qca} />}
 
               {/* Small portrait badge — identity without dominating the fold. */}
               {profile.avatarUrl && (

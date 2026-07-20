@@ -11,7 +11,14 @@ import {
   ChevronUp,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { experience, contacts, profile, honors, type ExperienceItem } from '../data';
+import {
+  experience,
+  contacts,
+  profile,
+  honors,
+  sectionLabels,
+  type ExperienceItem,
+} from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
 
 const ICONS = {
@@ -142,7 +149,7 @@ export default function Experience() {
       <div ref={ref} className={`container-prose ${revealClass(visible, 'left')}`}>
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
-            <div className="section-kicker">03 · Experience</div>
+            <div className="section-kicker">{sectionLabels.experience}</div>
             <h2 className="section-title">Experience &amp; education</h2>
             <p className="mt-3 max-w-xl text-ink-600 dark:text-ink-400">
               A timeline of research positions, programs, and industry

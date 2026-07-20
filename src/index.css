@@ -20,6 +20,13 @@
     @apply bg-paper text-ink-800 font-sans antialiased dark:bg-ink-950 dark:text-ink-200;
     font-feature-settings: 'cv11', 'ss01', 'ss03';
   }
+  :where(a, button, [role='button'], [role='tab']):focus-visible {
+    outline: 2px solid #106b78;
+    outline-offset: 3px;
+  }
+  .dark :where(a, button, [role='button'], [role='tab']):focus-visible {
+    outline-color: #71d4de;
+  }
   ::selection {
     @apply bg-clinic-100 text-clinic-900;
   }

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FileText, Code2, ExternalLink, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
-import { publications, contacts, type Publication } from '../data';
+import { publications, contacts, sectionLabels, type Publication } from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
 
 // Total peer-reviewed papers on Google Scholar; the list here is a curated
@@ -102,7 +102,7 @@ export default function Publications() {
       <div ref={ref} className={`container-prose ${revealClass(visible, 'left')}`}>
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
-            <div className="section-kicker">02 · Publications</div>
+            <div className="section-kicker">{sectionLabels.publications}</div>
             <h2 className="section-title">Selected papers</h2>
             <p className="mt-3 max-w-xl text-ink-600 dark:text-ink-400">
               A curated view of {publications.length} of {TOTAL_PAPERS}{' '}

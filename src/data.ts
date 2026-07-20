@@ -36,6 +36,8 @@ export interface Project {
   mediaFit?: 'cover' | 'contain'; // 'contain' for charts/graphs — rendered on a
                             // white background with inner padding instead of
                             // being cropped to fill the 16:10 frame.
+  mediaKind?: 'clinical' | 'research' | 'product';
+  mediaLabel?: string;
   collaboration?: string;
   description: string;
   metrics?: { label: string; value: string }[];
@@ -47,7 +49,13 @@ export interface Project {
   caseStudy?: { heading: string; body: string }[];
   // Detail-page gallery (route: #/project/<id>). Click opens a lightbox
   // showing the image with its short caption.
-  gallery?: { src: string; alt: string; caption: string }[];
+  gallery?: {
+    src: string;
+    alt: string;
+    caption: string;
+    label?: string;
+    summary?: string;
+  }[];
 }
 
 export interface ExperienceItem {
@@ -105,7 +113,7 @@ export const profile = {
   longBio: [
     'My research focuses on two problems where wrong answers have clinical consequences: automated coronary vessel analysis, where a mis-measured diameter can alter a treatment decision, and LLM reliability in medical Q&A, where a hallucinated fact can mislead a clinician. Both problems share a common question: how do you make a learned system behave as if it understands the rules, not just the patterns?',
     'I have authored 25 SCI/SCIE papers (6 co-first, 1 corresponding, 404 citations, h-index 12) in venues including The Lancet Regional Health, JMIR, and Scientific Reports — published within two years of graduate research at Kyung Hee University\'s Center for Digital Health and Asan Medical Center.',
-    'In 2024, selected as a fully-funded MSIT/IITP government fellow, I conducted applied AI research at the University of Toronto and MIT — implementing `PEFT` and soft prompting to match fine-tuning accuracy at 0.78–0.94% of the parameter cost (200k vs. 20–25M trainable parameters), and extending the system with a physics ontology-based `KG-RAG` pipeline grounded in Chain-of-Knowledge.',
+    'In 2024, selected as a fully-funded MSIT/IITP government fellow, I conducted applied AI research at the University of Toronto and MIT — implementing `PEFT` and soft prompting with 0.78–0.94% of full fine-tuning’s trainable parameters (200k vs. 20–25M), then extending the system with a physics ontology-based `KG-RAG` pipeline grounded in Chain-of-Knowledge. The parameter-efficient model improved on lightweight baselines but remained below full fine-tuning.',
     'Across both problems my method is the same: rather than reaching for the newest technique, I first ask whether it actually fits the problem, then verify it with experiments. My mathematics background is the engine of this — it lets me reason about *why* a model\'s output should be trusted, not just whether it scores well. I am seeking a research environment where I can pursue these questions at depth.',
   ],
   // Research-approach statement (Pranav-style "how I work" block).
@@ -148,6 +156,14 @@ export const profile = {
     { label: 'h-index', value: '12' },
   ],
 };
+
+export const sectionLabels = {
+  projects: 'Featured Evidence',
+  publications: 'Publications',
+  experience: 'Experience',
+  news: 'Notes',
+  about: 'About',
+} as const;
 
 // -----------------------------------------------------------------------------
 // PUBLICATIONS
@@ -469,6 +485,8 @@ export const publications: Publication[] = [
 export const projects: Project[] = [
   {
     id: 'proj-stent-marker',
+    mediaKind: 'clinical',
+    mediaLabel: 'QCA REVIEW',
     title: 'End-to-End Quantitative Coronary Angiography Pipeline',
     subtitle: 'Deep-learning segmentation · Mask refinement · Diameter profiling',
     period: '2025 – 2026',
@@ -515,12 +533,16 @@ export const projects: Project[] = [
     gallery: [
       {
         src: '/projects/qca-angiogram.png',
+        label: 'Pipeline output',
+        summary: 'Segmentation, centerline, bifurcations, and diameter profile on one review screen.',
         alt: 'QCA pipeline output on a 2D coronary angiogram with segmentation overlay and diameter profile',
         caption:
           'Full pipeline output on a routine 2D angiogram: automated vessel-boundary segmentation (cyan), centerline extraction (yellow), bifurcation detection with proximal/distal reference points (P1–P3, B1), and the resulting per-branch diameter profile with 1 / 2 / 3 mm reference measurements — everything a reviewer needs on one screen.',
       },
       {
         src: '/projects/qca-murrays-law.png',
+        label: 'Physiological check',
+        summary: "Murray's Law across 1,190+ samples (R² > 0.8); not a reference-standard comparison.",
         alt: "Murray's Law consistency-check scatter plot of the QCA pipeline",
         caption:
           "Murray's Law consistency check of the QCA pipeline — predicted vs. measured branch diameters across 1,190+ vessel samples (R² > 0.8). The governing equation of vascular branching, used as an independent physiological plausibility check on the segmentation (not a reference-standard comparison).",
@@ -529,6 +551,8 @@ export const projects: Project[] = [
   },
   {
     id: 'proj-llm',
+    mediaKind: 'research',
+    mediaLabel: 'BENCHMARK / FIGURE 01',
     title: 'Mitigating LLM Hallucinations in Scientific Q&A',
     subtitle: 'PEFT · Soft Prompting · KG-RAG',
     period: '2023 – 2024',
@@ -537,7 +561,7 @@ export const projects: Project[] = [
     mediaFit: 'contain',
     collaboration: 'MIT (6.2410 ChatTutor) & University of Toronto — MSIT/IITP Government Fellowship',
     description:
-      'Reduced factual hallucination in LLMs deployed for university-level physics Q&A (MIT ChatTutor, 6.2410). Core constraint: the solution had to be efficient enough for the service to self-host. Implemented PEFT + soft prompting to match full fine-tuning accuracy using only 0.78–0.94% of trainable parameters (200k vs. 20–25M). Extended with a physics ontology mapped to Chain-of-Knowledge KG-RAG baseline — embedding symbolic domain constraints directly into generation. Evaluated on ScienceQA and SciQ.',
+      'Reduced factual hallucination in LLMs deployed for university-level physics Q&A (MIT ChatTutor, 6.2410). Core constraint: the solution had to be efficient enough for the service to self-host. Implemented PEFT + soft prompting using only 0.78–0.94% of full fine-tuning’s trainable parameters (200k vs. 20–25M); the approach improved on lightweight baselines but remained below full fine-tuning. Extended with a physics ontology mapped to a Chain-of-Knowledge KG-RAG baseline — embedding symbolic domain constraints directly into generation. Evaluated on ScienceQA and SciQ.',
     metrics: [
       { label: 'Param reduction', value: '0.78–0.94% of FT params' },
       { label: 'Datasets',        value: 'ScienceQA · SciQ' },
@@ -563,7 +587,7 @@ export const projects: Project[] = [
       },
       {
         heading: 'Result',
-        body: 'The soft-prompt model trains only ~200k parameters — 0.78–0.94% of the trainable parameters of full fine-tuning (20–25M) — and matches or exceeds every baseline except the full fine-tuned model, recovering most of the accuracy at a fraction of the tunable footprint.',
+        body: 'The soft-prompt model trains only ~200k parameters — 0.78–0.94% of the trainable parameters of full fine-tuning (20–25M). It improves substantially over the lightweight baselines on ScienceQA and SciQ, while remaining well below the full fine-tuned model.',
       },
       {
         heading: 'Limitations & next step',
@@ -575,12 +599,13 @@ export const projects: Project[] = [
         src: '/projects/llm-performance.png',
         alt: 'Model accuracy comparison on ScienceQA and SciQ benchmarks',
         caption:
-          'Model accuracy on ScienceQA and SciQ. The soft-prompt model trains only 200k parameters — 0.78–0.94% of full fine-tuning’s trainable parameters — and matches or exceeds every baseline except the full fine-tuned model, the efficiency-accuracy tradeoff at the core of this project.',
+          'Model accuracy on ScienceQA and SciQ. The soft-prompt model trains only 200k parameters — 0.78–0.94% of full fine-tuning’s trainable parameters — and improves over lightweight baselines, but remains well below the full fine-tuned model.',
       },
     ],
   },
   {
     id: 'proj-defines',
+    mediaKind: 'product',
     title: 'DEFINES — Hallucination Suppression in Multimodal Math Reasoning',
     subtitle: 'Multi-agent VLM · LangGraph · Knowledge-graph retrieval',
     period: '2025 – Present',
@@ -637,6 +662,8 @@ export const projects: Project[] = [
   },
   {
     id: 'proj-outcomes',
+    mediaKind: 'research',
+    mediaLabel: 'VALIDATION / FIGURE 01',
     title: 'Clinical Outcome Prediction at Population Scale',
     subtitle: 'Nationwide ML risk models · XAI · external validation',
     period: '2023 – 2025',
@@ -706,7 +733,7 @@ export const experience: ExperienceItem[] = [
     location: 'Toronto, CA · Cambridge, MA',
     period: '2023.12 – 2024.06',
     bullets: [
-      'Matched full fine-tuning accuracy with <1% of trainable parameters (~200k vs. 20–25M) via PEFT and soft prompting.',
+      'Improved over lightweight baselines with <1% of full fine-tuning’s trainable parameters (~200k vs. 20–25M) via PEFT and soft prompting; full fine-tuning remained substantially stronger.',
       'Boosted factual accuracy on complex scientific Q&A by embedding physics-ontology constraints through KG-RAG.',
       'Mitigated LLM hallucination in cross-functional research teams across scientific Q&A datasets.',
     ],

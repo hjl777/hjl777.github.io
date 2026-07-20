@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { profile } from '../data';
+import { profile, sectionLabels } from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
 import { renderRich } from '../lib/richtext';
 
@@ -18,7 +18,7 @@ export default function About() {
   return (
     <section id="about" className="section">
       <div ref={ref} className={`container-prose ${revealClass(visible)}`}>
-        <div className="section-kicker">05 · About</div>
+        <div className="section-kicker">{sectionLabels.about}</div>
         <h2 className="section-title">The longer story</h2>
 
         <div className="mt-6 grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
