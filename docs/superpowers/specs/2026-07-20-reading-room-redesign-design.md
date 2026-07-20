@@ -48,13 +48,13 @@ theme flip plus a new signature chrome treatment, not a palette replacement.
    mono-font meta strip (label left, index/counter right), and small corner tick
    marks on the frame — no new color, no new animation.
 
-3. **Component pass** — `Hero.tsx` (verify hero contrast and CTA legibility against a
-   dark-by-default ground; the `bg-ink-900` hover/hover states dark variants already
-   exist since `dark:` classes are present, but now need to look correct as the
-   *primary* appearance, not a rarely-seen alternate), `ThemeToggle.tsx` (icon/label
-   logic still correct — toggle now flips *out of* dark by default), `tailwind.config.js`
-   only if any dark-variant token is found missing during implementation (not
-   anticipated based on current file).
+3. **Component pass.** `dark:` variants already exist throughout (Hero, EvidenceViewer,
+   Projects, etc.), but were designed as a rarely-seen alternate — verify each now
+   holds up as the *primary* appearance (contrast, CTA legibility, hover states).
+   `ThemeToggle.tsx` needs no logic change (it already flips the `dark` class either
+   way) but gets a quick check that its icon/label still read correctly once dark is
+   the default. `tailwind.config.js` changes only if a gap surfaces during
+   implementation — none anticipated from the current file.
 
 ## What does not change
 
