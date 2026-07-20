@@ -1,6 +1,7 @@
 import { useRef, useState, type KeyboardEvent } from 'react';
 import { Link } from 'react-router-dom';
 import type { Project } from '../data';
+import FrameTicks from './FrameTicks';
 
 export default function EvidenceViewer({ project }: { project: Project }) {
   const gallery = project.gallery ?? [];
@@ -64,6 +65,7 @@ export default function EvidenceViewer({ project }: { project: Project }) {
             className="h-full w-full animate-[fadeIn_200ms_ease-out] object-contain motion-reduce:animate-none"
           />
         </Link>
+        <FrameTicks />
       </div>
 
       <div className="border-t border-ink-200 dark:border-ink-800">
