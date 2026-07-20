@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { profile, sectionLabels } from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
 import { renderRich } from '../lib/richtext';
+import FrameTicks from './FrameTicks';
 
 /**
  * Long-form narrative moved out of the hero: the full bio, the "how I work"
@@ -30,11 +31,14 @@ export default function About() {
 
           {profile.avatarUrl && (
             <div className="md:col-span-1">
-              <img
-                src={profile.avatarUrl}
-                alt={profile.name}
-                className="mx-auto aspect-[4/5] w-full max-w-[240px] rounded-2xl object-cover object-top ring-1 ring-ink-200 dark:ring-ink-800"
-              />
+              <div className="relative mx-auto aspect-[4/5] w-full max-w-[240px]">
+                <img
+                  src={profile.avatarUrl}
+                  alt={profile.name}
+                  className="h-full w-full rounded-2xl object-cover object-top ring-1 ring-ink-200 dark:ring-ink-800"
+                />
+                <FrameTicks />
+              </div>
             </div>
           )}
         </div>
