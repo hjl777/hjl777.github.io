@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import type { Project } from '../data';
 import ProjectScene from './ProjectScene';
+import FrameTicks from './FrameTicks';
 
 /** Project media frame matched to the artifact: clinical figure, research
  * chart, or real browser product. Shared by home and the project archive. */
@@ -79,6 +80,7 @@ export default function BrowserFrame({ p, active }: { p: Project; active: boolea
         ) : (
           <ProjectScene id={p.id} active={active} />
         )}
+        <FrameTicks />
       </div>
     </div>
   );
