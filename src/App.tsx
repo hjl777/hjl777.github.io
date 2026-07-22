@@ -1,5 +1,11 @@
-import { useEffect } from 'react';
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useLayoutEffect } from 'react';
+import {
+  Navigate,
+  Outlet,
+  createBrowserRouter,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import Nav from './components/Nav';
 import Hero from './components/Hero';
 import News from './components/News';
@@ -18,12 +24,10 @@ import Footer from './components/Footer';
  */
 function ScrollManager() {
   const location = useLocation();
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (location.hash && !location.hash.startsWith('#/')) {
       const id = location.hash.slice(1);
-      requestAnimationFrame(() =>
-        document.getElementById(id)?.scrollIntoView({ block: 'start' }),
-      );
+      document.getElementById(id)?.scrollIntoView({ block: 'start' });
     } else {
       window.scrollTo(0, 0);
     }
@@ -59,33 +63,41 @@ function Home() {
   );
 }
 
-export default function App() {
+function AppLayout() {
   return (
     <div className="min-h-screen bg-paper text-ink-800 selection:bg-clinic-100 selection:text-clinic-900 dark:bg-ink-950 dark:text-ink-200 dark:selection:bg-clinic-500/30 dark:selection:text-clinic-100">
       <LegacyHashRedirect />
       <ScrollManager />
       <Nav />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/projects"
-          element={
-            <main className="overflow-x-clip">
-              <ProjectsPage />
-            </main>
-          }
-        />
-        <Route
-          path="/projects/:id"
-          element={
-            <main className="overflow-x-clip">
-              <ProjectPage />
-            </main>
-          }
-        />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <Outlet />
       <Footer />
     </div>
   );
 }
+
+export const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <AppLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      {
+        path: 'projects',
+        element: (
+          <main className="overflow-x-clip">
+            <ProjectsPage />
+          </main>
+        ),
+      },
+      {
+        path: 'projects/:id',
+        element: (
+          <main className="overflow-x-clip">
+            <ProjectPage />
+          </main>
+        ),
+      },
+      { path: '*', element: <Navigate to="/" replace /> },
+    ],
+  },
+]);
