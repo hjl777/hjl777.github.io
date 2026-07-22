@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import {
   Navigate,
   Outlet,
@@ -24,12 +24,26 @@ import Footer from './components/Footer';
  */
 function ScrollManager() {
   const location = useLocation();
+  const firstRender = useRef(true);
   useLayoutEffect(() => {
     if (location.hash && !location.hash.startsWith('#/')) {
       const id = location.hash.slice(1);
       document.getElementById(id)?.scrollIntoView({ block: 'start' });
     } else {
       window.scrollTo(0, 0);
+    }
+    // After a route change (not the initial load), move focus to the new
+    // page's main landmark so keyboard/screen-reader users start at the top.
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    if (!location.hash) {
+      const main = document.querySelector<HTMLElement>('main');
+      if (main) {
+        main.tabIndex = -1;
+        main.focus({ preventScroll: true });
+      }
     }
   }, [location.pathname, location.hash]);
   return null;
@@ -54,11 +68,11 @@ function Home() {
   return (
     <main className="overflow-x-clip">
       <Hero />
-      <Projects />
-      <Publications />
       <Experience />
-      <News />
+      <Projects />
       <About />
+      <Publications />
+      <News />
     </main>
   );
 }

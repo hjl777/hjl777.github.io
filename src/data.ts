@@ -115,6 +115,8 @@ export const profile = {
   email: 'iceanon1@gmail.com',
   cvUrl: '/cv.pdf',
   avatarUrl: '/portrait.png',
+  displayTitle: 'Healthcare AI,\nApplied Differently.',
+  traits: ['Clinical', 'Reliable', 'Builder', 'Researcher', 'Mathematical', 'Human-centered'],
   // One-line research thesis — the static hero headline.
   thesis: 'I build clinical AI whose measurements and reasoning a clinician can inspect.',
   // Short, one-line availability status — rendered as a chip in the hero.
@@ -186,6 +188,34 @@ export const sectionLabels = {
   experience: 'Experience',
   news: 'Notes',
   about: 'About',
+} as const;
+
+export const siteCopy = {
+  hero: {
+    eyebrow: "The healthcare AI researcher. That's Hojae.",
+    portfolioLabel: 'portfolio',
+    portraitLabel: 'Healthcare AI',
+    workCta: 'Selected work',
+  },
+  projects: {
+    title: 'Built for evidence,\nmade to hold up.',
+    intro:
+      'Selected systems across medical imaging, reliable language models, and clinically grounded machine learning.',
+    allCta: 'All projects',
+    caseStudyLabel: 'case study',
+  },
+  experience: {
+    title: 'About the work\n(&) the journey',
+    intro:
+      'From mathematics to clinical AI — a path shaped by building, publishing, and testing systems where evidence matters.',
+    cvCta: 'Full CV',
+    educationLabel: 'Education',
+    honorsLabel: 'Honors & awards',
+  },
+  about: {
+    title: 'Research,\napplied differently.',
+    practiceLabel: 'Areas of practice',
+  },
 } as const;
 
 // -----------------------------------------------------------------------------

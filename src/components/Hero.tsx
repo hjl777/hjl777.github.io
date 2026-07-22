@@ -1,20 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
+  ArrowDown,
   ArrowRight,
-  MapPin,
-  Mail,
   Check,
   Copy,
   FileText,
   Github,
-  Linkedin,
   GraduationCap,
+  Linkedin,
+  Mail,
   Fingerprint,
 } from 'lucide-react';
-import { profile, contacts, projects } from '../data';
-import VesselField from './VesselField';
-import ClinicalDepthPoster from './ClinicalDepthPoster';
+import { contacts, profile, siteCopy } from '../data';
 
 const SOCIAL_ICONS = {
   mail: Mail,
@@ -24,12 +22,46 @@ const SOCIAL_ICONS = {
   orcid: Fingerprint,
 } as const;
 
-// The featured QCA project — the strongest artifact, surfaced in the hero.
-const qca = projects.find((p) => p.id === 'proj-stent-marker');
-
-// One-line credential summary, keyed off the highlight values in data.ts.
 const stat = (label: string) =>
   profile.highlights.find((h) => h.label.toLowerCase().includes(label))?.value;
+
+/** Scene H0 — first visit only: a three-line intro mark, then the sheet
+ * lifts. Session-gated; skipped entirely under reduced motion. */
+function IntroGate() {
+  const [show, setShow] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+    try {
+      return sessionStorage.getItem('intro-seen') !== '1';
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    if (!show) return;
+    try {
+      sessionStorage.setItem('intro-seen', '1');
+    } catch {
+      /* private mode — show it every time, still harmless */
+    }
+    const t = window.setTimeout(() => setShow(false), 850);
+    return () => window.clearTimeout(t);
+  }, [show]);
+
+  if (!show) return null;
+  return (
+    <div className="intro-gate" aria-hidden="true">
+      <p>
+        {['HJL', 'Portfolio', String(new Date().getFullYear())].map((line, i) => (
+          <span key={line} style={{ animationDelay: `${i * 45}ms` }}>
+            {line}
+          </span>
+        ))}
+      </p>
+    </div>
+  );
+}
 
 export default function Hero() {
   const [copied, setCopied] = useState(false);
@@ -45,125 +77,98 @@ export default function Hero() {
   };
 
   return (
-    <section id="home" className="relative overflow-hidden pb-24 pt-28 sm:pb-32 sm:pt-36">
-      <VesselField />
-
-      <div className="container-prose relative">
-        <div className="flex flex-col gap-4 border-b border-ink-300 pb-5 sm:flex-row sm:items-end sm:justify-between dark:border-ink-700">
-          <div>
-            <div className="section-kicker">{profile.role.split('—')[0].trim()}</div>
-            <h1 className="font-serif text-lg font-semibold tracking-tight text-ink-900 dark:text-ink-50">
-              {profile.nameKr} · {profile.name}
-            </h1>
-          </div>
-          {profile.status && (
-            <p className="status-chip">
-              <span className="h-2 w-2 rounded-full bg-clinic-500" />
-              {profile.status}
-            </p>
-          )}
+    <section id="home" className="nesh-hero">
+      <IntroGate />
+      <div className="container-prose relative z-10">
+        <div className="hero-meta animate-hero-fade">
+          <p>{profile.role.split('·')[0].trim()}</p>
+          <p className="hidden sm:block">Seoul · KR</p>
+          <p>{new Date().getFullYear()} {siteCopy.hero.portfolioLabel}</p>
         </div>
 
-        <div className="mt-10 grid min-w-0 grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-14">
-          <div className="min-w-0 lg:col-span-7">
-            {profile.thesis && (
-              <p className="hero-display max-w-[11ch] text-ink-900 dark:text-ink-50">
-                {profile.thesis}
+        <div className="hero-grid">
+          <div className="min-w-0 pt-6 lg:pt-10">
+            <p className="hero-eyebrow animate-hero-fade">{siteCopy.hero.eyebrow}</p>
+            <h1 className="nesh-display" aria-label={profile.displayTitle}>
+              {profile.displayTitle.split('\n').map((line, index) => (
+                <span key={line} className="hero-line-mask">
+                  <span style={{ animationDelay: `${120 + index * 110}ms` }}>{line}</span>
+                </span>
+              ))}
+            </h1>
+
+            <div className="mt-8 grid gap-8 border-t border-black/25 pt-6 sm:grid-cols-2 sm:items-end lg:mt-10">
+              <p className="max-w-md text-sm leading-relaxed text-ink-700 sm:text-base">
+                {profile.shortBio}
               </p>
-            )}
-
-            <p className="mt-9 max-w-xl text-base leading-relaxed text-ink-700 dark:text-ink-300">
-              {profile.shortBio}
-            </p>
-
-            <p className="mt-7 border-y border-ink-200 py-4 text-sm text-ink-600 dark:border-ink-800 dark:text-ink-400">
-              <span className="font-medium text-ink-900 dark:text-ink-100">
-                {stat('publication')} publications
-              </span>
-              <span className="mx-2 text-ink-300 dark:text-ink-700">·</span>
-              h-index {stat('h-index')}
-              <span className="mx-2 text-ink-300 dark:text-ink-700">·</span>
-              {stat('citation')} citations
-              <span className="mx-2 text-ink-300 dark:text-ink-700">·</span>
-              <a
-                href={contacts.find((c) => c.icon === 'scholar')?.href}
-                target="_blank"
-                rel="noreferrer"
-                className="text-clinic-700 hover:text-clinic-900 dark:text-clinic-400 dark:hover:text-clinic-300"
-              >
-                Google Scholar
-              </a>
-            </p>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              {qca && (
-                <Link
-                  to={`/projects/${qca.id}`}
-                  viewTransition
-                  className="group inline-flex items-center gap-2 rounded-full bg-ink-900 px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-ink-800 dark:bg-clinic-500 dark:text-ink-950 dark:hover:bg-clinic-400"
-                >
-                  View QCA case study
-                  <ArrowRight size={16} />
+              <div className="flex flex-wrap gap-3 sm:justify-end">
+                <Link to="/#projects" className="nesh-button nesh-button-dark">
+                  {siteCopy.hero.workCta} <ArrowRight size={15} />
                 </Link>
-              )}
-              <a
-                href={profile.cvUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-ink-300 px-5 py-2.5 text-sm font-medium text-ink-800 transition-colors duration-200 hover:border-clinic-500 hover:text-clinic-800 dark:border-ink-700 dark:text-ink-200 dark:hover:border-clinic-500 dark:hover:text-clinic-300"
-              >
-                <FileText size={16} /> CV
-              </a>
-            </div>
-
-            <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-ink-500 dark:text-ink-400">
-              <span className="inline-flex items-center gap-1.5">
-                <MapPin size={14} /> {profile.location}
-              </span>
-              <button
-                type="button"
-                onClick={copyEmail}
-                title="Copy email"
-                className="inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-ink-900 dark:hover:text-ink-100"
-              >
-                {copied ? <Check size={14} className="text-clinic-600" /> : <Mail size={14} />}
-                {profile.email}
-                {copied ? <span className="text-xs text-clinic-700">Copied!</span> : <Copy size={12} />}
-              </button>
-            </div>
-
-            <div className="mt-5 flex items-center gap-4">
-              {profile.avatarUrl && (
-                <img
-                  src={profile.avatarUrl}
-                  alt={profile.name}
-                  className="h-12 w-12 rounded-full object-cover object-top ring-1 ring-ink-300 dark:ring-ink-700"
-                />
-              )}
-              <span className="inline-flex items-center gap-3">
-                {contacts.filter((c) => c.icon !== 'mail').map((c) => {
-                  const Icon = SOCIAL_ICONS[c.icon];
-                  return (
-                    <a
-                      key={c.icon}
-                      href={c.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={c.label}
-                      title={c.label}
-                      className="text-ink-500 transition-colors duration-200 hover:text-clinic-700 dark:text-ink-400 dark:hover:text-clinic-300"
-                    >
-                      <Icon size={19} />
-                    </a>
-                  );
-                })}
-              </span>
+                <a href={profile.cvUrl} target="_blank" rel="noreferrer" className="nesh-button">
+                  <FileText size={15} /> CV
+                </a>
+              </div>
             </div>
           </div>
 
-          <aside className="min-w-0 w-full max-w-[520px] lg:col-span-5 lg:justify-self-end">
-            {qca && <ClinicalDepthPoster projectId={qca.id} />}
-          </aside>
+          <div className="hero-portrait-wrap">
+            <div className="hero-portrait-reveal">
+              <img
+                src={profile.avatarUrl}
+                alt={profile.name}
+                fetchPriority="high"
+                className="hero-portrait"
+              />
+            </div>
+            <div className="hero-portrait-caption">
+              <span>{profile.nameKr} · {profile.name}</span>
+              <span>{siteCopy.hero.portraitLabel}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="hero-proof animate-hero-fade">
+          <div>
+            <strong>{stat('publication')}+</strong>
+            <span>Publications</span>
+          </div>
+          <div>
+            <strong>{stat('citation')}+</strong>
+            <span>Citations</span>
+          </div>
+          <div>
+            <strong>{stat('h-index')}</strong>
+            <span>h-index</span>
+          </div>
+          <div className="hero-contact">
+            <button type="button" onClick={copyEmail}>
+              {copied ? <Check size={14} /> : <Copy size={14} />}
+              {copied ? 'Copied' : profile.email}
+            </button>
+            <span>
+              {contacts.filter((contact) => contact.icon !== 'mail').map((contact) => {
+                const Icon = SOCIAL_ICONS[contact.icon];
+                return (
+                  <a key={contact.icon} href={contact.href} target="_blank" rel="noreferrer" aria-label={contact.label}>
+                    <Icon size={17} />
+                  </a>
+                );
+              })}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <a href="#projects" className="hero-scroll" aria-label="Scroll to selected work">
+        Scroll <ArrowDown size={14} />
+      </a>
+
+      <div className="nesh-marquee" aria-hidden="true">
+        <div>
+          {[...profile.traits, ...profile.traits].map((trait, index) => (
+            <span key={`${trait}-${index}`}>{trait}<i>↗</i></span>
+          ))}
         </div>
       </div>
     </section>

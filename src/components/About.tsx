@@ -1,81 +1,62 @@
-import { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { profile, sectionLabels } from '../data';
-import { useReveal, revealClass } from '../hooks/useReveal';
+import type { CSSProperties } from 'react';
+import { ArrowUpRight } from 'lucide-react';
+import { profile, sectionLabels, siteCopy } from '../data';
 import { renderRich } from '../lib/richtext';
-import FrameTicks from './FrameTicks';
+import { useReveal } from '../hooks/useReveal';
 
-/**
- * Long-form narrative moved out of the hero: the full bio, the "how I work"
- * statement, and research interests. First paragraph is always visible; the
- * rest folds behind a Read-more toggle so the section scans fast.
- */
 export default function About() {
-  const [open, setOpen] = useState(false);
-  const { ref, visible } = useReveal<HTMLDivElement>();
-
-  const [lead, ...rest] = profile.longBio;
+  const { ref, visible } = useReveal<HTMLDivElement>({ threshold: 0.05 });
+  const caps = useReveal<HTMLDivElement>({ threshold: 0.15 });
 
   return (
-    <section id="about" className="section">
-      <div ref={ref} className={`container-prose ${revealClass(visible)}`}>
-        <div className="section-kicker">{sectionLabels.about}</div>
-        <h2 className="section-title">The longer story</h2>
+    <section id="about" className="nesh-about">
+      <div ref={ref} data-in={visible ? 'true' : 'false'} className="container-prose">
+        <p className="io-fade nesh-light-kicker">{sectionLabels.about}</p>
+        <h2
+          className="io-rise nesh-about-title whitespace-pre-line"
+          style={{ '--d': '60ms' } as CSSProperties}
+        >
+          {siteCopy.about.title}
+        </h2>
 
-        <div className="mt-6 grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
-          <div className="md:col-span-2 space-y-4 text-[15.5px] leading-relaxed text-ink-700 dark:text-ink-300">
-            <p>{renderRich(lead)}</p>
-
-            {open && rest.map((p, i) => <p key={i}>{renderRich(p)}</p>)}
+        <div className="nesh-about-grid">
+          <div
+            className="io-settle-l nesh-about-portrait"
+            style={{ '--d': '140ms' } as CSSProperties}
+          >
+            <img src={profile.avatarUrl} alt={profile.name} loading="lazy" />
+            <div><span>{profile.name}</span><span>Seoul · KR</span></div>
           </div>
-
-          {profile.avatarUrl && (
-            <div className="md:col-span-1">
-              <div className="relative mx-auto aspect-[4/5] w-full max-w-[240px]">
-                <img
-                  src={profile.avatarUrl}
-                  alt={profile.name}
-                  className="h-full w-full rounded-2xl object-cover object-top ring-1 ring-ink-200 dark:ring-ink-800"
-                />
-                <FrameTicks />
-              </div>
-            </div>
-          )}
+          <div
+            className="io-settle-r nesh-about-story"
+            style={{ '--d': '200ms' } as CSSProperties}
+          >
+            <p className="nesh-about-lead">{renderRich(profile.longBio[0])}</p>
+            {profile.longBio.slice(1).map((paragraph, index) => (
+              <p key={index}>{renderRich(paragraph)}</p>
+            ))}
+          </div>
         </div>
 
-        {open && profile.approach && (
-          <div className="mt-8 max-w-3xl rounded-2xl border border-ink-200 bg-ink-50/60 p-6 dark:border-ink-800 dark:bg-ink-900/50">
-            <p className="section-kicker !mb-3">How I work</p>
-            <div className="space-y-3 text-[14.5px] leading-relaxed text-ink-700 dark:text-ink-300">
-              {profile.approach.map((p, i) => (
-                <p key={i}>{renderRich(p)}</p>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <button
-          onClick={() => setOpen((v) => !v)}
-          className="mt-6 inline-flex items-center gap-1.5 rounded-full border border-ink-200 bg-white px-4 py-2 text-sm font-medium text-ink-700 transition-colors duration-200 hover:border-indigo-300 hover:text-indigo-700 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300 dark:hover:border-indigo-500 dark:hover:text-indigo-300"
+        <div
+          ref={caps.ref}
+          data-in={caps.visible ? 'true' : 'false'}
+          className="nesh-capabilities"
         >
-          {open ? (
-            <><ChevronUp size={15} /> Show less</>
-          ) : (
-            <><ChevronDown size={15} /> Read the full story</>
-          )}
-        </button>
-
-        <div className="mt-10 max-w-3xl">
-          <p className="mb-3 text-xs font-medium uppercase tracking-wider text-ink-400 dark:text-ink-500">
-            Research interests
-          </p>
-          <ul className="flex flex-wrap gap-2">
-            {profile.interests.map((i) => (
-              <li key={i} className="chip">
-                {i}
+          <p className="io-fade">{siteCopy.about.practiceLabel}</p>
+          <ol>
+            {profile.interests.map((interest, index) => (
+              <li
+                key={interest}
+                className="io-fade"
+                style={{ '--d': `${index * 50}ms` } as CSSProperties}
+              >
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <h3>{interest}</h3>
+                <ArrowUpRight size={18} />
               </li>
             ))}
-          </ul>
+          </ol>
         </div>
       </div>
     </section>

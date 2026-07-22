@@ -5,6 +5,10 @@
 @layer base {
   :root {
     color-scheme: light;
+    /* Motion tokens (route-animation plan §3.1) */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+    --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
   }
   html.dark {
     color-scheme: dark;
@@ -101,15 +105,47 @@
     opacity: 0;
   }
 }
+/* Default page↔page: the old view dims and lifts while the new one wipes up
+   from the bottom — a curtain reveal without an extra DOM layer. */
+@keyframes vt-page-dim {
+  to {
+    opacity: 0.35;
+    transform: translateY(-12px);
+  }
+}
+@keyframes vt-curtain-reveal {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
 ::view-transition-old(root) {
-  animation: vt-fade-out 180ms ease-out both;
+  animation: vt-page-dim 360ms var(--ease-in-out) both;
 }
 ::view-transition-new(root) {
-  animation: vt-fade-in 240ms ease-out both;
+  animation: vt-curtain-reveal 720ms var(--ease-in-out) both;
 }
+/* Shared elements (project frame + title) travel on their own soft ease. */
 ::view-transition-group(*) {
-  animation-duration: 280ms;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-duration: 520ms;
+  animation-timing-function: var(--ease-soft);
+}
+::view-transition-group(root) {
+  animation-duration: 720ms;
+  animation-timing-function: var(--ease-in-out);
+}
+/* Entering a project: the shared card is the lead actor — the root only
+   fades (no transform, so it cannot fight the moving frame). */
+html[data-route-motion='project'] ::view-transition-old(root) {
+  animation: vt-fade-out 220ms ease both;
+}
+html[data-route-motion='project'] ::view-transition-new(root) {
+  animation: vt-fade-in 340ms ease-out 160ms both;
+}
+html[data-route-motion='project'] ::view-transition-group(root) {
+  animation-duration: 520ms;
 }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(*),
@@ -118,4 +154,584 @@
   ::view-transition-image-pair(*) {
     animation: none !important;
   }
+}
+
+/* HeyNESH-inspired editorial system ------------------------------------------------ */
+@keyframes hero-line-rise {
+  from { transform: translateY(108%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes hero-fade {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes portrait-reveal {
+  from { clip-path: inset(100% 0 0 0); transform: scale(1.08); }
+  to { clip-path: inset(0 0 0 0); transform: scale(1); }
+}
+
+@keyframes marquee-shift {
+  to { transform: translateX(-50%); }
+}
+
+.nesh-hero {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #d5cfbe;
+  color: #11110f;
+  padding: 7.5rem 0 8.5rem;
+}
+
+.dark .nesh-hero,
+.dark .nesh-journey {
+  background: #c7c0ae;
+  color: #0b0b0a;
+}
+
+.hero-meta {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.24);
+  padding-bottom: 0.9rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.65rem;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.32fr) minmax(300px, 0.68fr);
+  gap: clamp(2rem, 4vw, 5rem);
+  align-items: end;
+  min-height: calc(100svh - 14rem);
+}
+
+.hero-eyebrow {
+  margin-bottom: 1.2rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.nesh-display {
+  max-width: 10ch;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(4.4rem, 8vw, 9rem);
+  font-weight: 500;
+  line-height: 0.84;
+  letter-spacing: -0.075em;
+}
+
+.hero-line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.09em;
+}
+
+.hero-line-mask > span {
+  display: block;
+  animation: hero-line-rise 900ms cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.animate-hero-fade {
+  animation: hero-fade 760ms 520ms cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.hero-portrait-wrap {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-top: 2rem;
+}
+
+.hero-portrait-reveal {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #beb6a3;
+  animation: portrait-reveal 1050ms 160ms cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.hero-portrait {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: saturate(0.72) contrast(1.04);
+  transition: transform 900ms cubic-bezier(.16, 1, .3, 1), filter 600ms ease;
+}
+
+.hero-portrait-wrap:hover .hero-portrait {
+  transform: scale(1.025);
+  filter: saturate(1) contrast(1.02);
+}
+
+.hero-portrait-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.26);
+  padding-top: 0.8rem;
+  margin-top: 0.8rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.nesh-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  border-radius: 999px;
+  padding: 0.78rem 1.15rem;
+  font-size: 0.75rem;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: transform 280ms cubic-bezier(.16, 1, .3, 1), background-color 280ms, color 280ms;
+}
+
+.nesh-button:hover { transform: translateY(-3px); }
+.nesh-button-dark { background: #11110f; color: white; border-color: #11110f; }
+
+.hero-proof {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 0.5fr)) minmax(260px, 1.5fr);
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+  margin-top: 3rem;
+  padding-top: 1.2rem;
+}
+
+.hero-proof > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.hero-proof strong { font-size: clamp(1.6rem, 2.3vw, 2.5rem); font-weight: 500; line-height: 1; }
+.hero-proof span { font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.12em; }
+.hero-contact { align-items: flex-end; justify-content: space-between; }
+.hero-contact button { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.72rem; }
+.hero-contact > span { display: flex; gap: 0.8rem; }
+.hero-contact a { transition: transform 220ms ease; }
+.hero-contact a:hover { transform: translateY(-3px); }
+
+.hero-scroll {
+  position: absolute;
+  left: 1.5rem;
+  bottom: 5.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  transform: rotate(-90deg);
+  transform-origin: left center;
+}
+
+.nesh-marquee {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  overflow: hidden;
+  border-block: 1px solid rgba(0, 0, 0, 0.24);
+  padding: 1.1rem 0;
+}
+
+.nesh-marquee > div {
+  display: flex;
+  width: max-content;
+  /* Starts once the hero has settled; pauses under the pointer. */
+  animation: marquee-shift 26s linear 1s infinite;
+}
+.nesh-marquee:hover > div {
+  animation-play-state: paused;
+}
+
+.nesh-marquee span {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.8rem;
+  padding-right: 1.8rem;
+  font-size: clamp(1.1rem, 1.5vw, 1.45rem);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.nesh-marquee i { font-style: normal; opacity: 0.4; }
+
+.nesh-projects {
+  background: #10100f;
+  color: #f2efe6;
+  padding: clamp(7rem, 12vw, 12rem) 0;
+}
+
+.nesh-projects-head {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 4rem;
+  align-items: end;
+  padding-bottom: clamp(4rem, 8vw, 8rem);
+}
+
+.nesh-light-kicker {
+  margin-bottom: 1.2rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.nesh-projects-head h2,
+.nesh-journey-head h2,
+.nesh-about-title {
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(3.8rem, 7.4vw, 8.2rem);
+  font-weight: 500;
+  line-height: 0.88;
+  letter-spacing: -0.065em;
+}
+
+.nesh-projects-intro { max-width: 24rem; justify-self: end; }
+.nesh-projects-intro p { color: rgba(255,255,255,.64); line-height: 1.65; }
+.nesh-projects-intro a { display: inline-flex; gap: .5rem; align-items: center; margin-top: 1.6rem; border-bottom: 1px solid rgba(255,255,255,.5); padding-bottom: .35rem; font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; }
+
+.nesh-work-row { padding: 1.4rem 0 4.5rem; }
+.nesh-work-rule { display: block; height: 1px; background: rgba(255,255,255,.22); }
+.nesh-work-row:last-child { border-bottom: 1px solid rgba(255,255,255,.22); }
+.nesh-work-index { display: flex; justify-content: space-between; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .65rem; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: .12em; }
+.nesh-work-link { display: grid; grid-template-columns: minmax(0, .9fr) minmax(340px, 1.1fr); gap: clamp(2.5rem, 6vw, 7rem); align-items: center; margin-top: 2rem; }
+.nesh-work-copy h3 { max-width: 13ch; margin-top: 1.1rem; font-size: clamp(2.5rem, 4.4vw, 5rem); font-weight: 500; line-height: .94; letter-spacing: -.055em; transition: transform 500ms cubic-bezier(.16,1,.3,1); }
+.nesh-work-link:hover .nesh-work-copy h3 { transform: translateX(12px); }
+.nesh-work-copy > p { max-width: 35rem; margin-top: 1.8rem; color: rgba(255,255,255,.58); line-height: 1.65; font-size: .86rem; }
+.nesh-work-status { border: 1px solid rgba(255,255,255,.28); border-radius: 999px; padding: .3rem .6rem; font-size: .6rem; text-transform: uppercase; letter-spacing: .12em; }
+.nesh-work-stack { display: flex; flex-wrap: wrap; gap: .9rem; margin-top: 1.7rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .6rem; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.48); }
+.nesh-work-media { position: relative; overflow: hidden; }
+.nesh-work-media > div { border: 0; border-radius: 0; transform: scale(1.002); transition: transform 800ms cubic-bezier(.16,1,.3,1); }
+.nesh-work-link:hover .nesh-work-media > div { transform: scale(1.025); }
+.nesh-work-arrow { position: absolute; top: 1rem; right: 1rem; display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 999px; color: #10100f; background: #d5cfbe; transform: scale(0); transition: transform 400ms cubic-bezier(.16,1,.3,1); }
+.nesh-work-link:hover .nesh-work-arrow { transform: scale(1); }
+.nesh-work-metrics { display: flex; gap: 3rem; margin-top: 2rem; margin-left: calc(45% + 2rem); }
+.nesh-work-metrics dd { font-size: 1.4rem; }
+.nesh-work-metrics dt { margin-top: .35rem; font-size: .58rem; text-transform: uppercase; letter-spacing: .13em; color: rgba(255,255,255,.42); }
+
+.nesh-journey { background: #d5cfbe; color: #11110f; padding: clamp(7rem, 12vw, 12rem) 0; }
+.nesh-journey-head { display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; align-items: end; padding-bottom: 5rem; }
+.nesh-journey-head > div:last-child { max-width: 25rem; justify-self: end; }
+.nesh-journey-head > div:last-child p { line-height: 1.65; color: rgba(17,17,15,.68); }
+.nesh-journey-head a { display: inline-flex; gap: .5rem; align-items: center; margin-top: 1.5rem; border-bottom: 1px solid rgba(0,0,0,.5); padding-bottom: .35rem; font-size: .75rem; text-transform: uppercase; letter-spacing: .1em; }
+.nesh-timeline { border-bottom: 1px solid rgba(0,0,0,.25); }
+.nesh-timeline > li { display: grid; grid-template-columns: 130px minmax(260px,.9fr) minmax(300px,1.1fr); gap: 2.5rem; border-top: 1px solid rgba(0,0,0,.25); padding: 2rem 0; transition: background-color 300ms, padding 300ms; }
+.nesh-timeline > li:hover { background: rgba(255,255,255,.2); padding-inline: 1rem; }
+.nesh-timeline-year { display: flex; align-items: flex-start; justify-content: space-between; }
+.nesh-timeline-year > span { font-size: 3.2rem; line-height: .9; letter-spacing: -.06em; }
+.nesh-timeline-year small { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .6rem; opacity: .5; }
+.nesh-timeline-main > p { font-size: .65rem; text-transform: uppercase; letter-spacing: .12em; opacity: .55; }
+.nesh-timeline-main h3 { max-width: 18ch; margin-top: .8rem; font-size: clamp(1.5rem, 2.2vw, 2.4rem); line-height: 1; letter-spacing: -.035em; }
+.nesh-timeline-main > span { display: block; margin-top: 1rem; font-size: .68rem; opacity: .55; }
+.nesh-timeline-detail { display: flex; justify-content: space-between; gap: 2rem; color: rgba(17,17,15,.67); line-height: 1.6; font-size: .83rem; }
+.nesh-timeline-detail > span { flex: 0 0 auto; display: grid; place-items: center; width: 2.8rem; height: 2.8rem; border: 1px solid rgba(0,0,0,.25); border-radius: 999px; transition: transform 300ms; }
+.nesh-timeline > li:hover .nesh-timeline-detail > span { transform: rotate(45deg); }
+.nesh-credentials { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem,8vw,9rem); margin-top: 7rem; }
+.nesh-credential-label { margin-bottom: 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .65rem; text-transform: uppercase; letter-spacing: .15em; opacity: .55; }
+.nesh-credentials article { border-top: 1px solid rgba(0,0,0,.24); padding: 1.3rem 0 1.8rem; }
+.nesh-credentials article span { font-size: .62rem; opacity: .5; }
+.nesh-credentials article h3 { margin-top: .7rem; font-size: 1.35rem; line-height: 1.15; }
+.nesh-credentials article p { margin-top: .45rem; font-size: .75rem; opacity: .62; }
+
+.nesh-about { background: #10100f; color: #f2efe6; padding: clamp(7rem, 12vw, 12rem) 0; }
+.nesh-about-title { max-width: 10ch; }
+.nesh-about-grid { display: grid; grid-template-columns: minmax(280px,.72fr) minmax(0,1.28fr); gap: clamp(3rem,8vw,9rem); margin-top: 6rem; align-items: start; }
+.nesh-about-portrait img { width: 100%; aspect-ratio: 4/5; object-fit: cover; object-position: top; filter: grayscale(.3); }
+.nesh-about-portrait > div { display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,.25); margin-top: .75rem; padding-top: .75rem; font-size: .62rem; text-transform: uppercase; letter-spacing: .12em; color: rgba(255,255,255,.5); }
+.nesh-about-story { columns: 2; column-gap: 3rem; color: rgba(255,255,255,.6); font-size: .86rem; line-height: 1.75; }
+.nesh-about-story p { break-inside: avoid; margin-bottom: 1.4rem; }
+.nesh-about-story .nesh-about-lead { column-span: all; margin-bottom: 2.5rem; font-size: clamp(1.5rem,2.6vw,2.8rem); line-height: 1.16; letter-spacing: -.025em; color: #f2efe6; }
+.nesh-capabilities { display: grid; grid-template-columns: .45fr 1.55fr; gap: 4rem; margin-top: 8rem; }
+.nesh-capabilities > p { font-size: .66rem; text-transform: uppercase; letter-spacing: .14em; color: rgba(255,255,255,.45); }
+.nesh-capabilities li { display: grid; grid-template-columns: 50px 1fr 30px; align-items: center; border-top: 1px solid rgba(255,255,255,.22); padding: 1.4rem 0; transition: padding 300ms, color 300ms; }
+.nesh-capabilities li:last-child { border-bottom: 1px solid rgba(255,255,255,.22); }
+.nesh-capabilities li:hover { padding-inline: 1rem; color: #d5cfbe; }
+.nesh-capabilities li > span { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .62rem; color: rgba(255,255,255,.42); }
+.nesh-capabilities h3 { font-size: clamp(1.2rem,2vw,2rem); letter-spacing: -.02em; }
+
+@media (max-width: 900px) {
+  .hero-grid, .nesh-projects-head, .nesh-journey-head, .nesh-about-grid { grid-template-columns: 1fr; }
+  .hero-grid { min-height: auto; }
+  .hero-portrait-wrap { max-width: 33rem; padding-top: 0; }
+  .hero-proof { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .hero-contact { grid-column: 1 / -1; align-items: flex-start; margin-top: 1rem; }
+  .nesh-projects-intro, .nesh-journey-head > div:last-child { justify-self: start; }
+  .nesh-work-link { grid-template-columns: 1fr; }
+  .nesh-work-metrics { margin-left: 0; }
+  .nesh-timeline > li { grid-template-columns: 90px 1fr; }
+  .nesh-timeline-detail { grid-column: 2; }
+  .nesh-about-story { columns: 1; }
+}
+
+@media (max-width: 640px) {
+  .nesh-hero { padding-top: 6.5rem; }
+  .nesh-display { font-size: clamp(3.25rem, 16vw, 5.4rem); }
+  .hero-grid { gap: 2.5rem; }
+  .hero-proof { grid-template-columns: repeat(3, 1fr); }
+  .hero-proof strong { font-size: 1.4rem; }
+  .hero-proof span { font-size: .52rem; }
+  .hero-contact { grid-column: 1 / -1; }
+  .hero-scroll { display: none; }
+  .nesh-projects, .nesh-journey, .nesh-about { padding-block: 6rem; }
+  .nesh-projects-head h2, .nesh-journey-head h2, .nesh-about-title { font-size: clamp(3.1rem, 15vw, 5.2rem); }
+  .nesh-work-link { grid-template-columns: 1fr; }
+  .nesh-work-copy h3 { font-size: 2.4rem; }
+  .nesh-work-media { grid-row: 1; }
+  .nesh-timeline > li { grid-template-columns: 1fr; gap: 1.4rem; }
+  .nesh-timeline-detail { grid-column: auto; }
+  .nesh-timeline-year { justify-content: flex-start; gap: 1rem; }
+  .nesh-timeline-year > span { font-size: 2.5rem; }
+  .nesh-credentials, .nesh-capabilities { grid-template-columns: 1fr; }
+  .nesh-about-grid { margin-top: 4rem; }
+  .nesh-about-story .nesh-about-lead { font-size: 1.45rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-line-mask > span,
+  .animate-hero-fade,
+  .hero-portrait-reveal,
+  .nesh-marquee > div {
+    animation: none !important;
+  }
+  .hero-portrait-reveal { clip-path: none; transform: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   Route-animation system (plan 2026-07-22). In-view primitives: a container
+   is armed with data-in="false" only from JS (useReveal), so content stays
+   visible with no JS, for print, and under prefers-reduced-motion. Children
+   pick one primitive each; per-child stagger via inline --d.
+--------------------------------------------------------------------------- */
+.io-fade,
+.io-rise,
+.io-settle,
+.io-settle-l,
+.io-settle-r {
+  transition: opacity 620ms var(--ease-out), transform 620ms var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.io-settle { transition-duration: 420ms; }
+.io-clip,
+.io-clip-x {
+  transition: clip-path 720ms var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.io-clip-x img {
+  transition: transform 760ms var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.io-rule {
+  transform-origin: left;
+  transition: transform 520ms var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+[data-in='false'] .io-fade { opacity: 0; }
+[data-in='false'] .io-rise { opacity: 0; transform: translateY(18px); }
+[data-in='false'] .io-settle { opacity: 0; transform: translateY(8px); }
+[data-in='false'] .io-settle-l { opacity: 0; transform: translateX(-12px); }
+[data-in='false'] .io-settle-r { opacity: 0; transform: translateX(12px); }
+[data-in='false'] .io-clip { clip-path: inset(100% 0 0 0); }
+[data-in='false'] .io-clip-x { clip-path: inset(0 100% 0 0); }
+[data-in='false'] .io-clip-x img { transform: scale(1.045); }
+[data-in='false'] .io-rule { transform: scaleX(0); }
+[data-in='false'] .nesh-work-media > div { transform: scale(1.045); }
+
+/* Route-enter sequences (used on /projects and /projects/:id first screens) */
+@keyframes enter-rise {
+  from { opacity: 0; transform: translateY(14px); }
+}
+.enter-item {
+  animation: enter-rise 560ms var(--ease-out) both;
+  animation-delay: calc(var(--enter-base, 0ms) + var(--enter-delay, 0ms));
+}
+.enter-line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.enter-line-mask > span {
+  display: block;
+  animation: hero-line-rise 760ms var(--ease-out) both;
+  animation-delay: calc(var(--enter-base, 0ms) + var(--enter-delay, 0ms));
+}
+
+/* Project detail enter: shared-element arrivals hold the copy back until the
+   frame has landed; direct loads run their own title/frame reveal instead. */
+[data-enter='shared'] { --enter-base: 340ms; }
+[data-enter='direct'] { --enter-base: 60ms; }
+@keyframes frame-clip-in {
+  from { clip-path: inset(100% 0 0 0); }
+}
+[data-enter='direct'] .detail-frame-enter {
+  animation: frame-clip-in 680ms var(--ease-out) 120ms both;
+}
+@keyframes body-fade-in {
+  from { opacity: 0; }
+}
+[data-enter='shared'] .detail-body { animation: body-fade-in 520ms ease-out 520ms both; }
+[data-enter='direct'] .detail-body { animation: body-fade-in 520ms ease-out 260ms both; }
+
+/* Detail scroll progress: 2px bar, transform-only updates from rAF. */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  height: 2px;
+  background: #16a7b7;
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+/* Experience timeline: vertical progress line scrubbed by section scroll. */
+.nesh-timeline { position: relative; }
+.nesh-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.45);
+  transform: scaleY(var(--progress, 0));
+  transform-origin: top;
+}
+
+/* Publications: rows never lift — the title underline draws in instead. */
+.pub-title { position: relative; }
+.pub-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  opacity: 0.3;
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 620ms var(--ease-out);
+  transition-delay: calc(var(--d, 0ms) + 140ms);
+}
+[data-in='false'] .pub-title::after { transform: scaleX(0); }
+
+/* News: date marker lights up, text settles 8px. */
+.news-dot {
+  transition: transform 420ms var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+[data-in='false'] .news-dot { transform: scale(0); }
+
+/* First-visit intro mark (Scene H0): three mono lines, then the sheet lifts.
+   Session-gated in JS; ~780ms total, no fake progress. */
+.intro-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  background: #d5cfbe;
+  color: #11110f;
+  pointer-events: none;
+  animation: intro-exit 360ms var(--ease-in-out) 420ms both;
+}
+.dark .intro-gate { background: #c7c0ae; }
+.intro-gate p {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.intro-gate span {
+  display: block;
+  animation: intro-line 420ms var(--ease-out) both;
+}
+@keyframes intro-line {
+  from { opacity: 0; transform: translateY(10px); }
+}
+@keyframes intro-exit {
+  to { clip-path: inset(0 0 100% 0); }
+}
+
+/* /projects filter: leaving rows dip out, survivors FLIP (WAAPI, in JS),
+   arrivals stagger in. */
+.row-exit {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+.row-enter {
+  animation: enter-rise 480ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+/* Lightbox open/close sequence. */
+@keyframes lb-backdrop-in {
+  from { opacity: 0; }
+}
+@keyframes lb-figure-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.965); }
+}
+.lightbox { animation: lb-backdrop-in 220ms ease both; }
+.lightbox figure { animation: lb-figure-in 320ms var(--ease-out) 60ms both; }
+.lightbox-closing { opacity: 0; transition: opacity 220ms ease; }
+.lightbox-closing figure {
+  opacity: 0;
+  transform: translateY(8px) scale(0.97);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter-item,
+  .enter-line-mask > span,
+  .detail-frame-enter,
+  .detail-body,
+  .row-enter,
+  .lightbox,
+  .lightbox figure {
+    animation: none !important;
+  }
+  .intro-gate { display: none; }
+  .io-fade, .io-rise, .io-settle, .io-settle-l, .io-settle-r,
+  .io-clip, .io-clip-x, .io-clip-x img, .io-rule,
+  .pub-title::after, .news-dot, .row-exit {
+    transition: none !important;
+  }
+  [data-in='false'] .io-fade,
+  [data-in='false'] .io-rise,
+  [data-in='false'] .io-settle,
+  [data-in='false'] .io-settle-l,
+  [data-in='false'] .io-settle-r {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  [data-in='false'] .io-clip,
+  [data-in='false'] .io-clip-x { clip-path: none !important; }
+  [data-in='false'] .io-clip-x img,
+  [data-in='false'] .io-rule,
+  [data-in='false'] .nesh-work-media > div,
+  [data-in='false'] .news-dot { transform: none !important; }
+  [data-in='false'] .pub-title::after { transform: scaleX(1) !important; }
+  .nesh-timeline::before { transform: scaleY(1); }
+  .scroll-progress { display: none; }
 }
