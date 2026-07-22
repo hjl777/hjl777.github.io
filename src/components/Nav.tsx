@@ -52,20 +52,22 @@ export default function Nav() {
 
   return (
     <header
-      className={[
-        'fixed inset-x-0 top-0 z-50 transition-all duration-300',
-        scrolled
-          ? 'border-b border-ink-200/70 bg-white/85 backdrop-blur-md dark:border-ink-800/70 dark:bg-ink-950/85'
-          : 'border-b border-transparent bg-white/0 dark:bg-ink-950/0',
-      ].join(' ')}
+      className="fixed inset-x-0 top-3 z-50 px-3 sm:top-4 sm:px-4"
     >
-      <nav className="container-prose flex h-16 items-center justify-between">
+      <nav
+        className={[
+          'container-prose flex h-14 items-center justify-between rounded-full border transition-[background-color,border-color,box-shadow] duration-300',
+          scrolled
+            ? 'border-ink-200/80 bg-paper/90 shadow-[0_12px_30px_-22px_rgba(15,23,42,0.35)] backdrop-blur-md dark:border-ink-800/80 dark:bg-ink-950/90'
+            : 'border-transparent bg-transparent',
+        ].join(' ')}
+      >
         <Link
           to="/"
           viewTransition
-          className="group flex items-center gap-2.5 font-serif text-base font-semibold tracking-tight text-ink-900 dark:text-ink-50"
+          className="group flex items-center gap-2.5 text-sm font-semibold tracking-tight text-ink-900 dark:text-ink-50"
         >
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-ink-900 text-[11px] font-bold text-clinic-200 ring-1 ring-ink-900/10 dark:bg-ink-50 dark:text-clinic-700 dark:ring-ink-50/10">
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-ink-900 font-mono text-[10px] font-bold text-clinic-200 dark:bg-ink-50 dark:text-clinic-700">
             HL
           </span>
           <span className="hidden sm:inline">
@@ -79,17 +81,17 @@ export default function Nav() {
             <li key={s.id}>
               <Link
                 to={s.to}
-                viewTransition
+                viewTransition={!isHome}
                 className={[
-                  'relative rounded-full px-3.5 py-1.5 text-sm transition-colors',
+                  'relative px-3 py-2 text-xs font-medium uppercase tracking-[0.08em] transition-colors',
                   active === s.id
-                    ? 'text-ink-900 dark:text-ink-50'
+                    ? 'text-clinic-700 dark:text-clinic-300'
                     : 'text-ink-500 hover:text-ink-900 dark:text-ink-400 dark:hover:text-ink-50',
                 ].join(' ')}
               >
                 {s.label}
                 {active === s.id && (
-                  <span className="absolute inset-0 -z-10 rounded-full bg-ink-100 dark:bg-ink-800" />
+                  <span className="absolute bottom-1 left-3 right-3 h-px bg-clinic-500" />
                 )}
               </Link>
             </li>
@@ -102,7 +104,7 @@ export default function Nav() {
               href={profile.cvUrl}
               target="_blank"
               rel="noreferrer"
-              className="rounded-full bg-ink-900 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-ink-800 dark:bg-indigo-500 dark:hover:bg-indigo-400"
+              className="rounded-full bg-ink-900 px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-white transition-colors hover:bg-ink-800 dark:bg-clinic-500 dark:text-ink-950 dark:hover:bg-clinic-400"
             >
               CV
             </a>
@@ -130,7 +132,7 @@ export default function Nav() {
               <li key={s.id}>
                 <Link
                   to={s.to}
-                  viewTransition
+                  viewTransition={!isHome}
                   onClick={() => setOpen(false)}
                   className={[
                     'block rounded-md px-3 py-2 text-sm',

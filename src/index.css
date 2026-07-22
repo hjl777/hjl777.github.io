@@ -43,16 +43,22 @@
 
 @layer components {
   .container-prose {
-    @apply mx-auto w-full max-w-5xl px-6 sm:px-8;
+    @apply mx-auto w-full max-w-[1280px] px-6 sm:px-8 lg:px-10;
   }
   .section {
-    @apply scroll-mt-24 py-20 sm:py-28;
+    @apply scroll-mt-24 py-24 sm:py-36;
   }
   .section-title {
-    @apply font-serif text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl dark:text-ink-50;
+    @apply font-serif text-5xl font-medium leading-[0.98] tracking-[-0.035em] text-ink-900 sm:text-6xl dark:text-ink-50;
+  }
+  .hero-display {
+    @apply font-serif text-[clamp(3.4rem,6.2vw,6.5rem)] font-medium leading-[0.92] tracking-[-0.055em];
+  }
+  .page-display {
+    @apply font-serif text-[clamp(3rem,6.2vw,6.5rem)] font-medium leading-[0.94] tracking-[-0.045em] text-ink-900 dark:text-ink-50;
   }
   .section-kicker {
-    @apply mb-3 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-clinic-700 dark:text-clinic-400;
+    @apply mb-4 inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-clinic-700 dark:text-clinic-400;
   }
   .section-kicker::before {
     content: '';
@@ -76,7 +82,7 @@
   }
   /* Status chip — availability line in the hero. */
   .status-chip {
-    @apply inline-flex items-center gap-2 rounded-full border border-clinic-200 bg-clinic-50/70 px-3 py-1 text-[13px] font-medium text-clinic-800 dark:border-clinic-500/30 dark:bg-clinic-500/10 dark:text-clinic-200;
+    @apply inline-flex max-w-full items-center gap-2 whitespace-normal rounded-full border border-clinic-200 bg-clinic-50/70 px-3 py-1 text-[12px] font-medium text-clinic-800 sm:text-[13px] dark:border-clinic-500/30 dark:bg-clinic-500/10 dark:text-clinic-200;
   }
 }
 
@@ -85,27 +91,25 @@
    Card thumbnails carry view-transition-name: project-<id>, so matching
    elements morph between the home Selected Works grid and /projects.
    Browsers without the API fall back to instant navigation. */
-@keyframes vt-slide-out {
+@keyframes vt-fade-out {
   to {
     opacity: 0;
-    transform: translateY(-8px);
   }
 }
-@keyframes vt-slide-in {
+@keyframes vt-fade-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
   }
 }
 ::view-transition-old(root) {
-  animation: vt-slide-out 250ms ease-out both;
+  animation: vt-fade-out 180ms ease-out both;
 }
 ::view-transition-new(root) {
-  animation: vt-slide-in 250ms ease-out both;
+  animation: vt-fade-in 240ms ease-out both;
 }
 ::view-transition-group(*) {
-  animation-duration: 250ms;
-  animation-timing-function: ease-out;
+  animation-duration: 280ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(*),

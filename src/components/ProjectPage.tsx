@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowUpRight, Users, X, ZoomIn } from 'lucide-react';
 import { projects, type Project } from '../data';
+import BrowserFrame from './BrowserFrame';
 
 type GalleryImage = NonNullable<Project['gallery']>[number];
 
@@ -85,7 +86,7 @@ export default function ProjectPage() {
   }
 
   return (
-    <section className="section pt-28 sm:pt-32">
+    <section className="section pt-28 sm:pt-36">
       <div className="container-prose">
         <Link
           to="/projects"
@@ -95,52 +96,64 @@ export default function ProjectPage() {
           <ArrowLeft size={15} /> All projects
         </Link>
 
-        {/* Overview */}
-        <div className="mt-8 max-w-3xl">
-          <div className="section-kicker">Research & Projects</div>
-          <h1 className="font-serif text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl dark:text-ink-50">
-            {project.title}
-          </h1>
-          {project.subtitle && (
-            <p className="mt-3 text-lg text-ink-600 dark:text-ink-400">{project.subtitle}</p>
-          )}
-          {(project.period || project.status) && (
-            <div className="mt-4 flex items-center gap-2.5">
-              {project.period && (
-                <span className="font-mono text-xs text-ink-500 dark:text-ink-400">
-                  {project.period}
-                </span>
-              )}
-              {project.status && <span className="badge-soft">{project.status}</span>}
-            </div>
-          )}
-          {project.collaboration && (
-            <p className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-700 dark:text-indigo-400">
-              <Users size={14} />
-              {project.collaboration}
-            </p>
-          )}
+        <div className="mt-12 grid gap-10 border-b border-ink-300 pb-12 md:grid-cols-12 md:items-end dark:border-ink-700">
+          <div className="md:col-span-9">
+            <div className="section-kicker">Research & Projects</div>
+            <h1
+              className="page-display max-w-[13ch]"
+              style={{ viewTransitionName: `project-title-${project.id}` } as CSSProperties}
+            >
+              {project.title}
+            </h1>
+            {project.subtitle && (
+              <p className="mt-5 font-mono text-sm text-ink-500 dark:text-ink-400">
+                {project.subtitle}
+              </p>
+            )}
+          </div>
+          <div className="space-y-3 md:col-span-3">
+            {(project.period || project.status) && (
+              <div className="flex flex-wrap items-center gap-2.5">
+                {project.period && (
+                  <span className="font-mono text-xs text-ink-500 dark:text-ink-400">
+                    {project.period}
+                  </span>
+                )}
+                {project.status && <span className="badge-soft">{project.status}</span>}
+              </div>
+            )}
+            {project.collaboration && (
+              <p className="inline-flex items-start gap-1.5 text-sm font-medium leading-relaxed text-clinic-700 dark:text-clinic-300">
+                <Users size={14} className="mt-0.5 shrink-0" />
+                {project.collaboration}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-12">
+          <BrowserFrame p={project} active priority />
         </div>
 
         {project.metrics && (
-          <div className="mt-8 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
+          <dl className="mt-8 grid grid-cols-1 border-y border-ink-200 sm:grid-cols-3 dark:border-ink-800">
             {project.metrics.map((m) => (
               <div
                 key={m.label}
-                className="rounded-xl border border-ink-200 bg-white p-4 text-center dark:border-ink-800 dark:bg-ink-900"
+                className="border-b border-ink-200 py-5 last:border-b-0 sm:border-b-0 sm:border-r sm:px-6 sm:first:pl-0 sm:last:border-r-0 dark:border-ink-800"
               >
-                <div className="font-serif text-lg font-semibold text-ink-900 dark:text-ink-50">
+                <dd className="font-serif text-2xl font-semibold text-ink-900 dark:text-ink-50">
                   {m.value}
-                </div>
-                <div className="mt-1 text-[10.5px] font-medium uppercase tracking-wider text-ink-500 dark:text-ink-400">
+                </dd>
+                <dt className="mt-1 text-[10.5px] font-medium uppercase tracking-wider text-ink-500 dark:text-ink-400">
                   {m.label}
-                </div>
+                </dt>
               </div>
             ))}
-          </div>
+          </dl>
         )}
 
-        <p className="mt-8 max-w-3xl text-[15.5px] leading-relaxed text-ink-700 dark:text-ink-300">
+        <p className="mt-10 max-w-3xl font-serif text-xl leading-relaxed text-ink-700 dark:text-ink-300">
           {project.description}
         </p>
 
@@ -174,14 +187,14 @@ export default function ProjectPage() {
 
         {/* Structured case study — the order a research reviewer reads */}
         {project.caseStudy && project.caseStudy.length > 0 && (
-          <div className="mt-14 max-w-3xl border-t border-ink-200 pt-10 dark:border-ink-800">
+          <div className="mt-20 border-t border-ink-300 pt-10 dark:border-ink-700">
             <dl className="space-y-8">
               {project.caseStudy.map((s) => (
-                <div key={s.heading} className="grid grid-cols-1 gap-2 sm:grid-cols-4 sm:gap-6">
+                <div key={s.heading} className="grid grid-cols-1 gap-3 border-b border-ink-200 pb-8 sm:grid-cols-12 sm:gap-8 dark:border-ink-800">
                   <dt className="text-xs font-semibold uppercase tracking-wider text-clinic-700 dark:text-clinic-400">
                     {s.heading}
                   </dt>
-                  <dd className="sm:col-span-3 text-[15px] leading-relaxed text-ink-700 dark:text-ink-300">
+                  <dd className="text-[15px] leading-relaxed text-ink-700 sm:col-span-9 sm:col-start-4 dark:text-ink-300">
                     {s.body}
                   </dd>
                 </div>

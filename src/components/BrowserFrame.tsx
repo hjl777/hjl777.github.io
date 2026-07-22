@@ -5,7 +5,15 @@ import FrameTicks from './FrameTicks';
 
 /** Project media frame matched to the artifact: clinical figure, research
  * chart, or real browser product. Shared by home and the project archive. */
-export default function BrowserFrame({ p, active }: { p: Project; active: boolean }) {
+export default function BrowserFrame({
+  p,
+  active,
+  priority = false,
+}: {
+  p: Project;
+  active: boolean;
+  priority?: boolean;
+}) {
   const cover = p.gallery?.[0];
   const contain = p.mediaFit === 'contain';
   const product = p.mediaKind === 'product';
@@ -69,12 +77,13 @@ export default function BrowserFrame({ p, active }: { p: Project; active: boolea
           <img
             src={cover.src}
             alt={cover.alt}
-            loading="lazy"
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
             decoding="async"
             className={
               contain
                 ? 'h-full w-full bg-white object-contain p-4'
-                : 'h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]'
+                : 'h-full w-full object-cover object-top'
             }
           />
         ) : (

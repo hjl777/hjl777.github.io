@@ -10,7 +10,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import {
   experience,
   contacts,
@@ -32,12 +32,7 @@ const ICONS = {
 // Bullets shown per role before the "+N more" toggle — keeps each entry scannable.
 const BULLETS_SHOWN = 2;
 
-/** P8: each waypoint ignites (dot color + ring pulse, staggered bullets) when it scrolls into view. */
 function TimelineItem({ e }: { e: ExperienceItem }) {
-  const { ref, visible } = useReveal<HTMLLIElement>({
-    threshold: 0.15,
-    rootMargin: '0px 0px -12% 0px',
-  });
   const [showAll, setShowAll] = useState(false);
   const isNow = e.period.includes('Present');
   const hiddenCount = e.bullets.length - BULLETS_SHOWN;
@@ -45,55 +40,27 @@ function TimelineItem({ e }: { e: ExperienceItem }) {
 
   return (
     <li
-      ref={ref}
-      className="relative grid grid-cols-[1.5rem_1fr] gap-x-4 pb-10 last:pb-0 sm:grid-cols-[11rem_1.5rem_1fr] sm:gap-x-6"
+      className="grid grid-cols-1 gap-5 border-t border-ink-300 py-8 first:pt-0 sm:grid-cols-12 sm:gap-8 sm:py-10 dark:border-ink-700"
     >
-      {/* Period (desktop column) */}
-      <div className="hidden sm:block">
-        <p className="font-mono text-xs text-ink-500 dark:text-ink-400">{e.period}</p>
+      <div className="sm:col-span-3">
+        <p className="font-serif text-xl font-semibold text-ink-900 dark:text-ink-100">{e.period}</p>
         {e.location && (
-          <p className="mt-1 inline-flex items-center gap-1 text-xs text-ink-400 dark:text-ink-500">
+          <p className="mt-2 inline-flex items-center gap-1 text-xs text-ink-400 dark:text-ink-500">
             <MapPin size={11} />
             {e.location}
           </p>
         )}
       </div>
 
-      {/* Dot */}
-      <div className="relative pt-1.5">
-        <span
-          className={[
-            'block h-3.5 w-3.5 rounded-full border-2 border-white transition-colors duration-500 dark:border-ink-950',
-            visible
-              ? 'bg-clinic-500 ring-2 ring-clinic-200 dark:ring-clinic-700/60'
-              : 'bg-ink-300 dark:bg-ink-700',
-          ].join(' ')}
-        />
-      </div>
-
-      {/* Content */}
-      <div>
-        <h3 className="font-serif text-base font-semibold text-ink-900 dark:text-ink-50">
+      <div className="sm:col-span-9">
+        <h3 className="font-serif text-2xl font-semibold text-ink-900 dark:text-ink-50">
           {e.role}
           {isNow && <span className="badge-soft ml-2 align-middle">Now</span>}
         </h3>
-        <p className="text-sm text-ink-700 dark:text-ink-300">{e.org}</p>
-        <p className="mt-0.5 font-mono text-xs text-ink-500 sm:hidden dark:text-ink-400">
-          {e.period}
-          {e.location ? ` · ${e.location}` : ''}
-        </p>
-        <ul className="mt-2.5 list-disc space-y-1 pl-5 text-sm text-ink-600 marker:text-ink-300 dark:text-ink-400 dark:marker:text-ink-600">
+        <p className="mt-1 text-sm text-ink-700 dark:text-ink-300">{e.org}</p>
+        <ul className="mt-4 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-ink-600 marker:text-clinic-500 dark:text-ink-400">
           {bullets.map((b, i) => (
-            <li
-              key={i}
-              className={[
-                'scene-anim transition-all duration-500',
-                visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1',
-              ].join(' ')}
-              style={{ transitionDelay: visible ? `${150 + i * 80}ms` : '0ms' }}
-            >
-              {b}
-            </li>
+            <li key={i}>{b}</li>
           ))}
         </ul>
         {hiddenCount > 0 && (
@@ -115,35 +82,6 @@ function TimelineItem({ e }: { e: ExperienceItem }) {
 
 export default function Experience() {
   const { ref, visible } = useReveal<HTMLDivElement>();
-  const olRef = useRef<HTMLOListElement>(null);
-  const [lineP, setLineP] = useState(0);
-
-  // P8: the timeline's vertical line draws downward with scroll progress.
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setLineP(1);
-      return;
-    }
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const el = olRef.current;
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      setLineP(Math.min(Math.max((window.innerHeight * 0.65 - r.top) / r.height, 0), 1));
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
   return (
     <section id="cv" className="section bg-ink-50/50 dark:bg-ink-900/40">
       <div ref={ref} className={`container-prose ${revealClass(visible, 'left')}`}>
@@ -167,18 +105,7 @@ export default function Experience() {
           </a>
         </div>
 
-        {/* Timeline */}
-        <ol ref={olRef} className="mt-12 relative">
-          <span
-            aria-hidden
-            className="absolute left-[7px] top-2 bottom-2 w-px bg-ink-200 sm:left-[calc(11rem+7px)] dark:bg-ink-800"
-          />
-          {/* Scroll-driven progress line (transform-only) */}
-          <span
-            aria-hidden
-            className="absolute left-[7px] top-2 bottom-2 w-px origin-top bg-indigo-500/60 sm:left-[calc(11rem+7px)]"
-            style={{ transform: `scaleY(${lineP})` }}
-          />
+        <ol className="mt-14">
           {experience.map((e) => (
             <TimelineItem key={`${e.org}-${e.period}`} e={e} />
           ))}

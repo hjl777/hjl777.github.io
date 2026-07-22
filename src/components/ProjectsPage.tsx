@@ -1,49 +1,43 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { projects } from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
 import BrowserFrame from './BrowserFrame';
 
-/**
- * /projects — full archive in a sunnypatel.net-style alternating two-column
- * layout: framed screenshot (~45%) beside text (~55%), image side flipping
- * every other row on md+, stacked (image first) on mobile. The reveal
- * animation runs on the text column only — hiding the framed image would
- * corrupt its view-transition morph snapshot.
- */
 function ProjectRow({ p, index }: { p: (typeof projects)[number]; index: number }) {
   const { ref, visible } = useReveal<HTMLElement>({ threshold: 0.15 });
-  const imageRight = index % 2 === 1;
 
   return (
     <article
       ref={ref}
-      className="grid grid-cols-1 items-center gap-8 py-16 first:pt-4 sm:py-20 md:grid-cols-12 md:gap-12"
+      className="grid grid-cols-1 gap-7 border-t border-ink-300 py-10 last:border-b sm:py-12 lg:grid-cols-12 lg:items-center lg:gap-10 dark:border-ink-700"
     >
+      <div className="flex items-center justify-between lg:col-span-1 lg:block lg:self-start">
+        <span className="font-mono text-sm text-ink-400 dark:text-ink-500">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        {p.status && <span className="badge-soft lg:mt-3">{p.status}</span>}
+      </div>
+
       <Link
         to={`/projects/${p.id}`}
         viewTransition
         aria-label={`${p.title} — case study`}
-        className={['group block md:col-span-5', imageRight ? 'md:order-2' : ''].join(' ')}
+        className="group block lg:col-span-4"
       >
         <BrowserFrame p={p} active={visible} />
       </Link>
 
-      <div className={`md:col-span-7 ${revealClass(visible, 'up')}`}>
-        {/* Index · period · status */}
-        <div className="flex items-center gap-3">
-          <span className="font-mono text-sm text-ink-300 dark:text-ink-600">
-            {String(index + 1).padStart(2, '0')}
-          </span>
-          {p.period && (
-            <span className="font-mono text-xs text-ink-400 dark:text-ink-500">{p.period}</span>
-          )}
-          {p.status && <span className="badge-soft">{p.status}</span>}
-        </div>
-
+      <div className={`lg:col-span-6 ${revealClass(visible)}`}>
+        {p.period && (
+          <span className="font-mono text-xs text-ink-400 dark:text-ink-500">{p.period}</span>
+        )}
         <Link to={`/projects/${p.id}`} viewTransition className="group/title">
-          <h2 className="mt-3 font-serif text-xl font-semibold leading-snug text-ink-900 transition-colors duration-200 group-hover/title:text-indigo-700 sm:text-2xl dark:text-ink-50 dark:group-hover/title:text-indigo-300">
+          <h2
+            className="mt-3 font-serif text-3xl font-medium leading-[1.05] tracking-tight text-ink-900 transition-colors duration-200 group-hover/title:text-clinic-700 sm:text-4xl dark:text-ink-50 dark:group-hover/title:text-clinic-300"
+            style={{ viewTransitionName: `project-title-${p.id}` } as CSSProperties}
+          >
             {p.title}
           </h2>
         </Link>
@@ -53,7 +47,7 @@ function ProjectRow({ p, index }: { p: (typeof projects)[number]; index: number 
           </p>
         )}
 
-        <p className="mt-4 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
+        <p className="mt-5 line-clamp-3 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
           {p.description}
         </p>
 
@@ -68,26 +62,11 @@ function ProjectRow({ p, index }: { p: (typeof projects)[number]; index: number 
           ))}
         </div>
 
-        {p.metrics && (
-          <div className="mt-6 flex flex-wrap gap-x-10 gap-y-3">
-            {p.metrics.slice(0, 2).map((m) => (
-              <div key={m.label}>
-                <div className="font-serif text-lg font-semibold text-ink-900 dark:text-ink-50">
-                  {m.value}
-                </div>
-                <div className="mt-0.5 text-[10px] uppercase tracking-wider text-ink-500 dark:text-ink-400">
-                  {m.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
         <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
           <Link
             to={`/projects/${p.id}`}
             viewTransition
-            className="group/cs inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 transition-colors duration-200 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
+            className="group/cs inline-flex items-center gap-1 text-sm font-semibold text-clinic-700 transition-colors duration-200 hover:text-clinic-900 dark:text-clinic-300 dark:hover:text-clinic-200"
           >
             Case study
             <ArrowRight
@@ -108,6 +87,17 @@ function ProjectRow({ p, index }: { p: (typeof projects)[number]; index: number 
             </a>
           ))}
         </div>
+      </div>
+
+      <div className="hidden justify-self-end lg:col-span-1 lg:block">
+        <Link
+          to={`/projects/${p.id}`}
+          viewTransition
+          aria-label={`Open ${p.title}`}
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-ink-300 text-ink-600 transition-colors hover:border-clinic-500 hover:text-clinic-700 dark:border-ink-700 dark:text-ink-300 dark:hover:border-clinic-500 dark:hover:text-clinic-300"
+        >
+          <ArrowRight size={17} />
+        </Link>
       </div>
     </article>
   );
@@ -135,7 +125,7 @@ export default function ProjectsPage() {
   const filtered = tag === 'All' ? projects : projects.filter((p) => p.stack.includes(tag));
 
   return (
-    <section className="section pt-28 sm:pt-32">
+    <section className="section pt-28 sm:pt-36">
       <div className="container-prose">
         <Link
           to="/"
@@ -145,10 +135,12 @@ export default function ProjectsPage() {
           <ArrowLeft size={15} /> Home
         </Link>
 
-        <div className="mt-8 max-w-2xl">
+        <div className="mt-12 grid gap-8 border-b border-ink-300 pb-12 md:grid-cols-12 md:items-end dark:border-ink-700">
+          <div className="md:col-span-8">
           <div className="section-kicker">Research & Projects</div>
-          <h1 className="section-title">All Projects</h1>
-          <p className="mt-3 text-ink-600 dark:text-ink-400">
+            <h1 className="page-display">All Projects</h1>
+          </div>
+          <p className="text-sm leading-relaxed text-ink-600 md:col-span-4 dark:text-ink-400">
             Systems and studies, built end to end — from population-scale
             prediction to medical vision and trustworthy LLMs.
           </p>
@@ -172,7 +164,7 @@ export default function ProjectsPage() {
           ))}
         </div>
 
-        <div className="mt-6 divide-y divide-ink-100 dark:divide-ink-800/60">
+        <div className="mt-10">
           {filtered.map((p, i) => (
             <ProjectRow key={p.id} p={p} index={i} />
           ))}
