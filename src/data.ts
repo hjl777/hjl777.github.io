@@ -58,6 +58,19 @@ export interface Project {
   }[];
 }
 
+// One plate of the hero "Clinical Evidence Stack" — a layer of the QCA pipeline
+// shown as a lightbox plane. `src` points at an existing research artifact; the
+// crop of that artifact is a presentation detail and lives in the component.
+export interface EvidenceLayer {
+  id: 'segment' | 'measure' | 'check';
+  label: string;      // mono plate label, e.g. "SEGMENT"
+  title: string;      // control-button text
+  meta: string;       // short mono readout on the plate header
+  caption: string;
+  alt: string;
+  src: string;
+}
+
 export interface ExperienceItem {
   role: string;
   org: string;
@@ -83,6 +96,16 @@ export interface NewsItem {
 // -----------------------------------------------------------------------------
 // PROFILE
 // -----------------------------------------------------------------------------
+
+// Google Scholar profile totals (read from the live profile, 2026-07-22).
+// Single source for every stat surface: hero credential line and publications
+// header. The OG description in index.html repeats these — keep it in sync.
+export const scholarTotals = {
+  publications: 26,
+  citations: 572,
+  hIndex: 13,
+} as const;
+
 export const profile = {
   name: 'Hojae Lee',
   nameKr: '이호재',
@@ -112,7 +135,7 @@ export const profile = {
   ],
   longBio: [
     'My research focuses on two problems where wrong answers have clinical consequences: automated coronary vessel analysis, where a mis-measured diameter can alter a treatment decision, and LLM reliability in medical Q&A, where a hallucinated fact can mislead a clinician. Both problems share a common question: how do you make a learned system behave as if it understands the rules, not just the patterns?',
-    'I have authored 25 SCI/SCIE papers (6 co-first, 1 corresponding, 404 citations, h-index 12) in venues including The Lancet Regional Health, JMIR, and Scientific Reports — published within two years of graduate research at Kyung Hee University\'s Center for Digital Health and Asan Medical Center.',
+    'I have authored 26 publications (6 co-first, 1 corresponding, 572 citations, h-index 13) in venues including The Lancet Regional Health, JMIR, and Scientific Reports — published within two years of graduate research at Kyung Hee University\'s Center for Digital Health and Asan Medical Center.',
     'In 2024, selected as a fully-funded MSIT/IITP government fellow, I conducted applied AI research at the University of Toronto and MIT — implementing `PEFT` and soft prompting with 0.78–0.94% of full fine-tuning’s trainable parameters (200k vs. 20–25M), then extending the system with a physics ontology-based `KG-RAG` pipeline grounded in Chain-of-Knowledge. The parameter-efficient model improved on lightweight baselines but remained below full fine-tuning.',
     'Across both problems my method is the same: rather than reaching for the newest technique, I first ask whether it actually fits the problem, then verify it with experiments. My mathematics background is the engine of this — it lets me reason about *why* a model\'s output should be trusted, not just whether it scores well. I am seeking a research environment where I can pursue these questions at depth.',
   ],
@@ -151,9 +174,9 @@ export const profile = {
     },
   ],
   highlights: [
-    { label: 'SCI/SCIE Papers', value: '25' },
-    { label: 'Citations', value: '404' },
-    { label: 'h-index', value: '12' },
+    { label: 'Publications', value: String(scholarTotals.publications) },
+    { label: 'Citations', value: String(scholarTotals.citations) },
+    { label: 'h-index', value: String(scholarTotals.hIndex) },
   ],
 };
 
@@ -532,7 +555,7 @@ export const projects: Project[] = [
     ],
     gallery: [
       {
-        src: '/projects/qca-angiogram.png',
+        src: '/projects/qca-angiogram.webp',
         label: 'Pipeline output',
         summary: 'Segmentation, centerline, bifurcations, and diameter profile on one review screen.',
         alt: 'QCA pipeline output on a 2D coronary angiogram with segmentation overlay and diameter profile',
@@ -540,7 +563,7 @@ export const projects: Project[] = [
           'Full pipeline output on a routine 2D angiogram: automated vessel-boundary segmentation (cyan), centerline extraction (yellow), bifurcation detection with proximal/distal reference points (P1–P3, B1), and the resulting per-branch diameter profile with 1 / 2 / 3 mm reference measurements — everything a reviewer needs on one screen.',
       },
       {
-        src: '/projects/qca-murrays-law.png',
+        src: '/projects/qca-murrays-law.webp',
         label: 'Physiological check',
         summary: "Murray's Law across 1,190+ samples (R² > 0.8); not a reference-standard comparison.",
         alt: "Murray's Law consistency-check scatter plot of the QCA pipeline",
@@ -699,6 +722,53 @@ export const projects: Project[] = [
     ],
   },
 ];
+
+// -----------------------------------------------------------------------------
+// QCA EVIDENCE STACK — the hero's layered view of the pipeline, ordered
+// image → measurement → physiological check. Both source figures already exist
+// in the QCA project gallery; no synthetic clinical evidence is created here.
+// The first plate is deliberately NOT called "raw image": the archived angiogram
+// already carries the segmentation overlay, so claiming a raw layer would
+// outrun the artifact.
+// -----------------------------------------------------------------------------
+export const qcaEvidenceStack: EvidenceLayer[] = [
+  {
+    id: 'segment',
+    label: 'SEGMENT',
+    title: 'Segmentation',
+    meta: 'RCA · LAD · LCX',
+    caption:
+      'Sub-pixel vessel-boundary segmentation (cyan) with the extracted centerline (yellow) and automatically detected bifurcation points, on a routine 2D angiogram.',
+    alt: 'Coronary angiogram with automated vessel-boundary segmentation, centerline, and labelled bifurcation points',
+    src: '/projects/qca-angiogram.webp',
+  },
+  {
+    id: 'measure',
+    label: 'MEASURE',
+    title: 'Diameter profile',
+    meta: 'mm along vessel path',
+    caption:
+      'Per-branch diameter profile along the main vessel path, with the pixel-to-mm scale read from the catheter by OCR and 1 / 2 / 3 mm reference measurements.',
+    alt: 'Per-branch diameter profile plotted in millimetres against distance along the main vessel path',
+    src: '/projects/qca-angiogram.webp',
+  },
+  {
+    id: 'check',
+    label: 'CHECK',
+    title: "Murray's Law",
+    meta: 'R² > 0.8 · n > 1,190',
+    caption:
+      "Murray's Law consistency check — predicted vs. measured branch diameters, R² > 0.8 across 1,190+ vessel samples. An independent physiological plausibility check, not a reference-standard comparison against manual QCA.",
+    alt: "Murray's Law scatter plot of predicted against measured branch diameters with the regression and identity lines",
+    src: '/projects/qca-murrays-law.webp',
+  },
+];
+
+export const qcaEvidenceStackLabels = {
+  heading: 'QCA EVIDENCE STACK',
+  tablist: 'QCA pipeline layers',
+  detailLink: 'Case study',
+};
 
 // -----------------------------------------------------------------------------
 // EXPERIENCE TIMELINE
