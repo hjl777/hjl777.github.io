@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FileText, Code2, ExternalLink, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
+import type { CSSProperties } from 'react';
 import { publications, contacts, scholarTotals, sectionLabels, type Publication } from '../data';
-import { useReveal, revealClass } from '../hooks/useReveal';
+import { useReveal } from '../hooks/useReveal';
 
 type Filter = 'All' | 'Selected' | 'Journal' | 'Conference';
 const FILTERS: Filter[] = ['All', 'Selected', 'Journal', 'Conference'];
@@ -95,7 +96,7 @@ export default function Publications() {
 
   return (
     <section id="publications" className="section bg-ink-50/50 dark:bg-ink-900/40">
-      <div ref={ref} className={`container-prose ${revealClass(visible, 'left')}`}>
+      <div ref={ref} data-in={visible ? 'true' : 'false'} className="container-prose">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
             <div className="section-kicker">{sectionLabels.publications}</div>
@@ -140,7 +141,8 @@ export default function Publications() {
           {visiblePubs.map((p, idx) => (
             <li
               key={p.id}
-              className="group grid grid-cols-12 gap-x-6 gap-y-2 py-7 transition-colors hover:bg-white dark:hover:bg-ink-900/60"
+              className="io-fade group grid grid-cols-12 gap-x-6 gap-y-2 py-7 transition-colors hover:bg-white dark:hover:bg-ink-900/60"
+              style={{ '--d': `${Math.min(idx, 8) * 45}ms` } as CSSProperties}
             >
               {/* Year + index gutter */}
               <div className="col-span-12 sm:col-span-2">
@@ -160,7 +162,7 @@ export default function Publications() {
               {/* Main content */}
               <div className="col-span-12 sm:col-span-10">
                 <div className="flex flex-wrap items-start gap-2">
-                  <h3 className="font-serif text-[17px] font-semibold leading-snug text-ink-900 dark:text-ink-50">
+                  <h3 className="pub-title font-serif text-[17px] font-semibold leading-snug text-ink-900 dark:text-ink-50">
                     {p.title}
                   </h3>
                   {p.badge && <span className="badge-soft mt-1">{p.badge}</span>}

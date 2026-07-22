@@ -1,6 +1,7 @@
+import type { CSSProperties } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { news, sectionLabels } from '../data';
-import { useReveal, revealClass } from '../hooks/useReveal';
+import { useReveal } from '../hooks/useReveal';
 
 function formatDate(iso: string) {
   // "2025-02" -> "Feb 2025"
@@ -21,7 +22,7 @@ export default function News() {
 
   return (
     <section id="news" className="section">
-      <div ref={ref} className={`container-prose ${revealClass(visible)}`}>
+      <div ref={ref} data-in={visible ? 'true' : 'false'} className="container-prose">
         <div className="max-w-2xl">
           <div className="section-kicker">{sectionLabels.news}</div>
           <h2 className="section-title">Recent updates</h2>
@@ -38,15 +39,16 @@ export default function News() {
           {timeline.map((n, i) => (
             <li
               key={`${n.date}-${i}`}
+              style={{ '--d': `${i * 90}ms` } as CSSProperties}
               className="relative grid grid-cols-1 gap-y-1 pb-6 last:pb-0 sm:grid-cols-[6.5rem_1.5rem_1fr] sm:gap-x-4"
             >
-              <div className="hidden pt-0.5 font-mono text-xs text-ink-500 sm:block dark:text-ink-400">
+              <div className="io-fade hidden pt-0.5 font-mono text-xs text-ink-500 sm:block dark:text-ink-400">
                 {formatDate(n.date)}
               </div>
               <div className="relative hidden pt-1.5 sm:block">
-                <span className="block h-2.5 w-2.5 rounded-full border-2 border-white bg-clinic-500 ring-2 ring-clinic-200 dark:border-ink-950 dark:ring-clinic-700/60" />
+                <span className="news-dot block h-2.5 w-2.5 rounded-full border-2 border-white bg-clinic-500 ring-2 ring-clinic-200 dark:border-ink-950 dark:ring-clinic-700/60" />
               </div>
-              <div>
+              <div className="io-settle">
                 <p className="font-mono text-xs text-ink-500 sm:hidden dark:text-ink-400">
                   {formatDate(n.date)}
                 </p>
