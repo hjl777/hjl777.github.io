@@ -1,11 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FileText, Code2, ExternalLink, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
-import { publications, contacts, sectionLabels, type Publication } from '../data';
+import { publications, contacts, scholarTotals, sectionLabels, type Publication } from '../data';
 import { useReveal, revealClass } from '../hooks/useReveal';
-
-// Total peer-reviewed papers on Google Scholar; the list here is a curated
-// subset, so the two numbers are shown together rather than left to conflict.
-const TOTAL_PAPERS = 25;
 
 type Filter = 'All' | 'Selected' | 'Journal' | 'Conference';
 const FILTERS: Filter[] = ['All', 'Selected', 'Journal', 'Conference'];
@@ -105,8 +101,8 @@ export default function Publications() {
             <div className="section-kicker">{sectionLabels.publications}</div>
             <h2 className="section-title">Selected papers</h2>
             <p className="mt-3 max-w-xl text-ink-600 dark:text-ink-400">
-              A curated view of {publications.length} of {TOTAL_PAPERS}{' '}
-              peer-reviewed papers across medical AI, clinical prediction, and
+              A curated view of {publications.length} of {scholarTotals.publications}{' '}
+              publications across medical AI, clinical prediction, and
               trustworthy language models — the full record is on Google Scholar.
             </p>
           </div>
@@ -225,7 +221,7 @@ export default function Publications() {
               rel="noreferrer"
               className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-500 transition-colors duration-200 hover:text-indigo-600 dark:text-ink-400 dark:hover:text-indigo-400"
             >
-              View all {TOTAL_PAPERS} on Google Scholar
+              View all {scholarTotals.publications} on Google Scholar
               <ExternalLink size={14} />
             </a>
           )}
