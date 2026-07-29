@@ -56,16 +56,16 @@ export default function Nav() {
         className={[
           'container-prose flex h-[72px] items-center justify-between border-b transition-[background-color,border-color] duration-300',
           scrolled
-            ? 'border-black/15 bg-[#d8d1bf]/92 backdrop-blur-md'
-            : 'border-black/20 bg-transparent',
+            ? 'border-black/15 bg-[#d8d1bf]/92 backdrop-blur-md dark:border-white/12 dark:bg-[#1c1c18]/92'
+            : 'border-black/20 bg-transparent dark:border-white/15',
         ].join(' ')}
       >
         <Link
           to="/"
           viewTransition
-          className="group flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-ink-950"
+          className="group flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-ink-950 dark:text-ink-50"
         >
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-ink-950 font-mono text-[10px] font-bold text-[#d8d1bf]">
+          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-ink-950 font-mono text-[10px] font-bold text-[#d8d1bf] dark:bg-ink-50 dark:text-ink-950">
             HL
           </span>
           <span className="hidden sm:inline">
@@ -83,13 +83,13 @@ export default function Nav() {
                 className={[
                   'relative px-3 py-2 text-[11px] font-medium uppercase tracking-[0.14em] transition-colors',
                   active === s.id
-                    ? 'text-ink-950'
-                    : 'text-ink-600 hover:text-ink-950',
+                    ? 'text-ink-950 dark:text-ink-50'
+                    : 'text-ink-600 hover:text-ink-950 dark:text-ink-300 dark:hover:text-ink-50',
                 ].join(' ')}
               >
                 {s.label}
                 {active === s.id && (
-                  <span className="absolute bottom-1 left-3 right-3 h-px bg-clinic-500" />
+                  <span className="absolute bottom-1 left-3 right-3 h-px bg-clinic-500 dark:bg-clinic-300" />
                 )}
               </Link>
             </li>
@@ -102,7 +102,7 @@ export default function Nav() {
               href={profile.cvUrl}
               target="_blank"
               rel="noreferrer"
-              className="rounded-full bg-ink-950 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white transition-transform duration-300 hover:-translate-y-0.5"
+              className="rounded-full bg-ink-950 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white transition-transform duration-300 hover:-translate-y-0.5 dark:bg-ink-50 dark:text-ink-950"
             >
               CV
             </a>
