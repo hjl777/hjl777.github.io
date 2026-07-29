@@ -18,50 +18,55 @@ export default {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       colors: {
+        // Warm charcoal / greige "ink" — replaces the cold Tailwind slate so
+        // body text (ink-800) and the dark page background (ink-950) share the
+        // same warm temperature as the editorial beige/black surfaces.
         ink: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
-          950: '#020617',
+          50: '#f8f5ee',
+          100: '#efeade',
+          200: '#e2dccd',
+          300: '#cbc3b0',
+          400: '#aba28f',
+          500: '#857c6b',
+          600: '#625b4e',
+          700: '#453f36',
+          800: '#2b2721',
+          900: '#1a1712',
+          950: '#11110f',
         },
-        // Warm "radiograph paper" page background.
-        paper: '#f7f5ef',
-        // Clinical accent — segmentation cyan, sampled from the actual QCA
-        // analysis overlays rather than a generic brand hue.
+        // Warm ivory page background.
+        paper: '#f2efe6',
+        // Accent — burgundy / plum, chosen to sit with the warm ivory + black
+        // system and the photographic backgrounds. Anchored so clinic-700 is
+        // the light-mode accent (#6a3f4d) and clinic-300 the dark-mode accent
+        // (#b77c8d), matching the clinic-700/dark:clinic-300 usage pattern.
         clinic: {
-          50: '#edfafb',
-          100: '#d2f2f5',
-          200: '#a9e6ec',
-          300: '#71d4de',
-          400: '#35bccb',
-          500: '#16a7b7',
-          600: '#0d8695',
-          700: '#106b78',
-          800: '#145762',
-          900: '#154954',
-          950: '#072e35',
+          50: '#f8eef1',
+          100: '#f0dae1',
+          200: '#dcb0bf',
+          300: '#b77c8d',
+          400: '#a06378',
+          500: '#8a4f64',
+          600: '#7a4657',
+          700: '#6a3f4d',
+          800: '#4e2d38',
+          900: '#3a222b',
+          950: '#241419',
         },
         // Legacy accent name still used across components — aliased onto the
-        // clinical cyan so a single palette governs the whole site.
+        // burgundy scale so a single palette governs the whole site.
         indigo: {
-          50: '#edfafb',
-          100: '#d2f2f5',
-          200: '#a9e6ec',
-          300: '#71d4de',
-          400: '#35bccb',
-          500: '#16a7b7',
-          600: '#0d8695',
-          700: '#106b78',
-          800: '#145762',
-          900: '#154954',
-          950: '#072e35',
+          50: '#f8eef1',
+          100: '#f0dae1',
+          200: '#dcb0bf',
+          300: '#b77c8d',
+          400: '#a06378',
+          500: '#8a4f64',
+          600: '#7a4657',
+          700: '#6a3f4d',
+          800: '#4e2d38',
+          900: '#3a222b',
+          950: '#241419',
         },
       },
       typography: {
