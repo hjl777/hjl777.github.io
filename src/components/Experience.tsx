@@ -3,6 +3,7 @@ import { ArrowUpRight, Download } from 'lucide-react';
 import { experience, honors, profile, sectionLabels, siteCopy, type ExperienceItem } from '../data';
 import { useReveal } from '../hooks/useReveal';
 import { useScrollProgress } from '../hooks/useScrollProgress';
+import ProgressRail from './ProgressRail';
 
 function yearFromPeriod(period: string) {
   const match = period.match(/\d{4}/);
@@ -13,7 +14,7 @@ function TimelineRow({ item, index }: { item: ExperienceItem; index: number }) {
   const { ref, visible } = useReveal<HTMLLIElement>({ threshold: 0.08 });
 
   return (
-    <li ref={ref} data-in={visible ? 'true' : 'false'}>
+    <li ref={ref} data-in={visible ? 'true' : 'false'} data-rail-year={yearFromPeriod(item.period)}>
       <div className="io-fade nesh-timeline-year">
         <span>&apos;{yearFromPeriod(item.period).slice(-2)}</span>
         <small>{String(index + 1).padStart(2, '0')}</small>
@@ -38,8 +39,17 @@ export default function Experience() {
     el.style.setProperty('--progress', p.toFixed(4));
   });
 
+  const band = useReveal<HTMLElement>({ threshold: 0, rootMargin: '0px 0px -10% 0px' });
+  const railYears = [...new Set(experience.map((item) => yearFromPeriod(item.period)))];
+
   return (
-    <section id="cv" className="nesh-journey">
+    <section
+      ref={band.ref}
+      id="cv"
+      className="nesh-journey band-turn"
+      data-band-in={band.visible ? 'true' : 'false'}
+    >
+      <ProgressRail host={band.ref} years={railYears} />
       <div className="container-prose">
         <div className="nesh-journey-head">
           <div>

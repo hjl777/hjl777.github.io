@@ -2,7 +2,10 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './App';
+import { initRouteDirection } from './lib/motion';
 import './index.css';
+
+initRouteDirection();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

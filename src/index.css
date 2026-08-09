@@ -105,27 +105,52 @@
     opacity: 0;
   }
 }
-/* Default page↔page: the old view dims and lifts while the new one wipes up
-   from the bottom — a curtain reveal without an extra DOM layer. */
-@keyframes vt-page-dim {
+/* Default page↔page: film lift. Forward navigations lift the old page up and
+   out while the new one rises in; back-traversals reverse the direction
+   (html[data-vt-dir], set from the Navigation API). Browsers without the API
+   keep the directionless crossfade below. No overlay curtain — nothing may
+   cover content that is already loaded. */
+@keyframes vt-lift-out-up {
   to {
-    opacity: 0.35;
-    transform: translateY(-12px);
+    opacity: 0;
+    transform: translateY(-3%);
   }
 }
-@keyframes vt-curtain-reveal {
+@keyframes vt-lift-in-up {
   from {
-    clip-path: inset(100% 0 0 0);
+    opacity: 0;
+    transform: translateY(3%);
   }
+}
+@keyframes vt-lift-out-down {
   to {
-    clip-path: inset(0 0 0 0);
+    opacity: 0;
+    transform: translateY(3%);
+  }
+}
+@keyframes vt-lift-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-3%);
   }
 }
 ::view-transition-old(root) {
-  animation: vt-page-dim 360ms var(--ease-in-out) both;
+  animation: vt-fade-out 240ms ease-in both;
 }
 ::view-transition-new(root) {
-  animation: vt-curtain-reveal 720ms var(--ease-in-out) both;
+  animation: vt-fade-in 320ms var(--ease-out) both;
+}
+html[data-vt-dir='fwd'] ::view-transition-old(root) {
+  animation: vt-lift-out-up 240ms ease-in both;
+}
+html[data-vt-dir='fwd'] ::view-transition-new(root) {
+  animation: vt-lift-in-up 320ms var(--ease-out) both;
+}
+html[data-vt-dir='back'] ::view-transition-old(root) {
+  animation: vt-lift-out-down 240ms ease-in both;
+}
+html[data-vt-dir='back'] ::view-transition-new(root) {
+  animation: vt-lift-in-down 320ms var(--ease-out) both;
 }
 /* Shared elements (project frame + title) travel on their own soft ease. */
 ::view-transition-group(*) {
@@ -133,26 +158,34 @@
   animation-timing-function: var(--ease-soft);
 }
 ::view-transition-group(root) {
-  animation-duration: 720ms;
-  animation-timing-function: var(--ease-in-out);
+  animation-duration: 320ms;
+  animation-timing-function: var(--ease-out);
 }
-/* Entering a project: the shared card is the lead actor — the root only
-   fades (no transform, so it cannot fight the moving frame). */
-html[data-route-motion='project'] ::view-transition-old(root) {
+/* Any navigation with a shared-element morph (data-route-motion='project' or
+   'shared'): the moving card is the lead actor — the root only fades (no
+   transform, so it cannot fight the moving frame). */
+html[data-route-motion] ::view-transition-old(root) {
   animation: vt-fade-out 220ms ease both;
 }
-html[data-route-motion='project'] ::view-transition-new(root) {
+html[data-route-motion] ::view-transition-new(root) {
   animation: vt-fade-in 340ms ease-out 160ms both;
 }
-html[data-route-motion='project'] ::view-transition-group(root) {
+html[data-route-motion] ::view-transition-group(root) {
   animation-duration: 520ms;
 }
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(*),
-  ::view-transition-new(*),
+  /* Groups snap (no movement); every old/new pair keeps a bare 120ms
+     crossfade. The fade pair must stay — the UA's plus-lighter blend needs
+     opposing opacity ramps, or named snapshots blow out additively. */
   ::view-transition-group(*),
   ::view-transition-image-pair(*) {
     animation: none !important;
+  }
+  ::view-transition-old(*) {
+    animation: vt-fade-out 120ms ease both !important;
+  }
+  ::view-transition-new(*) {
+    animation: vt-fade-in 120ms ease both !important;
   }
 }
 
@@ -210,6 +243,78 @@ html[data-route-motion='project'] ::view-transition-group(root) {
 @media print {
   .nesh-hero { position: static; }
   .home-stack, .dark .home-stack { box-shadow: none; }
+}
+
+/* Chapter-turn crossfade: a band section develops its plate color as it
+   enters the viewport. useReveal arms data-band-in below the fold only, so
+   no-JS and reduced-motion always show the final colors; print restores them
+   explicitly below. Armed text inherits the page ink so nothing sits
+   light-on-light while the plate develops. In dark mode the armed state is
+   the warm-dark surface, so the deep plates still turn. */
+.band-turn {
+  transition: background-color 420ms var(--ease-soft), color 420ms var(--ease-soft);
+}
+.band-turn[data-band-in='false'] {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+.dark .band-turn[data-band-in='false'] {
+  background-color: #1c1c18 !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .band-turn { transition: none; }
+}
+@media print {
+  .band-turn { transition: none; }
+  .nesh-journey.band-turn {
+    background-color: #d5cfbe !important;
+    color: #11110f !important;
+  }
+  .nesh-projects.band-turn,
+  .nesh-about.band-turn {
+    background-color: #11110f !important;
+    color: #f2efe6 !important;
+  }
+}
+
+/* Progress rail: fixed mono year map for long chronological sections. Only
+   rendered on viewports wide enough to clear the 1280px content column;
+   decorative, so hidden from AT and pointer. */
+.progress-rail {
+  position: fixed;
+  right: 1.1rem;
+  top: 50%;
+  z-index: 30;
+  display: none;
+  flex-direction: column;
+  gap: 0.85rem;
+  transform: translateY(-50%);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-align: right;
+  color: rgba(20, 19, 15, 0.38);
+  opacity: 0;
+  transition: opacity 260ms var(--ease-soft);
+  pointer-events: none;
+}
+.progress-rail[data-visible='true'] { opacity: 1; }
+.progress-rail span {
+  display: block;
+  transition: color 260ms var(--ease-soft), transform 260ms var(--ease-soft);
+}
+.progress-rail span[data-active='true'] {
+  color: #14130f;
+  font-weight: 600;
+  transform: translateX(-3px);
+}
+.dark .progress-rail { color: rgba(242, 239, 230, 0.35); }
+.dark .progress-rail span[data-active='true'] { color: #f2efe6; }
+@media (min-width: 88rem) {
+  .progress-rail { display: flex; }
+}
+@media print {
+  .progress-rail { display: none; }
 }
 
 /* Dark mode: the editorial beige sections (hero, journey) become warm-dark
@@ -373,15 +478,19 @@ html[data-route-motion='project'] ::view-transition-group(root) {
   position: absolute;
   left: 1.5rem;
   bottom: 5.5rem;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  font-size: 0.65rem;
+  border: 1px solid rgba(17, 17, 15, 0.35);
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.6rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  transform: rotate(-90deg);
-  transform-origin: left center;
+  letter-spacing: 0.16em;
 }
+.hero-scroll:hover { transform: translateY(3px); }
+.dark .hero-scroll { border-color: rgba(255, 255, 255, 0.3); }
 
 .nesh-marquee {
   position: absolute;

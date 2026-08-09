@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { projects, sectionLabels, siteCopy } from '../data';
-import { markProjectEnter } from '../lib/motion';
+import { markProjectEnter, markSharedEnter } from '../lib/motion';
 import { useReveal } from '../hooks/useReveal';
 import BrowserFrame from './BrowserFrame';
 
@@ -64,9 +64,15 @@ function SelectedWork({ p, index }: { p: (typeof projects)[number]; index: numbe
 
 export default function Projects() {
   const featured = projects.filter((project) => project.featured);
+  const band = useReveal<HTMLElement>({ threshold: 0, rootMargin: '0px 0px -10% 0px' });
 
   return (
-    <section id="projects" className="nesh-projects">
+    <section
+      ref={band.ref}
+      id="projects"
+      className="nesh-projects band-turn"
+      data-band-in={band.visible ? 'true' : 'false'}
+    >
       <div className="container-prose">
         <div className="nesh-projects-head">
           <div>
@@ -77,7 +83,7 @@ export default function Projects() {
             <p>
               {siteCopy.projects.intro}
             </p>
-            <Link to="/projects" viewTransition>
+            <Link to="/projects" viewTransition onClick={markSharedEnter}>
               {siteCopy.projects.allCta} <ArrowRight size={15} />
             </Link>
           </div>

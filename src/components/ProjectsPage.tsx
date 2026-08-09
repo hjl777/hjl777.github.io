@@ -10,7 +10,7 @@ import {
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { projects } from '../data';
-import { markProjectEnter, prefersReducedMotion } from '../lib/motion';
+import { markProjectEnter, markSharedEnter, prefersReducedMotion } from '../lib/motion';
 import { useReveal } from '../hooks/useReveal';
 import BrowserFrame from './BrowserFrame';
 
@@ -234,6 +234,7 @@ export default function ProjectsPage() {
         <Link
           to="/"
           viewTransition
+          onClick={markSharedEnter}
           className="enter-item inline-flex items-center gap-1.5 text-sm font-medium text-ink-500 transition-colors duration-200 hover:text-indigo-600 dark:text-ink-400 dark:hover:text-indigo-400"
           style={delay(0)}
         >

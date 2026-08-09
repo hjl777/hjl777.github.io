@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { FileText, Code2, ExternalLink, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
 import type { CSSProperties } from 'react';
 import { publications, contacts, scholarTotals, sectionLabels, type Publication } from '../data';
 import { useReveal } from '../hooks/useReveal';
+import ProgressRail from './ProgressRail';
 
 type Filter = 'All' | 'Selected' | 'Journal' | 'Conference';
 const FILTERS: Filter[] = ['All', 'Selected', 'Journal', 'Conference'];
@@ -93,9 +94,19 @@ export default function Publications() {
   );
 
   const { ref, visible } = useReveal<HTMLDivElement>();
+  const sectionRef = useRef<HTMLElement>(null);
+  const railYears = useMemo(
+    () => [...new Set(visiblePubs.map((p) => String(p.year)))],
+    [visiblePubs],
+  );
 
   return (
-    <section id="publications" className="section bg-ink-50/50 dark:bg-ink-900/40">
+    <section ref={sectionRef} id="publications" className="section bg-ink-50/50 dark:bg-ink-900/40">
+      <ProgressRail
+        host={sectionRef}
+        years={railYears}
+        observeKey={`${filter}-${visiblePubs.length}`}
+      />
       <div ref={ref} data-in={visible ? 'true' : 'false'} className="container-prose">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
@@ -141,6 +152,7 @@ export default function Publications() {
           {visiblePubs.map((p, idx) => (
             <li
               key={p.id}
+              data-rail-year={p.year}
               className="io-fade group grid grid-cols-12 gap-x-6 gap-y-2 py-7 transition-colors hover:bg-white dark:hover:bg-ink-900/60"
               style={{ '--d': `${Math.min(idx, 8) * 45}ms` } as CSSProperties}
             >

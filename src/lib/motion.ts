@@ -40,3 +40,48 @@ export function consumeProjectEnter() {
   projectEnter = false;
   return value;
 }
+
+/** List↔list / detail↔list navigations that still morph shared elements get
+ * the same fade-only root, without arming ProjectPage's enter choreography. */
+export function markSharedEnter() {
+  document.documentElement.dataset.routeMotion = 'shared';
+  window.clearTimeout(clearTimer);
+  clearTimer = window.setTimeout(() => {
+    delete document.documentElement.dataset.routeMotion;
+  }, MOTION.route + 400);
+}
+
+// ---------------------------------------------------------------------------
+// Direction grammar for route transitions. The Navigation API (Chromium)
+// reports back/forward traversals; CSS keys off html[data-vt-dir='fwd'|'back']
+// to pick the lift direction. Browsers without the API never get the
+// attribute and fall back to a directionless crossfade.
+// ---------------------------------------------------------------------------
+type NavigationLike = EventTarget & {
+  currentEntry: { index: number } | null;
+};
+type NavigateEventLike = Event & {
+  navigationType: string;
+  destination: { index: number };
+};
+
+export function initRouteDirection() {
+  const nav = (window as unknown as { navigation?: NavigationLike }).navigation;
+  if (!nav) return;
+  nav.addEventListener('navigate', (event) => {
+    const e = event as NavigateEventLike;
+    const current = nav.currentEntry?.index ?? -1;
+    const destination = e.destination?.index ?? -1;
+    const back =
+      e.navigationType === 'traverse' &&
+      current >= 0 &&
+      destination >= 0 &&
+      destination < current;
+    document.documentElement.dataset.vtDir = back ? 'back' : 'fwd';
+    // A traversal must not replay a click-armed enter choreography — a stale
+    // data-route-motion would otherwise swallow the back lift for ~1s.
+    if (e.navigationType === 'traverse') {
+      delete document.documentElement.dataset.routeMotion;
+    }
+  });
+}

@@ -7,9 +7,15 @@ import { useReveal } from '../hooks/useReveal';
 export default function About() {
   const { ref, visible } = useReveal<HTMLDivElement>({ threshold: 0.05 });
   const caps = useReveal<HTMLDivElement>({ threshold: 0.15 });
+  const band = useReveal<HTMLElement>({ threshold: 0, rootMargin: '0px 0px -10% 0px' });
 
   return (
-    <section id="about" className="nesh-about">
+    <section
+      ref={band.ref}
+      id="about"
+      className="nesh-about band-turn"
+      data-band-in={band.visible ? 'true' : 'false'}
+    >
       <div ref={ref} data-in={visible ? 'true' : 'false'} className="container-prose">
         <p className="io-fade nesh-light-kicker">{sectionLabels.about}</p>
         <h2
