@@ -258,7 +258,11 @@ html[data-route-motion] ::view-transition-group(root) {
   background-color: transparent !important;
   color: inherit !important;
 }
-.dark .band-turn[data-band-in='false'] {
+/* Dark mode arms each band to the *other* dark surface so all three turn:
+   journey (final #1c1c18) develops from the deep stack background it sits on,
+   while the deep plates develop from the warm-dark surface. */
+.dark .nesh-projects.band-turn[data-band-in='false'],
+.dark .nesh-about.band-turn[data-band-in='false'] {
   background-color: #1c1c18 !important;
 }
 @media (prefers-reduced-motion: reduce) {
