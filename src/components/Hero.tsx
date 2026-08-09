@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import {
   ArrowDown,
@@ -50,7 +51,9 @@ function IntroGate() {
   }, [show]);
 
   if (!show) return null;
-  return (
+  // Portaled to <body>: the sticky hero is a stacking context, so rendering
+  // in place would put this fixed sheet under the z-50 nav.
+  return createPortal(
     <div className="intro-gate" aria-hidden="true">
       <p>
         {['HJL', 'Portfolio', String(new Date().getFullYear())].map((line, i) => (
@@ -59,12 +62,36 @@ function IntroGate() {
           </span>
         ))}
       </p>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
 export default function Hero() {
   const [copied, setCopied] = useState(false);
+
+  // Sticky-stack pin offset: the hero sticks at -(heroH - winH) so it only
+  // pins after its bottom edge has fully entered the viewport. Re-measured on
+  // hero/viewport resize; no scroll listeners.
+  const sectionRef = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const measure = () => {
+      el.style.setProperty(
+        '--hero-pin-top',
+        `${Math.min(0, window.innerHeight - el.offsetHeight)}px`,
+      );
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    window.addEventListener('resize', measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', measure);
+    };
+  }, []);
 
   const copyEmail = async () => {
     try {
@@ -77,7 +104,7 @@ export default function Hero() {
   };
 
   return (
-    <section id="home" className="nesh-hero">
+    <section ref={sectionRef} id="home" className="nesh-hero">
       <IntroGate />
       <div className="container-prose relative z-10">
         <div className="hero-meta animate-hero-fade">

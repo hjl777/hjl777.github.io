@@ -185,6 +185,33 @@ html[data-route-motion='project'] ::view-transition-group(root) {
   padding: 7.5rem 0 8.5rem;
 }
 
+/* Sticky-stack chapter turn: the hero pins once its bottom edge reaches the
+   viewport bottom (--hero-pin-top, measured in Hero.tsx; 0 when the hero fits),
+   then the rest of the home page slides over it as one opaque sheet. Desktop
+   only. Native scroll; nothing animates. */
+@media (min-width: 64rem) {
+  .nesh-hero { position: sticky; top: var(--hero-pin-top, 0px); }
+  .nesh-hero[inert] .nesh-marquee > div { animation-play-state: paused; }
+  .home-stack {
+    border-top: 1px solid rgba(17, 17, 15, 0.28);
+    box-shadow: 0 -16px 40px rgba(17, 17, 15, 0.14);
+  }
+  .dark .home-stack {
+    border-top-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.55);
+  }
+}
+.home-stack {
+  position: relative;
+  z-index: 1;
+  background: #f2efe6;
+}
+.dark .home-stack { background: #11110f; }
+@media print {
+  .nesh-hero { position: static; }
+  .home-stack, .dark .home-stack { box-shadow: none; }
+}
+
 /* Dark mode: the editorial beige sections (hero, journey) become warm-dark
    surfaces so the whole dark experience holds one temperature. Projects/About
    stay the deeper #11110f, leaving a subtle light/dark rhythm. Light mode keeps

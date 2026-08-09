@@ -65,14 +65,36 @@ function LegacyHashRedirect() {
 }
 
 function Home() {
+  // Once the stack's top edge crosses the viewport top, the pinned hero is
+  // fully covered but still fills the viewport geometrically — mark it inert
+  // so keyboard focus and find-in-page can't land on invisible content.
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const hero = document.getElementById('home');
+    const sentinel = sentinelRef.current;
+    if (!hero || !sentinel) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      const covered = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+      hero.toggleAttribute('inert', covered);
+    });
+    observer.observe(sentinel);
+    return () => {
+      observer.disconnect();
+      hero.removeAttribute('inert');
+    };
+  }, []);
+
   return (
     <main className="overflow-x-clip">
       <Hero />
-      <Experience />
-      <Projects />
-      <About />
-      <Publications />
-      <News />
+      <div className="home-stack">
+        <div ref={sentinelRef} aria-hidden="true" />
+        <Experience />
+        <Projects />
+        <About />
+        <Publications />
+        <News />
+      </div>
     </main>
   );
 }
