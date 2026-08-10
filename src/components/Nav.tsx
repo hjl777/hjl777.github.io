@@ -103,8 +103,8 @@ export default function Nav() {
                     : 'text-ink-600 hover:text-ink-950 dark:text-ink-300 dark:hover:text-ink-50',
                 ].join(' ')}
               >
-                <span aria-hidden="true" className="mr-0.5 opacity-50">
-                  {String(i + 1).padStart(2, '0')}._
+                <span aria-hidden="true" className="mr-1.5 opacity-45">
+                  {String(i + 1).padStart(2, '0')}
                 </span>
                 {s.label}
                 {active === s.id && (

@@ -150,7 +150,7 @@ yash의 "무대 위 쇼케이스"는 프로젝트 카드·다크 무대와 동�
 ### 구조 (signature = ① 상태 헤더 + ② `$ whoami` 히어로)
 1. **SYS 상태 헤더** (zui): 최상단 1줄 모노 바 — `NODE: hjl777.github.io · AUTH: GUEST · PUBS: 26 · H: 13 · LAST.SYNC: 2026-08`. 스크롤 시 Nav로 접힘.
 2. **`$ whoami` 히어로**: 프롬프트 + 키-값 행(FOCUS / AFFILIATION / CONTACT — 기존 "스탯은 한 줄" 원칙의 콘솔화) + Fraunces 클레임 + 하이라이트 바이오. 타이핑 애니메이션 금지(모션 예산의 typewriter 금지 유지) — 정적 프롬프트.
-3. **넘버드 모듈 내비**: `01._WORK 02._PAPERS 03._CV 04._ABOUT` (zui) — 기존 라우팅·URL 불변.
+3. **넘버드 모듈 내비**: `01 WORK 02 PAPERS 03 EXPERIENCE 04 ABOUT` — 번호는 저불투명 모노. zui의 `._` 파일명 흉내는 과해서 제거(2026-08-11 사용자 피드백). 기존 라우팅·URL 불변.
 4. **프로젝트 카드** (yash): 미디어 우선 + 모노 키커(`RESEARCH.PROJECT // QCA`) + method 칩(UNet·PEFT·Murray). 기존 BrowserFrame 진화.
 5. **명령 팔레트** (`⌘K` / `help`): 정적 바로가기(섹션·논문 검색·CV) — yash의 "Ask me anything"에서 AI를 뺀 것. 선택 사양 (미구현).
 6. **커서 반응 혈관 필드** (yash의 mouse-reactive 배경의 이 사이트식 번역): WebGL·캔버스가 아니라 **기존 VesselField SVG**에 포인터 추적을 얹음 — lerp 5% 관성 패럴랙스(±12px), 커서 근접 분지 노드가 밝아지며 관상동맥 세그먼트명(LM·LAD·LCx·D1·OM1·RCA·PDA·dLAD)이 모노 라벨로 떠오름. **가짜 수치 없음**(해부학 명칭만 — claim-precision), rAF는 lerp 정착 시 자동 정지, 히어로가 시트에 덮여 `inert`면 완전 휴면, reduced-motion·터치는 정적 렌더. WebGL/캔버스 씬 금지는 그대로 유지된다.
