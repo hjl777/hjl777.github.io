@@ -119,8 +119,7 @@ export default function Nav() {
           <li className="ml-2">
             <a
               href={profile.cvUrl}
-              target="_blank"
-              rel="noreferrer"
+              download="Hojae-Lee-CV.pdf"
               className="rounded-full bg-ink-950 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white transition-transform duration-300 hover:-translate-y-0.5 dark:bg-ink-50 dark:text-ink-950"
             >
               CV
@@ -165,8 +164,7 @@ export default function Nav() {
             <li>
               <a
                 href={profile.cvUrl}
-                target="_blank"
-                rel="noreferrer"
+                download="Hojae-Lee-CV.pdf"
                 onClick={() => setOpen(false)}
                 className="mt-1 block rounded-md bg-ink-900 px-3 py-2 text-sm font-medium text-white dark:bg-[#1f7a55]"
               >

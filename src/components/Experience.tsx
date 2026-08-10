@@ -60,7 +60,7 @@ export default function Experience() {
             <p>
               {siteCopy.experience.intro}
             </p>
-            <a href={profile.cvUrl} target="_blank" rel="noreferrer">
+            <a href={profile.cvUrl} download="Hojae-Lee-CV.pdf">
               {siteCopy.experience.cvCta} <Download size={15} />
             </a>
           </div>

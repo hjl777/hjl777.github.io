@@ -134,7 +134,7 @@ export default function Hero() {
                 <Link to="/#projects" className="nesh-button nesh-button-dark">
                   {siteCopy.hero.workCta} <ArrowRight size={15} />
                 </Link>
-                <a href={profile.cvUrl} target="_blank" rel="noreferrer" className="nesh-button">
+                <a href={profile.cvUrl} download="Hojae-Lee-CV.pdf" className="nesh-button">
                   <FileText size={15} /> CV
                 </a>
               </div>
