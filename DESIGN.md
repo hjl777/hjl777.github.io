@@ -116,6 +116,54 @@
 - **폴백:** View Transitions 미지원(Firefox 구버전 등) 시 즉시 전환 — 전환 없음이 기본값이므로 콘텐츠 손실·깜빡임 없음. prefers-reduced-motion 시 크로스페이드 120ms만.
 - **금지:** 전면 오버레이 와이프(콘텐츠를 가리는 커튼), 로딩 스피너, 전환 중 스크롤 잠금 300ms 초과.
 
+## Direction v2 제안 — Clinical Console (yashahire.info × zui.ooo 합본, 2026-08-10 실측)
+
+> 사용자 요청: 두 포트폴리오 스타일의 합본. 실측 근거 —
+> **yashahire.info**: 딥 스페이스 다크(#0d0d12) + 3D 깊이 필드, Plus Jakarta Sans, 골드 액센트, 필 내비,
+> 바이오 문장 안 키워드 하이라이트, 미디어 우선 프로젝트 카드(키커+타이틀 오버레이+스택 칩), "currently building" 위젯.
+> **zui.ooo**: 전면 Geist Mono 터미널 OS(10–12px), 그린 틴트 블랙(#0f1210) + 포스포 그린/앰버 상태색,
+> `SYS.NAME/AUTH/NODE` 상태 헤더, `$ whoami` 프롬프트 바이오, LOCATION/FOCUS/CONTACT 키-값 행,
+> `01._HOME 02._WORK` 넘버드 모듈 내비, 명령어 입력 인터랙션, ASCII 로고, 무스크롤 모듈 구조.
+
+**합본 논리**: zui의 "시스템 콘솔" 프레임은 이 사이트의 측정/증거 레지스터(모노 킥커·DOI·FIG 캡션)와 동족이고,
+yash의 "무대 위 쇼케이스"는 프로젝트 카드·다크 무대와 동족이다. 콘솔이 뼈대(구조·메타·내비)를,
+쇼케이스가 살(프로젝트 미디어·바이오 온도)을 맡는다. **클레임은 계속 세리프가 말한다** — 전면 모노는
+24편 논문 리스트와 심사위원 가독성을 해치므로, 모노는 "기계가 기록한 사실", 세리프는 "사람이 주장하는 문장"으로 역할 분리.
+
+### 토큰
+| 역할 | 값 | 출처 |
+|---|---|---|
+| bg (dark 기본) | `#0E100F` 그린 틴트 웜 블랙 | zui #0f1210 ↔ 기존 #0F0F0D 절충 |
+| surface | `#161A17` / hover `#1D221E` | zui |
+| text | `#D9DED6` | zui #d4d8d0 |
+| muted | `#8A9188` | zui |
+| **evidence(=링크·figure)** | phosphor `#4FE0A3` | zui GREEN — Evidence Rule 유지, 색만 교체 |
+| status/측정 | amber `#E0B34F` | zui + yash 골드 절충 |
+| error/임상риск | `#E0616B` 유지 | 현행 |
+| light 모드 | 현행 Contrast Medium 유지 (paper/ivory) | 콘솔은 다크의 문법 |
+
+### 타입
+- **Claim**: Fraunces 유지 (히어로 클레임 1줄, 섹션 타이틀) — zui에 없는 "사람의 목소리"가 이 사이트의 차별점.
+- **Console**: Martian Mono 역할 대확장 — 상태 헤더, 키-값 행, 내비, 칩, 캡션, 프롬프트. (zui의 Geist Mono 대응)
+- **Body**: Supreme 유지. 바이오 문장에는 yash식 **키워드 하이라이트** (evidence 색, `<Evidence>` 래퍼 재사용).
+
+### 구조 (signature = ① 상태 헤더 + ② `$ whoami` 히어로)
+1. **SYS 상태 헤더** (zui): 최상단 1줄 모노 바 — `NODE: hjl777.github.io · AUTH: GUEST · PUBS: 26 · H: 13 · LAST.SYNC: 2026-08`. 스크롤 시 Nav로 접힘.
+2. **`$ whoami` 히어로**: 프롬프트 + 키-값 행(FOCUS / AFFILIATION / CONTACT — 기존 "스탯은 한 줄" 원칙의 콘솔화) + Fraunces 클레임 + 하이라이트 바이오. 타이핑 애니메이션 금지(모션 예산의 typewriter 금지 유지) — 정적 프롬프트.
+3. **넘버드 모듈 내비**: `01._WORK 02._PAPERS 03._CV 04._ABOUT` (zui) — 기존 라우팅·URL 불변.
+4. **프로젝트 카드** (yash): 미디어 우선 + 모노 키커(`RESEARCH.PROJECT // QCA`) + method 칩(UNet·PEFT·Murray). 기존 BrowserFrame 진화.
+5. **명령 팔레트** (`⌘K` / `help`): 정적 바로가기(섹션·논문 검색·CV) — yash의 "Ask me anything"에서 AI를 뺀 것. 선택 사양 (미구현).
+6. **커서 반응 혈관 필드** (yash의 mouse-reactive 배경의 이 사이트식 번역): WebGL·캔버스가 아니라 **기존 VesselField SVG**에 포인터 추적을 얹음 — lerp 5% 관성 패럴랙스(±12px), 커서 근접 분지 노드가 밝아지며 관상동맥 세그먼트명(LM·LAD·LCx·D1·OM1·RCA·PDA·dLAD)이 모노 라벨로 떠오름. **가짜 수치 없음**(해부학 명칭만 — claim-precision), rAF는 lerp 정착 시 자동 정지, 히어로가 시트에 덮여 `inert`면 완전 휴면, reduced-motion·터치는 정적 렌더. WebGL/캔버스 씬 금지는 그대로 유지된다.
+
+### 모션
+현행 시스템 전부 유지 (sticky-stack, band-turn, film lift, 진행 레일). 콘솔 요소는 추가 모션 0 — 상태 헤더는 정적, 커서 깜빡임도 없음.
+
+### 단계별 적용안 (각각 독립 배포·롤백)
+- **S1** 상태 헤더 + 넘버드 내비 + 키-값 히어로 개편 — **구현·배포 2026-08-10** (SYS 바는 스크롤 시 max-height 접힘, `$ whoami` + FOCUS/BASE/SCHOLAR/CONTACT `<dl>`, 커서 반응 혈관 필드 포함)
+- **S2** 다크 팔레트 콘솔 전환 — **구현·배포 2026-08-10** (page `#0E100F` · surface `#161A17` · plate `#0B0D0C` · text `#D9DED6`; clinic/indigo **300/400 셰이드만** phosphor로 리맵 — 전 코드베이스에서 dark: 전용임을 검증, 라이트 hover 보더는 200으로 이동. 다크 채움 버튼 `#1F7A55`)
+- **S3** 프로젝트 카드 콘솔 킥커(`// QCA REVIEW`) + 보더 모노 칩 — **구현·배포 2026-08-10**
+- **S4** 명령 팔레트 (1일, 선택 — 미구현)
+
 ## 구현 시퀀스 (각 단계 독립 배포·롤백 가능, 총 ~4.5일)
 1. 폰트 스왑 + 모노 통일 (½일) — tailwind.config.js, index.html:39-44, index.css ~12곳
 2. 다크 토큰 통합 (½일) — rgba 난립 → muted/rule
@@ -131,3 +179,5 @@
 | 2026-08-09 | 8pt 스페이싱·URL·레이아웃 구조 유지 | 이미 좋은 자산 — 격차는 일관성이지 구조가 아님 |
 | 2026-08-09 | Scroll Choreography·Route Transitions 스펙 추가 (장 넘김 테마 반전, 진행 레일, View Transitions 페이지 전환, JS 관성 스크롤 도입 안 함) | awwwards 3D 카테고리 실측 (drinkstill.nz: Lenis+canvas 6, 섹션 테마 반전, 연도 레일, FIG 캡션 / seasats.com: 섹션 인덱스 레일) — 사용자 요청으로 수행 |
 | 2026-08-09 | 실측 표본 7곳으로 확대, sticky-stack 겹침 장 넘김(CSS-only, 최대 1곳) 선택 사양 추가, 커튼 오버레이·스크롤 하이재킹·인트로 잠금 금지를 실측 근거로 격상 | 추가 실측 5곳: produx.design(SOTD 8/9: sticky-stack, `page-transition-overlay` z-9999999 커튼, clip-path 메뉴 와이프), noartmusic.com(SOTD 8/6: 로더 바 커튼), showcase.noomoagency.com(SOTD 8/1: 완전 하이재킹 — scrollTo 무시), seunghyuk.com(lenis-stopped 인트로 잠금), gionatannese.com(무스크롤 WebGL 홈) |
+| 2026-08-10 | Direction v2 "Clinical Console" 제안 작성 (yashahire.info × zui.ooo 합본 — 콘솔=뼈대, 쇼케이스=살, 클레임=세리프 유지) | 사용자 요청. 두 사이트 헤드리스 실측 (yash: 딥다크+골드+미디어 카드+키워드 하이라이트 / zui: Geist Mono 터미널 OS+상태 헤더+키-값+넘버드 내비). 적용 범위는 사용자 결정 대기 |
+| 2026-08-10 | Clinical Console **S1–S3 구현·배포** + 커서 반응 혈관 필드(SVG, 세그먼트명 라벨) 추가. yash식 마우스 반응 배경은 사용자 분석(3단계: 정규화→lerp→반영)을 SVG로 이식 — WebGL 금지 유지 | 사용자 S1~S3 선택. critic 리뷰 8건 수정(rAF 무한 루프→settle 시 자동 정지+inert 휴면, 노드 발광 무효→저불투명 그룹 밖으로 분리, 모바일 헤더 여백 px-safe 등) |

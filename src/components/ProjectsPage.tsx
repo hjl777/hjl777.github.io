@@ -270,8 +270,8 @@ export default function ProjectsPage() {
               className={[
                 'rounded-full border px-3 py-1 text-xs font-medium transition-colors duration-200',
                 tag === t
-                  ? 'border-ink-900 bg-ink-900 text-white dark:border-indigo-500 dark:bg-indigo-500'
-                  : 'border-ink-200 bg-white text-ink-600 hover:border-indigo-300 hover:text-indigo-700 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300 dark:hover:border-indigo-500 dark:hover:text-indigo-300',
+                  ? 'border-ink-900 bg-ink-900 text-white dark:border-[#1f7a55] dark:bg-[#1f7a55]'
+                  : 'border-ink-200 bg-white text-ink-600 hover:border-indigo-200 hover:text-indigo-700 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300 dark:hover:border-indigo-500 dark:hover:text-indigo-300',
               ].join(' ')}
             >
               {t}

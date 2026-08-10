@@ -14,6 +14,8 @@ import {
   Fingerprint,
 } from 'lucide-react';
 import { contacts, profile, siteCopy } from '../data';
+import { renderRich } from '../lib/richtext';
+import VesselField from './VesselField';
 
 const SOCIAL_ICONS = {
   mail: Mail,
@@ -22,9 +24,6 @@ const SOCIAL_ICONS = {
   scholar: GraduationCap,
   orcid: Fingerprint,
 } as const;
-
-const stat = (label: string) =>
-  profile.highlights.find((h) => h.label.toLowerCase().includes(label))?.value;
 
 /** Scene H0 — first visit only: a three-line intro mark, then the sheet
  * lifts. Session-gated; skipped entirely under reduced motion. */
@@ -106,6 +105,7 @@ export default function Hero() {
   return (
     <section ref={sectionRef} id="home" className="nesh-hero">
       <IntroGate />
+      <VesselField />
       <div className="container-prose relative z-10">
         <div className="hero-meta animate-hero-fade">
           <p>{profile.role.split('·')[0].trim()}</p>
@@ -115,7 +115,9 @@ export default function Hero() {
 
         <div className="hero-grid">
           <div className="min-w-0 pt-6 lg:pt-10">
-            <p className="hero-eyebrow animate-hero-fade">{siteCopy.hero.eyebrow}</p>
+            <p className="hero-prompt animate-hero-fade" aria-hidden="true">
+              <span>$</span> {siteCopy.hero.console.prompt}
+            </p>
             <h1 className="nesh-display" aria-label={profile.displayTitle}>
               {profile.displayTitle.split('\n').map((line, index) => (
                 <span key={line} className="hero-line-mask">
@@ -125,8 +127,8 @@ export default function Hero() {
             </h1>
 
             <div className="mt-8 grid gap-8 border-t border-black/25 pt-6 sm:grid-cols-2 sm:items-end lg:mt-10">
-              <p className="max-w-md text-sm leading-relaxed text-ink-700 sm:text-base">
-                {profile.shortBio}
+              <p className="max-w-md text-sm leading-relaxed text-ink-700 sm:text-base dark:text-[#a8b0a6]">
+                {renderRich(profile.shortBio)}
               </p>
               <div className="flex flex-wrap gap-3 sm:justify-end">
                 <Link to="/#projects" className="nesh-button nesh-button-dark">
@@ -155,36 +157,39 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="hero-proof animate-hero-fade">
+        <dl className="hero-console animate-hero-fade">
           <div>
-            <strong>{stat('publication')}+</strong>
-            <span>Publications</span>
-          </div>
-          <div>
-            <strong>{stat('citation')}+</strong>
-            <span>Citations</span>
+            <dt>{siteCopy.hero.console.focusLabel}</dt>
+            <dd>{profile.role.split('—')[1]?.trim() ?? profile.role}</dd>
           </div>
           <div>
-            <strong>{stat('h-index')}</strong>
-            <span>h-index</span>
+            <dt>{siteCopy.hero.console.baseLabel}</dt>
+            <dd>{profile.location}</dd>
           </div>
-          <div className="hero-contact">
-            <button type="button" onClick={copyEmail}>
-              {copied ? <Check size={14} /> : <Copy size={14} />}
-              {copied ? 'Copied' : profile.email}
-            </button>
-            <span>
-              {contacts.filter((contact) => contact.icon !== 'mail').map((contact) => {
-                const Icon = SOCIAL_ICONS[contact.icon];
-                return (
-                  <a key={contact.icon} href={contact.href} target="_blank" rel="noreferrer" aria-label={contact.label}>
-                    <Icon size={17} />
-                  </a>
-                );
-              })}
-            </span>
+          <div>
+            <dt>{siteCopy.hero.console.scholarLabel}</dt>
+            <dd>{siteCopy.hero.console.scholarLine}</dd>
           </div>
-        </div>
+          <div>
+            <dt>{siteCopy.hero.console.contactLabel}</dt>
+            <dd className="hero-contact">
+              <button type="button" onClick={copyEmail}>
+                {copied ? <Check size={14} /> : <Copy size={14} />}
+                {copied ? 'Copied' : profile.email}
+              </button>
+              <span>
+                {contacts.filter((contact) => contact.icon !== 'mail').map((contact) => {
+                  const Icon = SOCIAL_ICONS[contact.icon];
+                  return (
+                    <a key={contact.icon} href={contact.href} target="_blank" rel="noreferrer" aria-label={contact.label}>
+                      <Icon size={17} />
+                    </a>
+                  );
+                })}
+              </span>
+            </dd>
+          </div>
+        </dl>
       </div>
 
       <a href="#projects" className="hero-scroll" aria-label="Scroll to selected work">

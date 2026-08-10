@@ -346,7 +346,7 @@ function GalleryRow({
       <button
         onClick={() => onOpen(image)}
         title="Click to enlarge"
-        className="io-clip-x group relative block w-full overflow-hidden rounded-2xl border border-ink-200 bg-white transition-colors duration-300 hover:border-indigo-300 md:col-span-3 dark:border-ink-800 dark:bg-ink-900 dark:hover:border-indigo-600"
+        className="io-clip-x group relative block w-full overflow-hidden rounded-2xl border border-ink-200 bg-white transition-colors duration-300 hover:border-indigo-200 md:col-span-3 dark:border-ink-800 dark:bg-ink-900 dark:hover:border-indigo-600"
       >
         <img
           src={image.src}

@@ -36,16 +36,16 @@ export default {
         },
         // Warm ivory page background.
         paper: '#f2efe6',
-        // Accent — burgundy / plum, chosen to sit with the warm ivory + black
-        // system and the photographic backgrounds. Anchored so clinic-700 is
-        // the light-mode accent (#6a3f4d) and clinic-300 the dark-mode accent
-        // (#b77c8d), matching the clinic-700/dark:clinic-300 usage pattern.
+        // Accent — burgundy / plum in light mode (clinic-700 = #6a3f4d).
+        // Direction v2 (Clinical Console): the 300/400 shades — used only
+        // behind dark: variants across the codebase — are phosphor green, so
+        // dark mode reads as console evidence while light keeps burgundy.
         clinic: {
           50: '#f8eef1',
           100: '#f0dae1',
           200: '#dcb0bf',
-          300: '#b77c8d',
-          400: '#a06378',
+          300: '#4fe0a3',
+          400: '#35c489',
           500: '#8a4f64',
           600: '#7a4657',
           700: '#6a3f4d',
@@ -54,13 +54,13 @@ export default {
           950: '#241419',
         },
         // Legacy accent name still used across components — aliased onto the
-        // burgundy scale so a single palette governs the whole site.
+        // same scale so a single palette governs the whole site.
         indigo: {
           50: '#f8eef1',
           100: '#f0dae1',
           200: '#dcb0bf',
-          300: '#b77c8d',
-          400: '#a06378',
+          300: '#4fe0a3',
+          400: '#35c489',
           500: '#8a4f64',
           600: '#7a4657',
           700: '#6a3f4d',

@@ -124,7 +124,7 @@ export const profile = {
   // Two-sentence hero bio — concrete, evidence-first. The stats line carries
   // the numbers, so this stays prose-light.
   shortBio:
-    'From coronary-angiography measurement to reliable medical language models, I build systems where a mis-measured vessel or a hallucinated fact would change a treatment decision — so both the number and the reasoning behind it have to hold up. My background is in mathematics (Korea University), and I work at the point where a model\'s output has to be trusted by a clinician, not just score well.',
+    'From `coronary-angiography` measurement to reliable `medical language models`, I build systems where a mis-measured vessel or a hallucinated fact would change a treatment decision — so both the number and the reasoning behind it have to hold up. My background is in *mathematics* (Korea University), and I work at the point where a model\'s output has to be trusted by a clinician, not just score well.',
   // One-line proof bar rendered under the hero stats — proper nouns over adjectives.
   credibility: [
     'The Lancet Regional Health',
@@ -182,6 +182,21 @@ export const profile = {
   ],
 };
 
+// Console status-bar facts (Direction v2). lastSync must stay truthful —
+// update it when content meaningfully changes.
+export const consoleMeta = {
+  node: 'hjl777.github.io',
+  auth: 'GUEST',
+  lastSync: '2026-08',
+  labels: {
+    node: 'NODE',
+    auth: 'AUTH',
+    pubs: 'PUBS',
+    hIndex: 'H',
+    sync: 'LAST.SYNC',
+  },
+};
+
 export const sectionLabels = {
   projects: 'Featured Evidence',
   publications: 'Publications',
@@ -196,6 +211,16 @@ export const siteCopy = {
     portfolioLabel: 'portfolio',
     portraitLabel: 'Healthcare AI',
     workCta: 'Selected work',
+    // Console register (Direction v2) — the hero introduces itself the way a
+    // system would: a prompt, then key-value facts.
+    console: {
+      prompt: 'whoami',
+      focusLabel: 'FOCUS',
+      baseLabel: 'BASE',
+      scholarLabel: 'SCHOLAR',
+      contactLabel: 'CONTACT',
+      scholarLine: `${scholarTotals.publications}+ publications · ${scholarTotals.citations}+ citations · h-index ${scholarTotals.hIndex}`,
+    },
   },
   projects: {
     title: 'Built for evidence,\nmade to hold up.',

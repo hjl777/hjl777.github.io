@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import { profile } from '../data';
+import { consoleMeta, profile } from '../data';
 import ThemeToggle from './ThemeToggle';
 
 // Section links use "/#id" so they lead back to the home page from /projects
@@ -50,13 +50,29 @@ export default function Nav() {
     return () => observer.disconnect();
   }, [isHome]);
 
+  const pubs = profile.highlights.find((h) => h.label === 'Publications')?.value;
+  const hIndex = profile.highlights.find((h) => h.label === 'h-index')?.value;
+
   return (
     <header className="fixed inset-x-0 top-0 z-50">
+      {/* SYS status bar (Direction v2) — collapses away once scrolled. */}
+      <div className="sys-bar" data-hidden={scrolled ? 'true' : 'false'} aria-hidden="true">
+        <div className="container-prose flex items-center justify-between">
+          <span>
+            {consoleMeta.labels.node}: {consoleMeta.node} <i>·</i> {consoleMeta.labels.auth}:{' '}
+            {consoleMeta.auth}
+          </span>
+          <span className="hidden sm:inline">
+            {consoleMeta.labels.pubs}: {pubs} <i>·</i> {consoleMeta.labels.hIndex}: {hIndex}{' '}
+            <i>·</i> {consoleMeta.labels.sync}: {consoleMeta.lastSync}
+          </span>
+        </div>
+      </div>
       <nav
         className={[
           'container-prose flex h-[72px] items-center justify-between border-b transition-[background-color,border-color] duration-300',
           scrolled
-            ? 'border-black/15 bg-[#d8d1bf]/92 backdrop-blur-md dark:border-white/12 dark:bg-[#1c1c18]/92'
+            ? 'border-black/15 bg-[#d8d1bf]/92 backdrop-blur-md dark:border-white/12 dark:bg-[#161a17]/92'
             : 'border-black/20 bg-transparent dark:border-white/15',
         ].join(' ')}
       >
@@ -75,18 +91,21 @@ export default function Nav() {
 
         {/* Desktop */}
         <ul className="hidden items-center gap-2 md:flex">
-          {sections.map((s) => (
+          {sections.map((s, i) => (
             <li key={s.id}>
               <Link
                 to={s.to}
                 viewTransition={!isHome}
                 className={[
-                  'relative px-3 py-2 text-[11px] font-medium uppercase tracking-[0.14em] transition-colors',
+                  'relative px-3 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em] transition-colors',
                   active === s.id
                     ? 'text-ink-950 dark:text-ink-50'
                     : 'text-ink-600 hover:text-ink-950 dark:text-ink-300 dark:hover:text-ink-50',
                 ].join(' ')}
               >
+                <span aria-hidden="true" className="mr-0.5 opacity-50">
+                  {String(i + 1).padStart(2, '0')}._
+                </span>
                 {s.label}
                 {active === s.id && (
                   <span className="absolute bottom-1 left-3 right-3 h-px bg-clinic-500 dark:bg-clinic-300" />
@@ -149,7 +168,7 @@ export default function Nav() {
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => setOpen(false)}
-                className="mt-1 block rounded-md bg-ink-900 px-3 py-2 text-sm font-medium text-white dark:bg-indigo-500"
+                className="mt-1 block rounded-md bg-ink-900 px-3 py-2 text-sm font-medium text-white dark:bg-[#1f7a55]"
               >
                 Download CV
               </a>

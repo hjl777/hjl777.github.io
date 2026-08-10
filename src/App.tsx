@@ -101,7 +101,7 @@ function Home() {
 
 function AppLayout() {
   return (
-    <div className="min-h-screen bg-paper text-ink-800 selection:bg-clinic-100 selection:text-clinic-900 dark:bg-ink-950 dark:text-ink-200 dark:selection:bg-clinic-500/30 dark:selection:text-clinic-100">
+    <div className="min-h-screen bg-paper text-ink-800 selection:bg-clinic-100 selection:text-clinic-900 dark:bg-[#0e100f] dark:text-[#d9ded6] dark:selection:bg-clinic-500/30 dark:selection:text-clinic-100">
       <LegacyHashRedirect />
       <ScrollManager />
       <Nav />

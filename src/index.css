@@ -21,7 +21,8 @@
     text-rendering: optimizeLegibility;
   }
   body {
-    @apply bg-paper text-ink-800 font-sans antialiased dark:bg-ink-950 dark:text-ink-200;
+    /* Dark = Clinical Console: green-tinted warm black + paper-green text. */
+    @apply bg-paper text-ink-800 font-sans antialiased dark:bg-[#0e100f] dark:text-[#d9ded6];
     font-feature-settings: 'cv11', 'ss01', 'ss03';
   }
   :where(a, button, [role='button'], [role='tab']):focus-visible {
@@ -29,7 +30,7 @@
     outline-offset: 3px;
   }
   .dark :where(a, button, [role='button'], [role='tab']):focus-visible {
-    outline-color: #b77c8d;
+    outline-color: #4fe0a3;
   }
   ::selection {
     @apply bg-clinic-100 text-clinic-900;
@@ -66,7 +67,7 @@
   }
   .section-kicker::before {
     content: '';
-    @apply h-px w-8 bg-clinic-300 dark:bg-clinic-700;
+    @apply h-px w-8 bg-clinic-200 dark:bg-clinic-700;
   }
   .link-underline {
     @apply relative inline-flex items-center gap-1 text-clinic-700 transition hover:text-clinic-900 dark:text-clinic-400 dark:hover:text-clinic-300;
@@ -82,11 +83,11 @@
     @apply inline-flex items-center rounded-full border border-ink-200 bg-white px-2.5 py-0.5 text-xs font-medium text-ink-600 dark:border-ink-800 dark:bg-ink-900 dark:text-ink-300;
   }
   .badge-soft {
-    @apply inline-flex items-center rounded-md bg-clinic-50 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-clinic-700 ring-1 ring-inset ring-clinic-100 dark:bg-clinic-500/15 dark:text-clinic-300 dark:ring-clinic-500/30;
+    @apply inline-flex items-center rounded-md bg-clinic-50 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-clinic-700 ring-1 ring-inset ring-clinic-100 dark:bg-[#4fe0a3]/10 dark:text-clinic-300 dark:ring-[#4fe0a3]/25;
   }
   /* Status chip — availability line in the hero. */
   .status-chip {
-    @apply inline-flex max-w-full items-center gap-2 whitespace-normal rounded-full border border-clinic-200 bg-clinic-50/70 px-3 py-1 text-[12px] font-medium text-clinic-800 sm:text-[13px] dark:border-clinic-500/30 dark:bg-clinic-500/10 dark:text-clinic-200;
+    @apply inline-flex max-w-full items-center gap-2 whitespace-normal rounded-full border border-clinic-200 bg-clinic-50/70 px-3 py-1 text-[12px] font-medium text-clinic-800 sm:text-[13px] dark:border-[#4fe0a3]/30 dark:bg-[#4fe0a3]/10 dark:text-[#a5ecc9];
   }
 }
 
@@ -215,7 +216,7 @@ html[data-route-motion] ::view-transition-group(root) {
   overflow: hidden;
   background: #d5cfbe;
   color: #11110f;
-  padding: 7.5rem 0 8.5rem;
+  padding: calc(72px + 3rem) 0 8.5rem;
 }
 
 /* Sticky-stack chapter turn: the hero pins once its bottom edge reaches the
@@ -239,7 +240,7 @@ html[data-route-motion] ::view-transition-group(root) {
   z-index: 1;
   background: #f2efe6;
 }
-.dark .home-stack { background: #11110f; }
+.dark .home-stack { background: #0e100f; }
 @media print {
   .nesh-hero { position: static; }
   .home-stack, .dark .home-stack { box-shadow: none; }
@@ -263,7 +264,7 @@ html[data-route-motion] ::view-transition-group(root) {
    while the deep plates develop from the warm-dark surface. */
 .dark .nesh-projects.band-turn[data-band-in='false'],
 .dark .nesh-about.band-turn[data-band-in='false'] {
-  background-color: #1c1c18 !important;
+  background-color: #161a17 !important;
 }
 @media (prefers-reduced-motion: reduce) {
   .band-turn { transition: none; }
@@ -328,16 +329,20 @@ html[data-route-motion] ::view-transition-group(root) {
    beige is flipped to a light value here. */
 .dark .nesh-hero,
 .dark .nesh-journey {
-  background: #1c1c18;
-  color: #f2efe6;
+  background: #161a17;
+  color: #d9ded6;
+}
+/* Console dark: plates sit one step deeper than the #0e100f page. */
+.dark .nesh-projects,
+.dark .nesh-about {
+  background: #0b0d0c;
 }
 .dark .hero-meta,
 .dark .hero-portrait-caption,
 .dark .nesh-marquee { border-color: rgba(255, 255, 255, 0.2); }
 .dark .nesh-button { border-color: rgba(255, 255, 255, 0.4); }
 .dark .nesh-button-dark { background: #f2efe6; color: #11110f; border-color: #f2efe6; }
-.dark .hero-proof { border-top-color: rgba(255, 255, 255, 0.22); }
-.dark .hero-portrait-reveal { background: #2b2721; }
+.dark .hero-portrait-reveal { background: #20241f; }
 .dark .nesh-journey-head > div:last-child p,
 .dark .nesh-timeline-detail { color: rgba(242, 239, 230, 0.62); }
 .dark .nesh-journey-head a { border-bottom-color: rgba(255, 255, 255, 0.5); }
@@ -371,6 +376,64 @@ html[data-route-motion] ::view-transition-group(root) {
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+}
+
+/* Console register (Direction v2) ------------------------------------------ */
+.hero-prompt {
+  margin-bottom: 1.2rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+}
+.hero-prompt span { opacity: 0.55; }
+
+.hero-console {
+  margin-top: 3rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.hero-console > div {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 1.5rem;
+  align-items: baseline;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 0.7rem 0;
+}
+.hero-console > div:last-child { border-bottom: 0; }
+.hero-console dt {
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  opacity: 0.55;
+}
+.hero-console dd { font-size: 0.78rem; letter-spacing: 0.02em; }
+.dark .hero-console { border-top-color: rgba(255, 255, 255, 0.22); }
+.dark .hero-console > div { border-bottom-color: rgba(255, 255, 255, 0.1); }
+
+.sys-bar {
+  overflow: hidden;
+  max-height: 1.9rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  background: rgba(242, 239, 230, 0.6);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.9rem;
+  transition: max-height 300ms var(--ease-soft), opacity 300ms var(--ease-soft);
+}
+.sys-bar i { font-style: normal; opacity: 0.4; }
+.sys-bar[data-hidden='true'] { max-height: 0; opacity: 0; border-bottom-width: 0; }
+.dark .sys-bar {
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+  background: rgba(14, 16, 15, 0.6);
+}
+
+.vessel-tag {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  opacity: 0;
 }
 
 .nesh-display {
@@ -456,23 +519,13 @@ html[data-route-motion] ::view-transition-group(root) {
 .nesh-button:hover { transform: translateY(-3px); }
 .nesh-button-dark { background: #11110f; color: white; border-color: #11110f; }
 
-.hero-proof {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 0.5fr)) minmax(260px, 1.5fr);
-  border-top: 1px solid rgba(0, 0, 0, 0.25);
-  margin-top: 3rem;
-  padding-top: 1.2rem;
-}
-
-.hero-proof > div {
+.hero-contact {
   display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1.2rem;
 }
-
-.hero-proof strong { font-size: clamp(1.6rem, 2.3vw, 2.5rem); font-weight: 500; line-height: 1; }
-.hero-proof span { font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.12em; }
-.hero-contact { align-items: flex-end; justify-content: space-between; }
 .hero-contact button { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.72rem; }
 .hero-contact > span { display: flex; gap: 0.8rem; }
 .hero-contact a { transition: transform 220ms ease; }
@@ -572,7 +625,8 @@ html[data-route-motion] ::view-transition-group(root) {
 .nesh-work-link:hover .nesh-work-copy h3 { transform: translateX(12px); }
 .nesh-work-copy > p { max-width: 35rem; margin-top: 1.8rem; color: rgba(255,255,255,.58); line-height: 1.65; font-size: .86rem; }
 .nesh-work-status { border: 1px solid rgba(255,255,255,.28); border-radius: 999px; padding: .3rem .6rem; font-size: .6rem; text-transform: uppercase; letter-spacing: .12em; }
-.nesh-work-stack { display: flex; flex-wrap: wrap; gap: .9rem; margin-top: 1.7rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .6rem; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.48); }
+.nesh-work-stack { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.7rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .6rem; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.55); }
+.nesh-work-stack span { border: 1px solid rgba(255,255,255,.18); padding: .28rem .55rem; }
 .nesh-work-media { position: relative; overflow: hidden; }
 .nesh-work-media > div { border: 0; border-radius: 0; transform: scale(1.002); transition: transform 800ms cubic-bezier(.16,1,.3,1); }
 .nesh-work-link:hover .nesh-work-media > div { transform: scale(1.025); }
@@ -626,8 +680,6 @@ html[data-route-motion] ::view-transition-group(root) {
   .hero-grid, .nesh-projects-head, .nesh-journey-head, .nesh-about-grid { grid-template-columns: 1fr; }
   .hero-grid { min-height: auto; }
   .hero-portrait-wrap { max-width: 33rem; padding-top: 0; }
-  .hero-proof { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-  .hero-contact { grid-column: 1 / -1; align-items: flex-start; margin-top: 1rem; }
   .nesh-projects-intro, .nesh-journey-head > div:last-child { justify-self: start; }
   .nesh-work-link { grid-template-columns: 1fr; }
   .nesh-work-metrics { margin-left: 0; }
@@ -637,13 +689,11 @@ html[data-route-motion] ::view-transition-group(root) {
 }
 
 @media (max-width: 640px) {
-  .nesh-hero { padding-top: 6.5rem; }
+  /* Header = 72px nav + 1.9rem sys-bar; keep the hero clear of it at any
+     root font size. */
+  .nesh-hero { padding-top: calc(72px + 2.5rem); }
   .nesh-display { font-size: clamp(3rem, 13vw, 4.25rem); }
   .hero-grid { gap: 2.5rem; }
-  .hero-proof { grid-template-columns: repeat(3, 1fr); }
-  .hero-proof strong { font-size: 1.4rem; }
-  .hero-proof span { font-size: .52rem; }
-  .hero-contact { grid-column: 1 / -1; }
   .hero-scroll { display: none; }
   .nesh-projects, .nesh-journey, .nesh-about { padding-block: 6rem; }
   .nesh-projects-head h2, .nesh-journey-head h2, .nesh-about-title { font-size: clamp(2.4rem, 11vw, 3.25rem); }
@@ -812,7 +862,7 @@ html[data-route-motion] ::view-transition-group(root) {
   pointer-events: none;
   animation: intro-exit 360ms var(--ease-in-out) 420ms both;
 }
-.dark .intro-gate { background: #1c1c18; color: #f2efe6; }
+.dark .intro-gate { background: #161a17; color: #d9ded6; }
 .intro-gate p {
   display: flex;
   flex-direction: column;

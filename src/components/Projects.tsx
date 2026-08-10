@@ -27,9 +27,11 @@ function SelectedWork({ p, index }: { p: (typeof projects)[number]; index: numbe
         <div className="io-rise nesh-work-copy" style={{ '--d': '90ms' } as CSSProperties}>
           <div className="flex flex-wrap items-center gap-3">
             {p.status && <span className="nesh-work-status">{p.status}</span>}
-            <span className="text-[10px] uppercase tracking-[0.18em] text-white/45">
-              {p.mediaLabel}
-            </span>
+            {p.mediaLabel && (
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">
+                {'// '}{p.mediaLabel}
+              </span>
+            )}
           </div>
           <h3
             style={{ viewTransitionName: `project-title-${p.id}` } as CSSProperties}

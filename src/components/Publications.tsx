@@ -41,7 +41,7 @@ function PubLinks({ pub }: { pub: Publication }) {
           href={it.href}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1 rounded-md border border-ink-200 bg-white px-2 py-1 text-[11px] font-medium text-ink-700 transition-colors duration-200 hover:border-indigo-300 hover:text-indigo-700 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300 dark:hover:border-indigo-500 dark:hover:text-indigo-300"
+          className="inline-flex items-center gap-1 rounded-md border border-ink-200 bg-white px-2 py-1 text-[11px] font-medium text-ink-700 transition-colors duration-200 hover:border-indigo-200 hover:text-indigo-700 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300 dark:hover:border-indigo-500 dark:hover:text-indigo-300"
         >
           {it.icon} {it.label}
         </a>
@@ -128,7 +128,7 @@ export default function Publications() {
                 className={[
                   'inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors duration-200',
                   filter === f
-                    ? 'bg-ink-900 text-white shadow-sm dark:bg-indigo-500'
+                    ? 'bg-ink-900 text-white shadow-sm dark:bg-[#1f7a55]'
                     : 'text-ink-500 hover:text-ink-800 dark:text-ink-400 dark:hover:text-ink-100',
                 ].join(' ')}
               >
@@ -219,7 +219,7 @@ export default function Publications() {
           {hidden > 0 && (
             <button
               onClick={() => setExpanded((v) => !v)}
-              className="inline-flex items-center gap-1.5 rounded-full border border-ink-200 bg-white px-4 py-2 text-sm font-medium text-ink-700 transition-colors duration-200 hover:border-indigo-300 hover:text-indigo-700 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300 dark:hover:border-indigo-500 dark:hover:text-indigo-300"
+              className="inline-flex items-center gap-1.5 rounded-full border border-ink-200 bg-white px-4 py-2 text-sm font-medium text-ink-700 transition-colors duration-200 hover:border-indigo-200 hover:text-indigo-700 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300 dark:hover:border-indigo-500 dark:hover:text-indigo-300"
             >
               {expanded ? (
                 <><ChevronUp size={15} /> Show fewer</>
